@@ -1,0 +1,53 @@
+.std ul.lst-slide{
+    margin-top: 10px;
+}
+.std ul {
+	list-style-type: none;
+}
+.best-selling .paging{
+	margin-left: 0px;
+    margin-right: 0px;
+}
+.best-selling .paging ul{
+    right: -10px;
+}
+div.loading{
+    position: absolute;
+    display: block;
+    background: url('../images/load.gif') no-repeat !important  ;
+    left: 50%;
+    top: 50%;
+    width:50px;
+    height:50px;
+}
+div.add_button_cart{
+    position: absolute;
+    right: 5px;
+    bottom: 33px;
+}
+.special-price .price{
+    background-image: none;
+}
+.products-grid .price-box{
+    height: 60px;
+}
+.regular-price {
+    /* background: url("../images/icon_2.png") no-repeat scroll 105px 15px transparent; */
+    color: #FFFFFF;
+    font-size: 27px;
+    font-weight: normal;
+    padding: 0 20px 0 0;
+    border-top: 1px dotted #FFFFFF;
+    margin: 0;
+}
+.regular-price .price{
+    color: #FFFFFF;
+    font-size: 27px;
+    font-weight: normal;
+}
+.price-box span{
+    display: block;
+}
+.paging ul li.current a{
+    cursor: text;
+}

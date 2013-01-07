@@ -1,0 +1,156 @@
+.std ul.lst-slide{
+    margin-top: 10px;
+}
+.std ul {
+	list-style-type: none;
+}
+.best-selling .paging{
+	margin-left: 0px;
+    margin-right: 0px;
+}
+.best-selling .paging ul{
+    right: -10px;
+}
+div.loading{
+    position: absolute;
+    display: block;
+    background: url('../images/load.gif') no-repeat !important  ;
+    left: 50%;
+    top: 50%;
+    width:50px;
+    height:50px;
+}
+div.add_button_cart{
+    position: absolute;
+    right: 5px;
+    bottom: 33px;
+}
+.special-price .price{
+    background-image: none;
+}
+.products-grid .price-box{
+    height: 60px;
+}
+.regular-price {
+    /* background: url("../images/icon_2.png") no-repeat scroll 105px 15px transparent; */
+    color: #FFFFFF;
+    font-size: 27px;
+    font-weight: normal;
+    padding: 0 20px 0 0;
+    border-top: 1px dotted #FFFFFF;
+    margin: 0;
+}
+.regular-price .price{
+    color: #FFFFFF;
+    font-size: 22px;
+    font-weight: normal;
+}
+.price-box span{
+    display: block;
+}
+.product-shop .special-price {
+	margin-top: 10px;
+}
+.product-shop .special-price .price {
+    color: #474747;
+    font-size: 17px;
+    font-weight: bold;
+    line-height: 30px;
+}
+.product-shop .regular-price .price{
+    color: #000000;
+}
+.add-to-cart button.button{
+    float: none;
+}
+.add-to-cart label{
+   color: #474747;
+}
+.product-collateral h2{
+    line-height: 20px;
+}
+.product-collateral{
+    background: none;
+}
+.in-stock, .out-stock{
+    display: none;
+}
+.product-essential h2 {
+    border: medium none;
+    color: #474747;
+    /* font-family: "segoe ui light"; */
+    font-size: 14px;
+    font-weight: bold;
+    margin: -5px;
+    padding: 5px;
+    width: 70px;
+}
+.block-about{
+    width: 430px;
+    margin-top: 10px;
+}
+.cart{
+    margin-top: 10px;
+}
+a.btn-checkout{
+    cursor: pointer;
+}
+td strong span.price{
+    margin-left: 10px;
+}
+#shopping-cart-totals-table{
+    font-size: 14px;
+}
+#shopping-cart-totals-table td{
+    margin-top: 10px;
+} 
+#shopping-cart-totals-table .price{
+    color: #9F1500;
+}
+.btn-buy{
+    cursor: pointer;
+}
+div.pager{
+   
+}
+div.paging{
+    float:right;
+    display: inline;
+}
+
+div#login-link a{
+    color: #C70C00;
+}
+.cart{
+	margin: 3px;
+}
+#checkoutSteps .buttons-set button.button{
+    margin-top: 5px;
+}
+#checkoutSteps .data-table tr.last th, .data-table tr.last td{
+    /* border-bottom: 1px solid #E2E2E2 !important; */
+    /* font-size: 12px; */
+}
+#login-link{
+    margin-left: 10px;
+}
+.top-link-cart .quantity{
+    line-height: 0px;
+}
+.tab-type-2{
+    margin-left: 20px;
+}
+div.success_info{
+    margin-left: 20px;
+}
+h1.sub-title{
+    font-size: 16px;
+}
+
+/* dtnghia - jcarousel */
+
+.std ul.jcarousel-pager-center {
+    padding: 0px;
+    display: block;
+    margin: 10px auto 0 auto;
+}

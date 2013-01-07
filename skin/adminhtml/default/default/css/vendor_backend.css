@@ -1,0 +1,19 @@
+.item_label{
+    text-align: left;
+    float: left;
+    width: 200px;
+    margin-top: 3px;
+}
+.item_action,.updated{
+    float: right;
+}
+.check{
+    margin-bottom: 5px;
+}
+div.action{
+    clear: both;
+    text-align: left;
+}
+div.update{
+    text-align: right;
+}

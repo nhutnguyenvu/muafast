@@ -1,0 +1,35 @@
+body.christmas .header-container {
+	background: url("../images/christmas/christmas-top-menu.png") repeat-x bottom center transparent;
+	padding-top: 58px;
+}
+body.christmas .header .links li.bor,
+body.christmas .header .links li {
+	border: none;
+}
+body.christmas .page {
+	background: url("../images/christmas/wood-bg.gif") repeat left top #adafae;
+}
+body.christmas .header-bottom {
+	background: #FFF;
+	border: 1px dotted;
+    width: 980px;
+}
+body.christmas .header-nav-top .logo img {
+	padding-left: 8px;
+}
+body.christmas #christmas-footer {
+	display: block;
+	width: 200px;
+	position: fixed;
+	height: 156px;
+	background: url("../images/christmas/christmas-footer.gif") no-repeat left bottom transparent;
+	bottom:0;
+	left: 0;
+}
+body.christmas #christmas-banner img {
+	width: 940px;
+	padding: 0 20px;
+}
+body.christmas .header {
+	background: url("../images/bg-transparent-75.png") repeat center bottom transparent;
+}
