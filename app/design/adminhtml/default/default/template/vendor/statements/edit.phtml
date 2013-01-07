@@ -1,0 +1,173 @@
+
+<?php 
+    $test  = 'a:3:{i:0;a:3:{s:4:"name";s:17:"Product of Phap 2";s:3:"qty";s:6:"1.0000";s:5:"price";s:9:"5000.0000";}i:1;a:3:{s:4:"name";s:15:"Shirt-Product 3";s:3:"qty";s:6:"3.0000";s:5:"price";s:8:"200.0000";}i:2;a:3:{s:4:"name";s:17:"Trouser Product 1";s:3:"qty";s:6:"2.0000";s:5:"price";s:8:"520.0000";}}';
+    //echo "test";
+    //var_dump(unserialize($test));
+    //die;
+    
+    $statementId = $this->getRequest()->getParam("id");
+    $statementDetail = Mage::getModel("vendor/vendor_statementdetail")->getStatementDetail($statementId);
+    
+    
+?>
+<div class="grid">
+    <table summary="Items Ordered" class="data order-tables" width="1030">
+        <colgroup>
+            <col width="100">
+            <col width="530">
+            <col width="130">
+            <col width="130">
+            <col width="140">
+            <col width="140">
+            <col width="140">
+        </colgroup>
+        <thead>
+            <tr style="background: none repeat scroll 0 0 #6F8992; color: #fff;" class="headings">
+                <th><?php echo $this->__("Order Id") ?></th>
+                <th class="a-center"><?php echo $this->__("Product Detail Info(Name | Qty | Unit Price)") ?></th>
+                <th class="a-center"><?php echo $this->__("Order #Item") ?></th>
+                <th> <?php echo $this->__("Order Price") ?></th>
+                <th><?php echo $this->__("Vendor Earning") ?></th>
+                <th><?php echo $this->__("Order Shipping") ?></th>
+                <th><?php echo $this->__("Vendor Payout") ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php 
+                $total_order_price = 0;
+                $total_order_payout = 0;
+                $total_vendor_earning = 0;
+                $total_order_shipping = 0;
+            ?>    
+            <?php for( $i=0; $i < count($statementDetail);$i++): ?>
+                <?php $detail = $statementDetail[$i]; ?>
+
+                <?php $order = Mage::getModel("sales/order")->load($detail['order_id']);?>
+                <?php $incrementId = $order->getIncrementId();?>
+                <?php //$vendor = Mage::getModel("vendor/vendor")->load($detail['vendor_id']);?>
+
+                <tr id="order-item-row-1" class="border">
+                    <td>
+                        <b><?php echo $incrementId ?></b>
+
+                    </td>
+                    <td> 
+                        <table summary="Items Ordered" class="data order-tables" >
+                            
+                            <?php 
+                                
+                                $productListInfo = $detail['order_detail_information'];
+                                $productListInfo = unserialize($productListInfo);
+                                
+                                for($j=0;$j < count($productListInfo);$j++){ 
+                                    $row = $productListInfo[$j]; 
+                                    if($row['price'] > 0){
+                                        
+                                        echo "<tr>";
+                                        echo "<td width='200'>";
+                                        echo $row['name'];
+                                        echo "</td>";
+                                        echo "<td width='100'>";
+                                        echo intval($row['qty']);
+                                        echo "</td>";
+                                        echo "<td width='100'>";
+
+                                        echo Mage::helper('core')->currency($row['price']);
+                                        echo "</td>";       
+                                        echo "</tr>";
+                                    }    
+                                
+                            }
+                        ?>
+                        </table>
+                    </td>
+                    <?php $vendor_earning = floatval($detail['total_payout']) - floatval($detail['total_shipping']) ?>
+                    <?php 
+                        $total_order_price  += $detail['total_price'];
+                        $total_order_payout  += $detail['total_payout'];
+                        $total_order_shipping  += $detail['total_shipping'];
+                        $total_vendor_earning  += $vendor_earning;
+                    ?>
+                    <td><?php echo $detail['total_quantity'] ?> </td>
+                    <td><?php echo Mage::helper('core')->currency($detail['total_price']) ?> </td>
+                    
+                    
+                    <td><?php echo Mage::helper('core')->currency($vendor_earning) ?> </td>
+                    <td><?php echo Mage::helper('core')->currency($detail['total_shipping']) ?> </td>
+                    <td><?php echo Mage::helper('core')->currency($detail['total_payout']) ?> </td>
+                    
+                </tr>
+
+            <?php endfor; ?>
+
+
+            
+            <tr>
+                <td>
+                </td>
+                <td>
+                     <b><?php echo $this->__("Total Commission:"); ?></b>
+                     <?php echo Mage::helper('core')->currency(floatval($total_order_price)  - floatval($total_order_payout) + floatval($total_order_shipping)) ?>
+                </td>
+                <td>
+                </td>
+             
+                <td>
+                    <b><?php echo $this->__("Total price:"); ?></b>
+                
+                    <b><span class="price"><?php echo Mage::helper('core')->currency($total_order_price) ?></span></b>
+                </td>
+                
+                <td>
+                    <b><?php echo $this->__("Total Vendor Earning:"); ?></b>
+                    <b><span class="price"><?php echo Mage::helper('core')->currency($total_vendor_earning) ?></span></b>
+                </td>
+                <td>
+                    <b><?php echo $this->__("Total Vendor Shipping:"); ?></b>
+                    <b><span class="price"><?php echo Mage::helper('core')->currency($total_order_shipping) ?></span></b>
+                </td>
+                <td>
+                    <b><?php echo $this->__("Total Vendor Payout:"); ?></b>
+                    <b><span class="price"><?php echo Mage::helper('core')->currency($total_order_payout) ?></span></b>
+                </td>
+            </tr>
+            <!--
+            <tr>
+                <td valign="middle" align="right" style="padding:5px 9px 5px 9px;" colspan="7">
+                    Total Shipping:
+                </td>
+                <td valign="middle" align="right" style="padding:5px 9px 5px 9px;">
+                    <b><span class="price">$5.00</span></b>
+                </td>
+            </tr>
+
+            <tr>
+                <td valign="middle" align="right" style="padding:5px 9px 5px 9px;" colspan="7">
+                    Order Total:
+                </td>
+                <td valign="middle" align="right" style="padding:5px 9px 5px 9px;">
+                    <b><span class="price">$5,005.00</span></b>
+                </td>
+            </tr>
+
+            <tr>
+                <td valign="middle" align="right" style="padding:5px 9px 5px 9px;" colspan="7">
+                    <b>Total Vendor Earnings:</b>
+                </td>
+                <td valign="middle" align="right" style="padding:5px 9px 5px 9px;">
+                    <b><span class="price">$4,500.00</span></b>
+                </td>
+            </tr>	
+
+            <tr>
+                <td valign="middle" align="right" style="padding:5px 9px 5px 9px;" colspan="7">
+                    <b>Vendor Payment:</b>
+                </td>
+                <td valign="middle" align="right" style="padding:5px 9px 5px 9px;">
+                    <b><span class="price">$4,505.00</span></b>
+                </td>
+            </tr>
+            -->
+        </tbody>
+    </table>
+</div>

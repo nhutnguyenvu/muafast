@@ -1,0 +1,33 @@
+<?php $session_fbid = Mage::getSingleton('core/session')->getFacebookID(); ?>
+<div class="home" style=" margin: 0 auto; width: 120px; margin-top: 80px; ">
+    <div id="green">
+       <?php if ($this->helper('customer')->isLoggedIn()): ?> 
+	   <?php $check_user = $this->helper('marketing')->checkUserUpload($session_fbid); ?>
+	   <?php if ($check_user == 0): ?>
+            <a title="Đăng hình" href="<?php echo $this->getUrl('marketing/index/upload')?>" >
+                <span class="danghinh"></span>
+                <span class="text">Đăng hình</span></a>
+		<?php else: ?>
+			<?php $marketing_id = Mage::getModel('marketing/marketing')->getCollection()->addFilter('face_id', $session_fbid); ?>
+			<?php foreach ($marketing_id as $marketing_idItem): ?>
+                <a title="Ảnh của bạn" href="<?php echo $this->getUrl('marketing/index/detail') . '?imageId=' . $marketing_idItem['marketing_id'] ?>"> 
+					<span class="anhcuaban"></span>
+                    <span class="text" style='right:-10px'><?php echo $this->__('Ảnh của bạn'); ?></span> </a>
+    		<?php endforeach; ?>
+		
+		<?php endif; ?>
+       <?php else: ?>
+       <a title="Tham gia" href="javascript:void(0)" onclick='fblogin();' title="Facebook Login">
+            <span class="thamgia"></span>
+            <span class="text">Tham gia</span></a>
+       <?php endif; ?>
+    </div>
+    <a title="Sàn đấu" href="<?php echo $this->getUrl('marketing/index/toideptrongmatai')?>" class="coming-soon"><div id="red">
+        <span class="daugia"></span>
+        <span class="text">Sàn đấu</span>
+    </div></a>
+    <a title="Ảnh dự thi" href="<?php echo $this->getUrl('marketing/index/list')?>" class="coming-soon"><div id="blue">
+        <span class="anhduthi"></span>
+        <span class="text">Ảnh dự thi</span>
+    </div></a>
+</div>

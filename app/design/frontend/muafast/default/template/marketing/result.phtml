@@ -1,0 +1,65 @@
+<?php $write = Mage :: getSingleton ( 'core/resource' )-> getConnection ('core_write'); 
+        $readresult = $write -> query("SELECT * 
+                                    FROM ".Mage::getSingleton('core/resource')->getTableName('marketing')."
+                                    WHERE count_like >= 2000 
+                                    ORDER BY count_like DESC
+                                    LIMIT 0,3
+                                  ");
+        $get_winner = $readresult->fetchAll(); ?>
+
+<?php $readresult2 = $write -> query("SELECT * 
+                                    FROM ".Mage::getSingleton('core/resource')->getTableName('marketing')."
+                                    WHERE count_like < 2000 
+                                            AND status = 1
+                                    ORDER BY count_like DESC
+                                    LIMIT 0,50
+                                  ");
+        $top_like = $readresult2->fetchAll(); ?>
+
+<div id="result-left">
+    <img src="<?php echo $this->getSkinUrl('images/result-text.jpg')?>" alt="ketqua" />
+    <h5><i>TOP 50 - NGƯỜI ĐƯỢC BÌNH CHỌN NHIỀU NHẤT</i></h5>
+    <p class="luuy" style="text-align: justify; margin-top: 10px;"><b>Chú Thích :</b> Hiện số like bạn nhìn thấy trên ảnh dự thi của bạn là không chính xác,
+                                          vì nó bao gồm cả số like, share, comment. Vì vậy chúng tôi đã lấy ra số like chính xác
+                                          trên bảng kết quả. Xin các bạn vui lòng kiểm tra số like của mình ở đây, Cảm ơn.                    
+    </p>
+    <img class="note-result" src="<?php echo $this->getSkinUrl('images/note-result.jpg')?>" alt="result" />
+</div>
+<div id="result-right">
+    <ul id="list-winner">
+    <?php foreach($get_winner as $row){  ?>
+    <?php $customer_win = $row['user_id']; ?>
+    <?php $customer_name = Mage::getModel("customer/customer")->load($customer_win);
+            $first = $customer_name->getFirstname();
+            $last =  $customer_name->getLastname();
+            $name = $first.' '.$last;?>
+        <li class="winner">
+            <div class="detail-winner photos"><img src="<?php echo Mage::helper('marketing')->resizemini($row['photo'],60,50); ?>" alt="<?php echo $row['photo'] ?>" /></div>
+            <div class="detail-winner metal"><img class="winner-img" src="<?php echo $this->getSkinUrl('images/Winner_icon.png')?>" alt="" /></div>  
+             <div class="detail-winner name"><span><?php echo $name ?></span></div>
+            <div class="detail-winner facelike">
+                <p class="bg_face"><span><?php echo $row['count_like'] ?></span></p>
+            </div>
+        </li>
+    <?php } ?>
+    <?php $i=1 ; foreach($top_like as $item){  ?>
+    <?php $customer_id = $item['user_id']; ?>
+    <?php $customer = Mage::getModel("customer/customer")->load($customer_id);
+            $first = $customer->getFirstname();
+            $last =  $customer->getLastname();
+            $name = $first.' '.$last;?>
+        <li class="winner <?php if($i == 1){echo 'first-top';}; ?> ">
+            <div class="detail-winner photos"><img src="<?php echo Mage::helper('marketing')->resizemini($item['photo'],60,50); ?>" alt="<?php echo $item['photo'] ?>" /></div>
+           <?php if($i==1 || $i==2): ?>
+            <div class="detail-winner metal"><img src="<?php echo $this->getSkinUrl('images/metal1.png')?>" alt="" /></div>
+            <?php else: ?>
+           <div class="detail-winner metal"><img src="<?php echo $this->getSkinUrl('images/metal2.png')?>" alt="" /></div>
+            <?php endif; ?>
+            <div class="detail-winner name"><span><?php echo $name ?></span></div>
+            <div class="detail-winner facelike">
+                <p class="bg_face"><span><?php echo $item['count_like'] ?></span></p>
+            </div>
+        </li>
+    <?php $i++; }?>    
+    </ul>
+</div>

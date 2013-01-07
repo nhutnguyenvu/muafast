@@ -1,0 +1,35 @@
+<?php $product_id = $this->getRequest()->getParam('product_id') ?>
+<?php $single_product = Mage::getModel('catalog/product')->load($product_id);?>
+<?php $vendor_data = FavoredMinds_Vendor_Block_Vendor_Renderer_Vendor::getVendorInfo($single_product->getData('manufacturer'));
+        $vendor = Mage::getModel("vendor/vendor")->load($vendor_data['vendor_id']);?>
+	<h2 class="vender-name">
+		<?php echo $vendor->getCompanyName() ?>
+		<div class="fb-like" data-href="<?php echo $single_product->getProductUrl() ?>" data-send="false" data-layout="button_count" data-width="70" data-show-faces="true"></div>
+		<a class="chia-se" onclick="window.open('http://www.facebook.com/sharer.php?s=100&amp;p[title]=<?php echo $single_product->getName(); ?>&amp;p[summary]=<?php echo $single_product->getName(); ?>&amp;p[url]=<?php echo $single_product->getProductUrl() ?>&amp;&p[images][0]=<?php echo $this->helper('catalog/image')->init($single_product, 'image')->resize(80,80); ?>', 'sharer', 'toolbar=0,status=0,width=620,height=280');" href="javascript: void(0)"> 
+			<img id = "share_button" src="<?php echo $this->getSkinUrl("images/facebook_counter.png"); ?>"/>
+		</a>
+	</h2>
+    <a target="_blank" href="<?php echo $single_product->getProductUrl() ?>" title="<?php echo $single_product->getName(); ?>">
+        <img src="<?php echo $this->helper('catalog/image')->init($single_product, 'image')->resize(400,360); ?>" alt="" />
+    </a>
+    <div class="product-name">
+        <a href="<?php echo $single_product->getProductUrl() ?>" title="<?php echo $single_product->getName(); ?>"><h2><?php echo $single_product->getName(); ?></h2></a>
+        <div class="like">
+            <ul>
+                <?php $row = $this->getLike($product_id); ?>
+                <li class="face"><?php echo $row['like'] ?></li>
+                <li class="love"><?php echo $row['share'] ?></li>
+                <li class="comen"><?php echo $row['comment'] ?></li>
+            </ul>
+        </div>
+    </div>
+    <div class="comment-list">
+		<div class="fb-comments" data-href="<?php echo $single_product->getProductUrl() ?>" data-width="580" data-num-posts="5"></div>
+    </div>
+    <?php /*<div class="list-face">
+        <!--<h2>Có 3 Like</h2>-->
+        <div class="like-list">
+            <div class="fb-like" data-href="<?php echo $single_product->getProductUrl() ?>" data-send="false" data-layout="button_count" data-width="150" data-show-faces="true"></div>
+        </div>
+    </div>
+	*/?>

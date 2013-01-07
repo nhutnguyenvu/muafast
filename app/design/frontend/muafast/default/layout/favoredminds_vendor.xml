@@ -1,0 +1,211 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+        <reference name="top.links">
+            <action method="addLink" translate="label title" module="vendor" ifconfig="vendor/links/header">
+                <label>Vendor</label>
+                <url>vendor</url>
+                <title>Vendor Section</title>
+                <prepare>true</prepare>
+                <position>21</position>
+            </action>
+        </reference>
+    </default>
+  
+  
+
+    <vendor_rss_index>
+    <!-- TODO: display the list of all feeds -->
+    </vendor_rss_index>
+
+    <vendor_rss_orders>
+        <block type="vendor/rss_orders" output="toHtml" name="vendor.rss.orders"/>
+    </vendor_rss_orders>
+
+    <vendor_rss_newvendors>
+        <block type="vendor/rss_newvendors" output="toHtml" name="vendor.rss.newvendors"/>
+    </vendor_rss_newvendors>
+
+    <vendor_rss_statements>
+        <block type="vendor/rss_statements" output="toHtml" name="vendor.rss.statements"/>
+    </vendor_rss_statements>
+    <vendor_index_slide>
+        <reference name="content">
+            <block type="vendor/vendor_renderer_vendor" name="slide" template="home/slide.phtml">
+            </block>
+        </reference>
+    </vendor_index_slide>
+    <vendor_index_index>
+        <reference name="head">
+            <action method="setTitle">
+                <title>Vendor Interface</title>
+            </action>
+            <action method="addCss">
+                <stylesheet>css/vendor.css</stylesheet>
+            </action>
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/new_style.css</name>
+                <params/>
+            </action>
+            <action method="removeItem">
+                <type>skin_css</type>
+                <name>css/dev.css</name>
+            </action>
+        </reference>
+
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
+        </reference>
+
+        <reference name="content">
+            <block type="vendor/home" name="vendor_home" template="vendor/home.phtml">
+                <action method="setTemplate">
+                    <template>vendor/home.phtml</template>
+                </action>
+            </block>
+        </reference>
+
+    </vendor_index_index>
+
+    <vendor_signup_index>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
+        </reference>
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/new_style.css</name>
+                <params/>
+            </action>
+            <action method="removeItem">
+                <type>skin_css</type>
+                <name>css/dev.css</name>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="vendor/signup" name="vendor_signup" template="vendor/signup.phtml">
+                <action method="setTemplate">
+                    <template>vendor/signup.phtml</template>
+                </action>
+            </block>
+        </reference>
+    </vendor_signup_index>
+
+    <vendor_signup_welcome>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
+        </reference>
+
+        <reference name="content">
+            <block type="vendor/welcome" name="vendor_welcome" template="vendor/welcome.phtml">
+                
+                <action method="setTemplate">
+                    <template>vendor/welcome.phtml</template>
+                </action>
+                
+            </block>
+        </reference>
+
+    </vendor_signup_welcome>
+
+    <vendor_redirect_index>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
+        </reference>
+
+        <reference name="content">
+            <block type="vendor/redirect" name="vendor_redirect" template="vendor/redirect.phtml">
+                <action method="setTemplate">
+                    <template>vendor/redirect.phtml</template>
+                </action>
+            </block>
+        </reference>
+    </vendor_redirect_index>
+
+    <vendor_sales_index>
+        <reference name="content">
+            <block type="vendor/sales" name="vendor_sales" template="vendor/sales/index.phtml" />
+        </reference>
+    </vendor_sales_index>
+  <!--
+Email layouts section
+-->
+    <vendor_sales_email_order_items>
+        <block type="sales/order_email_items" name="items" template="vendor/email/items.phtml" />
+    </vendor_sales_email_order_items>
+    <vendor_index_show translate="label">
+        <reference name="content">
+            <block type="vendor/vendor_renderer_vendor" name="list.vendor" template="vendor/list.phtml">       
+            </block>
+        </reference>
+    </vendor_index_show>   
+    <vendor_quote_index>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
+        </reference>
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/new_style.css</name>
+                <params/>
+            </action>
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/template.css</name>
+                <params/>
+            </action>
+            <action method="removeItem">
+                <type>skin_css</type>
+                <name>css/dev.css</name>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="core/template" name="vendor_quote" template="vendor/registervendor.phtml">
+            </block>
+        </reference>
+    </vendor_quote_index>
+    <vendor_index_productlist>
+		<reference name="head">
+		  <block type="vendor/vendor_renderer_vendor" name="facebookmeta" before="-" template="vendor/meta.phtml" />
+        </reference>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="vendor/vendor_renderer_vendor" name="vendor_product_list" template="vendor/productlist.phtml">
+			  <block type="amshopby/catalog_layer_view_top" name="amshopby.navtop" as="navtop" template="amshopby/view_top.phtml"/>
+            </block>
+        </reference>
+    </vendor_index_productlist>
+	<!-- khanh.phan -->
+	 <vendor_index_vendorlist>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="vendor/vendor_renderer_vendor" name="vendor_product_list" template="vendor/vendorlist.phtml">
+			 <block type="vendor/vendor_renderer_vendor" name="productlist" as="productlist" template="vendor/vendorlist/list.phtml"/>
+			 <block type="core/template" name="search" as="search" template="vendor/vendorlist/search-vendor.phtml"/>
+            </block>
+        </reference>
+    </vendor_index_vendorlist>
+
+	<vendor_search_ajaxresult>
+            <block type="vendor/vendor_renderer_vendor" name="layer_vendorlist" template="vendor/vendorlist/list.phtml"/>
+    </vendor_search_ajaxresult>
+</layout> 

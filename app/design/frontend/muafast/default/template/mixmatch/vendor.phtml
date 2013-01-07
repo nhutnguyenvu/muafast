@@ -1,0 +1,16 @@
+<?php $store = Mage::getModel('vendor/vendor')->getVendorList(1); ?>
+
+<?php $vendor_block = $this->getLayout()->getBlockSingleton("vendor/vendor_renderer_vendor"); ?>
+<?php foreach ($store as $item): ?>
+    <?php if($this->countproductbyvendor($item->getData("vendor_code"))>0): ?>
+    <?php $logo = $vendor_block->getLogoSrcFrontEnd($item) ?>
+				<li>
+					<a class="mixnmatch_ajax" href="<?php echo $this->getUrl('mixmatch/index/ajax') . "?vendor=" . $item->getData("vendor_code") ?>" >
+						<img  width="55px" height="55px" src="<?php echo $logo ?>"  alt="<?php echo $item->getCompanyName(); ?>" title="<?php echo $item->getCompanyName(); ?>"/>
+						<span><?php echo $item->getCompanyName(); ?></span>
+					</a>
+				</li>
+			
+	<?php endif; ?>
+	<?php endforeach; ?>
+	

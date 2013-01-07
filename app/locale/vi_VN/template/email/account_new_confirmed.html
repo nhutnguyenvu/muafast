@@ -1,0 +1,48 @@
+<!--@subject Chào mừng {{var customer.name}}! @-->
+
+<style type="text/css">
+body,td { color:#2f2f2f; font:11px/1.35em Verdana, Arial, Helvetica, sans-serif; }
+</style>
+
+<div style="font:11px/1.35em Verdana, Arial, Helvetica, sans-serif;">
+    <table cellspacing="0" cellpadding="0" border="0" width="98%" style="margin-top:10px; font:11px/1.35em Verdana, Arial, Helvetica, sans-serif; margin-bottom:10px;">
+        <tr>
+            <td align="center" valign="top">
+                <!-- [ header starts here] -->
+                <table cellspacing="0" cellpadding="0" border="0" width="650">
+                    <tr>
+                        <td valign="top">
+                            <a href="{{store url=""}}"><img src="{{var logo_url}}" alt="{{var logo_alt}}"  style="margin-bottom:10px;" border="0"/></a></td>
+                  </tr>
+                </table>
+
+                <!-- [ middle starts here] -->
+                <table cellspacing="0" cellpadding="0" border="0" width="650">
+                    <tr>
+                        <td valign="top">
+                            <p><strong>K&iacute;nh g&#7903;i {{var customer.name}}</strong>,<br/>
+                          Ch&agrave;o m&#7915;ng b&#7841;n &#273;&#7871;n v&#7899;i h&#7879; th&#7889;ng si&ecirc;u th&#7883; tr&#7921;c tuy&#7871;n c&#7911;a <strong>{{var store.getFrontendName()}}</strong>. &#272;&#7875; &#273;&#259;ng nh&#7853;p v&agrave;o h&#7879; th&#7889;ng b&#7841;n ch&#7881; c&#7847;n <a href="{{store url="customer/account/"}}" style="color:#1E7EC8;">Click v&agrave;o &#273;&acirc;y</a>ho&#7863;c <a href="{{store url="customer/account/"}}" style="color:#1E7EC8;">Click v&agrave;o &#273;&acirc;y &#273;&#7875; ki&#7875;m tra t&agrave;i kho&#7843;n</a></p>
+
+                          <p>Khi b&#7841;n &#273;&#259;ng nh&#7853;p v&agrave;o t&agrave;i kho&#7843;n c&#7911;a b&#7841;n, b&#7841;n s&#7869; c&oacute; th&#7875; l&agrave;m nh&#432; sau:</p>
+
+                      <ul>
+                        <li>Ti&#7871;n h&agrave;nh ki&#7875;m tra qu&aacute; tr&igrave;nh mua h&agrave;ng nhanh h&#417;n.</li>
+                                <li> Theo d&otilde;i tr&#7841;ng th&aacute;i &#273;&#417;n h&agrave;ng.</li>
+                                <li>Qu&#7843;n l&yacute; &#273;&#417;n h&agrave;ng &#273;&atilde; v&agrave; &#273;ang giao d&#7883;ch.</li>
+                                <li> Qu&#7843;n l&yacute; v&agrave; thay &#273;&ocirc;i th&ocirc;ng tin t&agrave;i kho&#7843;n c&#7911;a m&igrave;nh.</li>
+                                <li>Thay &#273;&#7893;i m&#7853;t kh&#7849;u.</li>
+                                <li>Qu&#7843;n l&yacute;, chia s&#7867; th&ocirc;ng tin s&#7843;n ph&#7849;m cho ng&#432;&#7901;i th&acirc;n.</li>
+                                <li>Tham gia mua c&aacute;c s&#7843;n ph&#7849;m tr&ecirc;n to&agrave;n h&#7879; th&#7889;ng si&ecirc;u th&#7883; <strong>{{var store.getFrontendName()}}</strong>: Ph&#7847;n m&#7873;m. Linh ki&#7879;n m&aacute;y t&iacute;nh, Th&#7901;i trang. Website,v.v...</li>
+                      </ul>
+
+                          <p>C&#7843;m &#417;n b&#7841;n!</p>
+
+
+                        </td>
+                    </tr>
+                </table>
+
+            </td>
+        </tr>
+    </table>
+</div>

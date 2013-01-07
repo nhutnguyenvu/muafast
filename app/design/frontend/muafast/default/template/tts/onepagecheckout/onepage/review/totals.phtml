@@ -1,0 +1,26 @@
+<?php if ($this->getTotals()): ?>
+    <?php $_colspan = $this->helper('tax')->displayCartBothPrices() ? 5 : 3; ?>
+    <?php echo $this->renderTotals(null, $_colspan); ?>
+    <?php echo $this->renderTotals('footer', $_colspan); ?>
+    <?php if ($this->needDisplayBaseGrandtotal()):?>
+    <tr class="total-price">
+        <td class="a-right" colspan="<?php echo $_colspan; ?>">
+            <small><?php echo $this->helper('sales')->__('Your credit card will be charged for') ?></small>
+        </td>
+        <td class="a-right">
+            <small><?php echo $this->displayBaseGrandtotal() ?></small>
+        </td>
+    </tr>
+    <?php endif?>
+
+<?php endif; ?>
+ <!--   
+ <script type="text/javascript">
+    jQuery(document).ready(function(){
+       
+        jQuery('tr.first').removeClass("first odd").addClass('total-price');
+        jQuery('tr.last').removeClass("last odd").addClass('total');
+        
+    }); 
+ </script>
+ -->

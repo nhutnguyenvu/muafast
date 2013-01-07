@@ -1,0 +1,58 @@
+<?php $steps = $this->getSteps(); ?>
+<?php if($this->getLayout()->createBlock('checkout/onepage_billing')->isUseBillingAddressForShipping()) $shipping = 'shipping_as_billing'; else $shipping = ''; ?>
+<div class="onepagecheckout opc <?php echo $shipping; ?>" id="checkoutSteps">
+    <div class="column-left">
+        <div id="opc-billing" class="section active">
+            <div class="step-title">
+                <span class="number"></span>
+                <h2><?php echo $steps['billing']['label']; ?></h2>
+            </div>
+            <div id="checkout-step-billing" class="step a-item">
+                <?php echo $this->getChildHtml('billing'); ?>
+            </div>
+        </div>
+        <?php if ($shipping == 'shipping_as_billing') $style=' style="display:none"'; else $style=''; ?>
+        <div id="opc-shipping" class="section active"<?php echo $style; ?>>
+            <div class="step-title">
+                <span class="number"></span>
+                <h2><?php echo $steps['shipping']['label']; ?></h2>
+            </div>
+            <div id="checkout-step-shipping" class="step a-item">
+                <?php echo $this->getChildHtml('shipping'); ?>
+            </div>
+        </div>
+    </div>
+    <div class="column-right">
+        <div>
+            <div id="opc-shipping_method" class="section active">
+                <div class="step-title">
+                    <span class="number"></span>
+                    <h2><?php echo $steps['shipping_method']['label']; ?></h2>
+                </div>
+                <div id="checkout-step-shipping_method" class="step a-item">
+                    <?php echo $this->getChildHtml('shipping_method'); ?>
+                </div>
+            </div>
+            <div id="opc-payment" class="section active">
+                <div class="step-title">
+                    <span class="number"></span>
+                    <h2><?php echo $steps['payment']['label']; ?></h2>
+                </div>
+                <div id="checkout-step-payment" class="step a-item">
+                    <?php echo $this->getChildHtml('payment'); ?>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div id="opc-review" class="section active">
+            <div class="step-title">
+                <span class="number"></span>
+                <h2><?php echo $steps['review']['label']; ?></h2>
+            </div>
+            <div id="checkout-step-review" class="step a-item">
+                <?php echo $this->getChildHtml('review'); ?>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>

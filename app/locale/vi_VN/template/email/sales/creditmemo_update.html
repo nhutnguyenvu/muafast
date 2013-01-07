@@ -1,0 +1,33 @@
+<!--@subject {{var order.getStoreGroupName()}}: Credit Memo # {{var creditmemo.increment_id}} update @-->
+<style type="text/css">body,td { color:#2f2f2f; font:11px/1.35em Verdana, Arial, Helvetica, sans-serif; }</style>
+<div style="font:11px/1.35em Verdana, Arial, Helvetica, sans-serif;">
+<table cellspacing="0" cellpadding="0" border="0" width="98%" style="margin-top:10px; font:11px/1.35em Verdana, Arial, Helvetica, sans-serif; margin-bottom:10px;">
+<tr>
+    <td align="center" valign="top">
+        <!-- [ header starts here] -->
+        <table cellspacing="0" cellpadding="0" border="0" width="650">
+        <tr>
+            <td valign="top"><a href="{{store url=""}}"><img src="{{var logo_url}}" alt="{{var logo_alt}}"  style="margin-bottom:10px;" border="0"/></a></td>
+        </tr>
+        </table>
+
+        <!-- [ middle starts here] -->
+        <table cellspacing="0" cellpadding="0" border="0" width="650">
+        <tr>
+            <td valign="top">
+                <p>
+                  <strong>K&iacute;nh g&#7903;i {{var order.getCustomerName()}}</strong>,<br/>
+                    &#272;&#417;n h&agrave;ng c&#7911;a b&#7841;n s&#7889;: {{var order.increment_id}} has been <br/>
+                    <strong>{{var order.getStatusLabel()}}</strong>.
+                </p>
+              <p>b&#7841;n c&oacute; th&#7875; ki&#7875;m tra &#273;&#417;n h&agrave;ng n&agrave;y b&#7857;ng c&aacute;ch <a href="{{store url="customer/account/"}}" style="color:#1E7EC8;">&#273;&#259;ng nh&#7853;p v&agrave;o t&agrave;i kho&#7843;n</a>.</p>
+              <p>{{var comment}}</p>
+                            <p>N&#7871;u b&#7841;n g&#7863;p s&#7921; c&#7889; nh&#432; th&#7871; n&agrave;o, m&#7901;i b&#7841;nemail qua <a href="mailto:support@ttstech.com" style="color:#1E7EC8;">support@ttstech.com</a> Ho&#7863;c g&#7885;i cho ch&uacute;ng t&ocirc;i s&#7889;: <span class="nobr">(84-8) 39168992 - 39168993 - 39168994. </span> T&#7915; th&#7913; 2 &#273;&#7871;n th&#7913; 7, s&aacute;ng t&#7915; 7h30 - 11h30 chi&#7873;u t&#7915; 1h30 - 5h30. Ngo&agrave;i gi&#7901; xin li&ecirc;n h&#7879; qua s&#7889;: 090.2006.206</p>
+              <p>Thank you again,<br/><strong>{{var order.getStoreGroupName()}}</strong></p>
+            </td>
+        </tr>
+        </table>
+    </td>
+</tr>
+</table>
+</div>

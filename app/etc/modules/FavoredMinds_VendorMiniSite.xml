@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <FavoredMinds_VendorMiniSite>
+            <active>true</active>
+            <codePool>local</codePool>
+        </FavoredMinds_VendorMiniSite>
+    </modules>
+</config> 

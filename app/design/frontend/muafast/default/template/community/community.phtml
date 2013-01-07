@@ -1,0 +1,215 @@
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/jquery-1.7.1.min.js') ?>"></script>
+<script type="text/javascript">
+    jQuery.noConflict();
+</script>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/vi_VN/all.js#xfbml=1";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
+<div id="banner-community">
+    <!--<div class="text-community">
+      <p><strong>Muafast là một bảng ảo.</strong><br /> Tổ chức và chia sẻ những gì bạn thích.</p>
+       <span><a href="#" class="Buttona RedButton Button18" title="Tham gia Muafast">Tham gia Muafast</a></span>
+   </div>-->
+</div>
+<div id="loadings" style="display: none;"><img alt="Loading Animation" src="<?php echo $this->getSkinUrl('images/loading.gif') ?>" /></div>
+<div class="overlay" style="display: none;"></div>
+<div id="show-ajax" style="display: none;">
+    <a class="lightbox-close" href="javascript:void(0)"><img src="<?php echo $this->getSkinUrl('images/close_color.png') ?>"/></a>
+</div>
+<?php
+if (!$this->getRequest()->getParam('page')) {
+    $current_page = 1;
+} else {
+    $current_page = $this->getRequest()->getParam('page');
+}
+?>
+<?php $current_page; ?>
+<div class="amshopby-overlay" style="">
+    <img src="<?php echo $this->getSkinUrl('images/amshopby-overlay.gif') ?>" />
+</div>
+<section id="content">
+    <div id="container" class="transitions-enabled infinite-scroll clearfix">
+        <?php
+        $record_in_page = 12;
+        //$y = $record_in_page * ($current_page - 1);
+        ?>
+
+        <?php
+        $productCollection = Mage::getModel('community/community')->getCollection()
+                ->addFieldToSelect('product_id')
+                ->setCurPage($current_page)
+                ->setPageSize($record_in_page)
+				->setOrder('update_time');
+				
+		// total record
+		$tong = Mage::getModel('community/community')->getCollection()
+                ->addFieldToSelect('product_id');
+        ?>
+
+        <?php
+        $total = count($tong);
+        $total_page = ceil($total / $record_in_page);
+        if ($total != 0):
+            foreach ($productCollection as $product):
+                $product_id = $product->getProduct_id();
+                $full_product = Mage::getModel('catalog/product')->load($product_id);
+                $product_image_url = $full_product->getImageUrl();
+        ?>
+                <div class="product-item lv-3"> 
+                    <a href="javascript:void(0)" class="product-ajax" nav="<?php echo $product_id ?>">
+                        <?php //echo $product->getName()  ?>
+                        <?php $image = $this->helper('catalog/image')->init($full_product, 'small_image'); ?>
+                        <img src="<?php echo $this->helper('catalog/cropimage')->cropImage(175, 260, $image); ?>" alt="" /></a> 
+                    <!--  <div class="hover-but">
+                          <span class="toithich"></span>
+                          <span class="binhluan"></span>
+                      </div>-->
+
+                    <div class="show-comment">
+                        <div class="like">
+                            <span><?php echo $full_product->getName(); ?></span>
+                            <ul>
+                                <?php $row = $this->getLike($product_id); ?>
+                                <li class="face"><?php echo $row['like'] ?></li>
+                                <li class="love"><?php echo $row['share'] ?></li>
+                                <li class="comen"><?php echo $row['comment'] ?></li>
+                                <li class="buy"><?php echo $row['buy'] ?></li>
+                            </ul>
+                        </div>
+                        <div class="comment-first convo">
+                       	    <div>
+                                <?php if ($full_product->isSaleable()): ?>
+                                    <?php 
+										if (!($full_product->getTypeInstance(true)->hasRequiredOptions($full_product) || $full_product->isGrouped())) { 
+									?>
+                                        <a  style=" float: left;"  class="btn-buy" title="<?php echo $this->__('Add to Cart') ?>" onclick="setLocationAjax('<?php echo $this->getAddToCartUrl($full_product) ?>')"><?php echo $this->__("Mua Hàng") ?></a>
+                                        <span id='ajax_loader<?php echo $product_id ?>' style='display:none'><img src='<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>'/></span>
+                                    <?php } else { ?>
+                                        <a  style=" float: left;"  class="btn-buy" title="<?php echo $this->__('Add to Cart') ?>" onclick="showOptions('<?php echo $product_id ?>')"><?php echo $this->__("Mua Hàng") ?></a>
+                                        <a href='<?php echo $this->getUrl('ajax/index/options', array('product_id' => $product_id)); ?>' class='fancybox' id='fancybox<?php echo $product_id ?>' style='display:none'></a>
+                                    <?php } ?>		
+                                <?php else: ?>
+                                    <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                                <?php endif; ?>
+                            </div>   
+                            <span class="noComment product-ajax" nav="<?php echo $product_id ?>"><?php echo $this->__('Bình luận') ?></span>
+                        </div>
+                    </div>
+
+                </div>
+
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+</section>
+<?php if ($current_page < $total_page) { ?>
+    <nav id="page-nav">
+        <a href="<?php echo $this->getUrl('community') . "?page=" . ($current_page + 1); ?>"></a>
+    </nav>
+<?php } ?>
+<div class="footer-comunity">
+    <h5>Copyright @ 2012 muafast.com</h5>
+</div>
+<button type="button" class="Button WhiteButton Indicator" id="ScrollToTop">
+    Scroll to Top
+</button>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/jquery.masonry.min.js') ?>"></script>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/ias/jquery.ias.min.js') ?>"></script>
+<script type="text/javascript">
+jQuery(function(){
+    
+    var $container = jQuery('#container');
+    
+    $container.imagesLoaded(function(){
+        $container.masonry({
+            itemSelector: '.product-item',
+            //columnWidth: 10
+        });
+    });
+    
+    jQuery.ias({
+        container : '#container',
+        item: '.product-item',
+        pagination: '#page-nav',
+        next: '#page-nav a',
+        history: false,
+        loader: '<img src="<?php echo $this->getSkinUrl('images/6RMhx.gif') ?>"/>',
+        onLoadItems: function(items) {
+            // hide new items while they are loading
+            var $newElems = jQuery(items).show().css({ opacity: 0 });
+            // ensure that images load before adding to masonry layout
+            $newElems.imagesLoaded(function(){
+                // show elems now they're ready
+                $newElems.animate({ opacity: 1 });
+                jQuery('#container').masonry( 'appended', $newElems, true );
+            });
+            return true;
+        }
+    });
+
+});
+</script>
+<script type='text/javascript'>
+jQuery(function(){
+    jQuery(window).scroll(function(){
+        if(jQuery(this).scrollTop()!=0){
+            jQuery('#ScrollToTop').fadeIn();
+        }else{jQuery('#ScrollToTop').fadeOut();}
+    });
+    jQuery('#ScrollToTop').click(function(){
+        jQuery('body,html').animate({scrollTop:0},800);});
+});
+</script>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+    jQuery('.product-ajax').live('click',function(){
+        jQuery('body,html').animate(
+        {scrollTop:0},800
+    );
+        jQuery('.overlay').fadeIn('fast');
+        jQuery('#loadings').fadeIn('');
+            
+        var product_id = jQuery(this).attr('nav');
+			
+        ajaxCall = jQuery.ajax({
+            url: "<?php echo $this->getUrl('community/index/ajax') ?>",
+            type: "POST",
+            data: {product_id : product_id},
+            dataType: "json",
+            success: function( html ){
+                jQuery('#loading').fadeOut();
+                jQuery('#show-ajax').append(html);
+                jQuery('#show-ajax').fadeIn('fast');
+                try{
+                    FB.XFBML.parse(); 
+                }catch(ex){}
+            }
+        });
+            
+    })
+        
+    jQuery('.overlay').click(function(){
+        if(ajaxCall) ajaxCall.abort();
+        jQuery('.overlay').fadeOut('fast');
+        jQuery('#show-ajax').fadeOut('fast');
+        jQuery('#show-ajax').html(''); 
+        jQuery('#loadings').fadeOut();
+        jQuery('#show-ajax').html('<a class="lightbox-close" href="javascript:void(0)"><img src="<?php echo $this->getSkinUrl('images/close_color.png') ?>"/></a>');         
+    })
+        
+    jQuery('.lightbox-close').live('click',function(){
+        if(ajaxCall) ajaxCall.abort();
+        jQuery('.overlay').fadeOut('fast');
+        jQuery('#show-ajax').fadeOut('fast');
+        jQuery('#show-ajax').html(''); 
+        jQuery('#loadings').fadeOut();
+        jQuery('#show-ajax').html('<a class="lightbox-close" href="javascript:void(0)"><img src="<?php echo $this->getSkinUrl('images/close_color.png') ?>"/></a>');         
+    })
+})
+</script>

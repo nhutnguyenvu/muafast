@@ -1,0 +1,181 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Catalog advanced search form
+ *
+ * @see Mage_CatalogSearch_Block_Advanced_Form
+ */
+?>
+<?php $maxQueryLength= $this->helper('catalogsearch')->getMaxQueryLength();?>
+<form action="<?php echo $this->getSearchPostUrl() ?>" method="get" id="form-validate"  >
+<div class="page-title page-title-search">
+    <h1>
+		<a href="#" class="open_search"><?php echo $this->__('Catalog Advanced Search') ?>
+			<span><img src="<?php echo $this->getSkinUrl('images/icon_open.png') ?>"/></span>
+		</a>
+		<a href="#" class="close_search" style="display:none"><?php echo $this->__('Catalog Advanced Search') ?>
+			<span><img src="<?php echo $this->getSkinUrl('images/icon_close.png') ?>"/></span>
+		</a>
+	</h1>
+	    <div class="input-box">
+		   <?php $name = Mage::getModel('catalog/product')->getResource()->getAttribute("name");  ?>
+            <input type="text" maxlength="100" class="input-text " title="Name" value="<?php echo $this->escapeHtml($this->getAttributeValue($name)) ?>" id="name" name="name">
+        </div>
+        <div class="buttons-set advanced-button">
+            <button type="button" onclick="dataForm.submit(this);" title="<?php echo $this->__('Search') ?>" class="button"><span><span><?php echo $this->__('Search') ?></span></span></button>
+    		<span class="ajax_loader" style="display:none">
+    			<img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="" />
+    		</span>
+        </div>
+	
+</div>
+
+
+    <div class="fieldset advanced-search search_form"  style="display:none;">
+        <!--<h2 class="legend"><?php echo $this->__('Search Settings') ?></h2>-->
+        <ul class="form-list" id="advanced-search-list">
+            <?php foreach ($this->getSearchableAttributes() as $_attribute): ?>
+            <?php $_code = $_attribute->getAttributeCode() ?>
+            <li>
+                <?php if($_code!="name"): ?>
+				  <label for="<?php echo $_code ?>"><?php echo $this->getAttributeLabel($_attribute) ?></label>
+				<?php endif; ?>
+                <?php switch($this->getAttributeInputType($_attribute)):
+                    case 'number': ?>
+                    <div class="input-range">
+                        <input type="text" name="<?php echo $_code ?>[from]" value="<?php echo $this->escapeHtml($this->getAttributeValue($_attribute, 'from')) ?>" id="<?php echo $_code ?>" title="<?php echo $this->escapeHtml($this->getAttributeLabel($_attribute)) ?>" class="input-text validate-number" maxlength="<?php echo $maxQueryLength;?>" />
+                        <span class="separator">-</span>
+                        <input type="text" name="<?php echo $_code ?>[to]" value="<?php echo $this->escapeHtml($this->getAttributeValue($_attribute, 'to')) ?>" id="<?php echo $_code ?>_to" title="<?php echo $this->escapeHtml($this->getAttributeLabel($_attribute)) ?>" class="input-text validate-number" maxlength="<?php echo $maxQueryLength;?>" />
+                    </div>
+                    <?php break;
+                    case 'price': ?>
+                    <div class="input-range">
+                        <input name="<?php echo $_code ?>[from]" value="<?php echo $this->escapeHtml($this->getAttributeValue($_attribute, 'from')) ?>" id="<?php echo $_code ?>" title="<?php echo $this->escapeHtml($this->getAttributeLabel($_attribute)) ?>"  class="input-text validate-number" type="text" maxlength="<?php echo $maxQueryLength;?>" />
+                        <span class="separator">-</span>
+                        <input name="<?php echo $_code ?>[to]" value="<?php echo $this->escapeHtml($this->getAttributeValue($_attribute, 'to')) ?>" id="<?php echo $_code ?>_to" title="<?php echo $this->escapeHtml($this->getAttributeLabel($_attribute)) ?>"  class="input-text validate-number" type="text" maxlength="<?php echo $maxQueryLength;?>" />
+                        <small>(<?php echo $this->getCurrency($_attribute); ?>)</small>
+                    </div>
+                    <?php break;
+                    case 'select': ?>
+                        <div class="input-box">
+                            <?php echo $this->getAttributeSelectElement($_attribute) ?>
+                        </div>
+                    <?php break;
+                    case 'yesno': ?>
+                        <?php echo $this->getAttributeYesNoElement($_attribute) ?>
+                    <?php break;
+                    case 'date': ?>
+                    <div class="input-range">
+                        <?php echo $this->getDateInput($_attribute, 'from') ?>
+                        <span class="separator">-</span>
+                        <?php echo $this->getDateInput($_attribute, 'to') ?>
+                    </div>
+                    <?php break;
+                    default: ?>
+					<?php if($_code!="name"): ?>
+                    <div class="input-box">
+                        <input type="text" name="<?php echo $_code ?>" id="<?php echo $_code ?>" value="<?php echo $this->escapeHtml($this->getAttributeValue($_attribute)) ?>" title="<?php echo $this->escapeHtml($this->getAttributeLabel($_attribute)) ?>"  class="input-text <?php echo $this->getAttributeValidationClass($_attribute) ?>" maxlength="<?php echo $maxQueryLength;?>" />
+                    </div>
+					<?php endif; ?>
+                <?php endswitch; ?>
+            </li>
+            <?php endforeach; ?>
+            <li class="buttons-set-last">
+                <span class="ajax_loader" style="display:none">
+         			<img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="" />
+          		</span>
+                <button type="button" onclick="dataForm.submit(this);" title="<?php echo $this->__('Search') ?>" class="button"><span><span><?php echo $this->__('Search') ?></span></span></button>
+            </li>
+        </ul>
+        <script type="text/javascript">decorateList('advanced-search-list')</script>
+    </div>
+    
+</form>
+
+<div class="advanced-search-result" >
+<?php 
+$query = $this->getRequest()->getQuery();
+
+?>
+  <?php if(!empty($query) &&(isset($query['name'])&&$query['name']!="")){echo $this->getChildHtml('advanced_result') ;}?>
+</div>
+<script type="text/javascript">
+	jQuery(document).ready(function(){
+		jQuery('a.open_search').click(function(){
+			jQuery('.search_form').css('display','block');
+			jQuery(this).css('display','none');
+			jQuery('a.close_search').css('display','block');
+            jQuery('.advanced-button').css('display','none');
+            jQuery('input[name=name]').attr('value','');
+		});
+		
+		jQuery('a.close_search').click(function(){
+			jQuery('.search_form').css('display','none');
+			jQuery(this).css('display','none');
+			jQuery('a.open_search').css('display','block');
+            jQuery('.advanced-button').css('display','block');
+		});
+	});
+	
+	
+</script>
+<script type="text/javascript">
+//<![CDATA[
+    var dataForm = new VarienForm('form-validate', true);
+	
+    	dataForm.submit = function(button, url) {
+		if (this.validator.validate()) {
+			var e = null;
+			// Start of our new ajax code
+			url = '<?php echo $this->getUrl('catalogsearch/advanced/resultajax') ?>';
+			var data = jQuery('#form-validate').serialize();
+			data += '&isAjax=1';
+			jQuery('.ajax_loader').show();
+			try {
+				jQuery.ajax( {
+					url : url,
+					dataType : 'json',
+					type : 'get',
+					data : data,
+					success : function(data) {
+						jQuery('.ajax_loader').hide();
+						jQuery('.advanced-search-result').html(data);
+					}
+				});
+			} catch (e) {
+			}
+			// End of our new ajax code
+		
+			if (e) {
+				throw e;
+			}
+		}
+	}.bind(dataForm);
+//]]>
+
+</script>

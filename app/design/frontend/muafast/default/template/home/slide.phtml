@@ -1,0 +1,223 @@
+
+<?php $vendorList = $this->getVendorsOnSlide(); ?>
+
+<?php $page_arr = $this->page_arr ?>
+
+    <?php
+// dtnghia - fix bug #0001
+//    if(empty($page_arr)){
+//        $page = 1;
+//        $model = Mage::getModel("vendor/vendor");
+//        $vendorList = $model->getVendorList($page);
+//        $page_arr  = $model->getPagination($page);
+//    }
+//    else{
+//        $model = Mage::getModel("vendor/vendor");
+//        $vendorList = $model->getVendorList($page_arr['page_number']);
+//
+//    }
+?>
+<h3><?php echo $this->__("Gian hàng"); ?></h3>
+<?php $i = 1 ?>
+<?php if (count($vendorList) > 0): ?>
+    <div class="home-shops-slider">
+        <ul class="store jcarousel-pager-center">
+            <?php $j = 0; ?>
+            <?php foreach ($vendorList as $vendor): ?>
+                <?php $class = "" ?>
+                <?php if ($i % 3 == 0): ?>
+                    <?php $class = "class='last'" ?>
+                <?php endif; ?>
+                <?php if ($j % 6 == 0): ?>
+                    <li>
+                        <dl>
+                        <?php endif; ?>
+                        <dd <?php echo $class ?> >
+                            <?php // $url_vendor = $this->getUrl("catalogsearch/result")."?manufacturer=".$vendor['vendor_code']."&q=1"; ?>
+                            <?php $vendorId = $vendor['vendor_id']; ?>
+							<?php $saling = $vendor['is_saling'];?>
+                            <?php $url_vendor = Mage::getBaseUrl() . $vendor['path'] ?>
+                            <?php $logo = $this->getLogoSrcFrontEnd($vendor) ?>
+                            <?php $description = $vendor['about_mshort_company'];  ?>
+                            <?php $companyName = $vendor['company_name'] ?>
+                            <?php if (strlen($description) > MAXIMUM_HP_DES_SLIDE): ?>
+                                <?php $description = MyString::split(MAXIMUM_HP_DES_SLIDE, $description); ?>
+                            <?php endif; ?>
+
+                            <a href="<?php echo $url_vendor ?>">
+                                <img  class="product-img" src="<?php echo $logo ?>" width="298" height="298" alt="" >
+                            </a>
+                            <div class="product-description">
+                                <img align="left" style="margin-right: 5px;" src="<?php echo $this->getSkinUrl('images/gianhang.png')?>" width="40" height="33" alt="" />
+								
+                                <a href="<?php echo $url_vendor ?>">
+                                    <span><?php echo $companyName ?></span>
+                                    <?php if($description != null):?>
+                                    <span class="description-short"><?php echo strip_tags(implode(' ',array_slice(explode(' ',$description),0,6)).'...'); ?></span>
+                                    <img src="<?php echo $this->getSkinUrl("images/dummy.gif") ?>" class="ui-icon icon-06" alt="" />
+                                    <?php endif; ?>
+                                </a>
+                                <?php if($saling != 0):?>
+                                    <div class="discount-s"><p>Sale</p></div>
+                                <?php endif; ?>
+                            </div>
+                            <?php $i++; ?>
+                        </dd>
+                        <?php if ($j % 6 == 5): ?>
+                        </dl>
+                    </li>
+                <?php endif; ?>
+                <?php $j++; ?>
+            <?php endforeach ?>
+        <?php endif; ?>
+    </ul>
+</div>
+
+<div class="paging">
+    <?php if (count($page_arr) > 0): ?>     
+        <?php if ($page_arr['last'] > 1): ?>
+            <ul>
+                <?php if ($page_arr['page_number'] > 1): ?>
+                    <li class="first">
+                        <a  style="cursor:pointer" rel="<?php echo (intval($page_arr['page_number']) - 1) ?>" class="lnk-prev-1" href="javascript:void(0)">
+                            &nbsp;
+                            <?php //echo $this->__("Previous") ?></a>
+                    </li>
+                <?php endif; ?>
+                <?php for ($i = 0; $i < $page_arr['last']; $i++): ?>
+                    <?php if ($page_arr['page_number'] != ($i + 1)): ?>
+                        <li><a rel="<?php echo $i + 1 ?>" href="javascript:void(0)"> <?php echo ($i + 1) ?></a></li>
+                    <?php else: ?>
+                        <li class="current"><a rel="<?php echo $i + 1 ?>" href="javascript:void(0)"> <?php echo ($i + 1) ?></a></li>
+                    <?php endif; ?>
+                <?php endfor; ?>
+                <?php if ($page_arr['last'] > $page_arr['page_number']): ?>
+                    <li class="last">
+                        <a style="cursor:pointer" rel="<?php echo (intval($page_arr['page_number']) + 1) ?>" class="lnk-next-1" href="javascript:void(0)">
+                            &nbsp;
+                            <?php //echo $this->__("Next") ?>
+                        </a>
+                    <?php endif; ?>
+            </ul>
+        <?php endif; ?>  
+    <?php endif; ?>
+</div>
+
+<br/>
+
+<!--
+<div class="paging">
+    <ul>
+        <li class="first"><a class="lnk-prev-1" title="previous" href="#">&nbsp;</a></li>
+        <li class="current"><a title="1" href="#">1</a></li>
+        <li><a title="2" href="#">2</a></li>
+        <li><a title="3" href="#">3</a></li>
+        <li><a title="4" href="#">4</a></li>
+        <li class="last"><a class="lnk-next-1" title="next" href="#">&nbsp;</a></li>
+    </ul>
+</div>
+-->
+<!--
+<ul class="lst-slide">
+    <li><a href="#" title=""><img src="<?php //echo $this->__("images/dummy.gif")     ?>" class="ui-icon icon-05" alt="" /></a></li>
+    <li><a href="#" title=""><img src="<?php //echo $this->__("images/dummy.gif")     ?>" class="ui-icon icon-05" alt="" /></a></li>
+    <li><a href="#" title=""><img src="<?php //echo $this->__("images/dummy.gif")     ?>" class="ui-icon icon-05 active" alt="" /></a></li>
+    <li><a href="#" title=""><img src="<?php //echo $this->__("images/dummy.gif")     ?>" class="ui-icon icon-05" alt="" /></a></li>
+    <li><a href="#" title=""><img src="<?php //echo $this->__("images/dummy.gif")     ?>" class="ui-icon icon-05" alt="" /></a></li>
+</ul>
+-->
+<input type="hidden" value="<?php echo $this->getUrl("vendor/index/slide") ?>" id="url_slide"/>
+<script type="text/javascript">
+    
+    var is_running_ajax = false;
+    jQuery(document).ready(function() {
+        jQuery('.paging li').unbind('click');
+        jQuery('.paging li').bind('click',function(){
+            var taga = jQuery(this).find('a').first();
+            var page = jQuery(taga).prop('rel');
+            ajax_mix_search(page);
+        });
+    });
+    
+    function ajax_mix_search(page){
+        var url_slide = jQuery("#url_slide").val();
+        if(is_running_ajax==false){
+            jQuery.ajax({
+                type : 'POST',
+                dataType : 'json',
+                url : url_slide,
+                data: {page: page},
+                beforeSend:function() {
+                    jQuery("#slide_vendor").append("<div class='loading'></div>");
+                    jQuery("#slide_vendor").fadeTo('slow', 0.5, function() {
+                        // Animation complete.
+                    });
+                    is_running_ajax = false;
+                },
+                success : function(data) {
+                    if(data.error == 1 ){
+                        alert(data.result);
+                        //jQuery("#slide_vendor").find("div.loading").remove();
+                    }
+                    else{
+                        jQuery("#slide_vendor").html(data.result);
+                        jQuery('.paging li').unbind('click');
+                        jQuery('.paging li').bind('click',function(){
+                            var taga = jQuery(this).find('a').first();
+                            var page = jQuery(taga).prop('rel');
+                            ajax_mix_search(page);
+
+                        });
+                        var current = jQuery(".paging ul").find("li").last().attr("class");
+                        if(current=='current'){
+                            jQuery(".best-selling .paging ul").css('right',"0px");
+                        }
+                        jQuery("#slide_vendor").fadeTo('slow', 1, function() {
+                            // Animation complete.
+                        });
+
+                    } //end else
+                    is_running_ajax = false;
+                }
+            });
+        }
+
+    }
+</script>
+
+<script type="text/javascript">
+    
+    function home_slider_carousel_initCallback(carousel)
+    {
+        // Disable autoscrolling if the user clicks the prev or next button.
+        carousel.buttonNext.bind('click', function() {
+            carousel.startAuto(0);
+        });
+
+        carousel.buttonPrev.bind('click', function() {
+            carousel.startAuto(0);
+        });
+
+        // Pause autoscrolling if the user moves with the cursor over the clip.
+        carousel.clip.hover(function() {
+            carousel.stopAuto();
+        }, function() {
+            carousel.startAuto();
+        });
+    };
+    
+    // Ride the carousel...
+    jQuery(document).ready(function() {
+        jQuery(".home-shops-slider").jcarousel({
+            pager: true,
+            scroll: 1,
+            visible: 1,
+            auto: 8,
+            wrap: 'last',
+            buttonPrevHTML: '<a class="btn-previous" title="<?php echo $this->__("Previous") ?>" href="javascript:void(0)"><p class="prev_slider"></p></a>',
+            buttonNextHTML: '<a class="btn-continue" title="<?php echo $this->__("Continue") ?>" href="javascript:void(0)"><p class="next_slider"></p></a>',
+            initCallback: home_slider_carousel_initCallback
+        });
+    });
+    
+</script>

@@ -1,0 +1,119 @@
+<?php
+	$helper 	= Mage::app()->getHelper('vendor');
+?>
+<div class="columns">
+	<div id="page:left" class="side-col">
+		<h3>Setup Area</h3>
+		<ul class="tabs" id="edit_product_tabs">
+			
+			<li>
+				<a class="tab-item-link active" title="Product Attributes" name="main" id="edit_product_attributes" href="#">
+					<span><span title="The information in this tab has been changed." class="changed"></span><span title="This tab contains invalid data. Please solve the problem before saving." class="error"></span>Product Attributes</span>
+				</a>
+			</li>
+			
+		</ul>
+		<script type="text/javascript">
+			site_home_tabsJsTabs = new varienTabs('edit_product_tabs', 'edit_form', 'edit_custom_options', []);
+		</script>
+	</div>
+	
+	<div id="content" class="main-col">
+		<div class="main-col-inner">
+			<div id="messages"></div>
+			
+			<div class="content-header" style="visibility: visible;">
+				<h3 class="icon-head head-catalog-product-attribute">General Setup</h3>
+			</div>
+			<div class="entry-edit">
+			
+			<form id="edit_form" name="edit_form" action="<?php echo $this->getUrl("*/*/post");?>" method="post">
+			<?php echo $this->getBlockHtml('formkey')?>
+			</form>
+			
+				
+				<div id="edit_product_attributes_content">
+					<form action="<?php echo $this->getUrl("*/*/post");?>" name="product_attributes_form" id="product_attributes_form" method="post">
+					<?php echo $this->getBlockHtml('formkey')?>
+					<input type="hidden" name="doaction" value="product_attribute">
+					<input type="hidden" name="attribute_code" value="">
+					<div class="entry-edit">
+						<div class="entry-edit-head">
+							<h4 class="icon-head head-edit-form fieldset-legend">Required Product Attributes</h4>
+							<div class="form-buttons"></div>
+						</div>
+						<div class="fieldset">
+							<div class="hor-scroll">
+								<table cellspacing="0" class="form-list">
+								<tbody>
+									<?php
+										foreach($helper->getRequiredProductAttributes() as $attribute_code => $installed)
+										{
+									?>
+									<tr>
+										<td class="label">
+											<label for="custom_explanation_content"><?php echo $attribute_code; ?></label>
+										</td>
+										<td class="value" valign="middle" style="vertical-align:middle !important">
+											<?php
+												if($installed)
+												{
+													echo $this->__("Installed");
+											?>
+												&nbsp;
+												<button class="scalable save" type="button" onclick="UninstallProductAttribute('<?php echo $attribute_code; ?>')">
+													<span>Uninstall</span>
+												</button>
+											<?php
+												}
+												else
+												{
+													echo $this->__("Not Installed");
+											?>
+												&nbsp;
+												<button class="scalable save" type="button" onclick="InstallProductAttribute('<?php echo $attribute_code; ?>')">
+													<span>Install</span>
+												</button>
+											<?php
+												}
+											?>
+										</td>
+									</tr>
+									<?php
+										}
+									?>
+								</tbody>
+								</table>
+							</div>
+						</div>
+						
+					</div>
+					</form>
+				</div>
+			</div>
+			
+		
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+
+function saveAndContinueEdit(urlTemplate)
+{
+	alert("saveAndContinueEdit");
+}
+
+function InstallProductAttribute(attributeName)
+{
+	var form	= document.forms['product_attributes_form'];
+	
+	if(typeof(form)!="undefined" && form)
+	{
+		form.attribute_code.value	= attributeName;
+		form.submit();
+	}
+}
+
+//]]>
+</script>

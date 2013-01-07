@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Luclong_Generating>
+            <version>0.1.0</version>
+        </Luclong_Generating>
+    </modules>
+     <global>
+        <helpers>
+            <generating>
+                <class>Luclong_Generating_Helper</class>
+            </generating>
+        </helpers>
+         <blocks>
+            <generating>
+                <class>Luclong_Generating_Block</class>
+            </generating>
+        </blocks>
+    </global>
+    <frontend>
+        <routers>
+            <generating>
+                <use>standard</use>
+                <args>
+                    <module>Luclong_Generating</module>
+                    <frontName>generating</frontName>
+                </args>
+            </generating>
+           
+        </routers>
+        
+    </frontend>
+    <admin>
+        <routers>
+            <generatingadmin>
+                <use>admin</use>
+                <args>
+                    <module>Luclong_Generating</module>
+                    <frontName>generatingadmin</frontName>
+                </args>
+            </generatingadmin>
+        </routers>
+    </admin>
+    <adminhtml>
+        <layout>
+            <updates>
+                <generating>
+                    <file>generating.xml</file>
+                </generating>
+            </updates>
+        </layout>
+         
+    </adminhtml>
+   
+</config>

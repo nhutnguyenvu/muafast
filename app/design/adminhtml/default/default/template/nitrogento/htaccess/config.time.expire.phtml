@@ -1,0 +1,25 @@
+<?php foreach ($this->getTimeExpireConfigs() as $timeExpireConfig) : ?>
+<tr>
+    <td>&nbsp;</td>
+    <td class="scope-label">
+        <select class="input-select" name="time_expire_configs[<?php echo $timeExpireConfig->getKey() ?>]">
+        <?php foreach ($this->getTimeExpireOptions() as $key => $value) :?>
+        	<?php $timeValue = $timeExpireConfig->getValue() ?>
+        	<?php        		
+        		if(strlen($timeExpireConfig->getValue()) > 100)
+        		{
+        			$timeValue = "1 year";
+        		}
+        		
+        		if(strlen($timeExpireConfig->getValue()) > 100 && $timeExpireConfig->getKey() == "time_expire_html")
+        		{
+        			$timeValue = "0 seconds";
+        		}
+        	?>
+            <option value="<?php echo $key?>" <?php echo ( $timeValue == $key) ? 'selected="selected"' : ''?>><?php echo $this->__($value)?></option>
+        <?php endforeach ?>
+        </select>
+        &nbsp;<?php echo $timeExpireConfig->getLabel() ?>
+    </td>
+</tr>
+<?php endforeach ?>

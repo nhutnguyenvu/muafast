@@ -1,0 +1,125 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+/**
+ * Product media data template
+ *
+ * @see Mage_Catalog_Block_Product_View_Media
+ */
+?>
+
+<?php
+    $_product = $this->getProduct();
+    $_helper = $this->helper('catalog/output');
+?>
+<?php if ($_product->getImage() != 'no_selection' && $_product->getImage()): ?>
+<div class="zoom-small-image ">
+        <?php
+        $image = $this->helper('catalog/image')->init($_product, 'image');
+        $_img = '<a href="' . $this->helper('catalog/image')->init($_product, 'image') . '" class ="cloud-zoom" id="zoom1" rel="adjustX: 10, adjustY:-4" ><img id="image1" 
+            src="' . $this->helper('catalog/cropimage')->cropImage(PRODUCT_DETAIL_WIDTH, PRODUCT_DETAIL_HEIGHT, $image) . '" alt="' . $this->htmlEscape($this->getImageLabel()) . '" title="' . $this->htmlEscape($this->getImageLabel()) . '"  /></a>';
+        echo $_helper->productAttribute($_product, $_img, 'image');
+        ?>
+    <a id="fancybox" href="javascript:;" title="zoom view">zoom view</a>
+ </div>
+<?php else: ?>
+<p class="product-image">
+    <?php
+        $_img = '<a href="' . $this->helper('catalog/cropimage')->cropImage(PRODUCT_DETAIL_WIDTH, PRODUCT_DETAIL_HEIGHT, $image) . '" class ="cloud-zoom" rel="tintOpacity:0.5 ,smoothMove:5,zoomWidth:480, adjustY:-4, adjustX:10"><img src="'.$this->helper('catalog/image')->init($_product, 'image')->resize(265).'" alt="'.$this->htmlEscape($this->getImageLabel()).'" title="'.$this->htmlEscape($this->getImageLabel()).'" /></a>';
+        echo $_helper->productAttribute($_product, $_img, 'image');
+    ?>
+</p>
+<?php endif; ?>
+
+<?php if (count($this->getGalleryImages()) > 0): ?>
+    <div class="more-views">
+	<?php if ($_product->getTypeId() == "configurable" && Mage::helper('autoswatchesplus')->getUsesSwatchAttribs($_product) == 'yes'): ?>					?>
+                        <?php $gallery = Mage::helper('autoswatchesplus')->getMoreViewsImage($_product); ?>
+	<?php else : ?>
+            <?php $gallery = $this->getGalleryImages(); ?>
+        <?php endif; ?>
+        <ul>
+            <?php foreach ($gallery as $_image): ?>
+                <?php
+                    $image_thumnail = $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile());
+                    $image = $this->helper('catalog/image')->init($this->getProduct(), 'image', $_image->getFile());
+                    $fancy_arr[] = "'".$image."'";
+                ?>
+                <li>
+                    <a href='<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'image', $_image->getFile()); ?>' class='cloud-zoom-gallery' title='<?php echo $this->htmlEscape($_image->getLabel()) ?>' rel="useZoom: 'zoom1', smallImage: '<?php echo $this->helper('catalog/cropimage')->cropImage(PRODUCT_DETAIL_WIDTH, PRODUCT_DETAIL_HEIGHT, $image); ?>' ">
+                        <img class="zoom-tiny-image" src="<?php echo $this->helper('catalog/cropimage')->cropImage(56, 56, $image_thumnail); ?>" width="56" height="56" alt = "<?php echo $this->htmlEscape($_image->getLabel()) ?>"/>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+	<?php //endif; ?>
+    </div>
+<?php endif; ?>
+
+<!-- FancyBox -->
+<script type="text/javascript">// <![CDATA[    
+        jQuery("#fancybox").click(function() {
+            jQuery.fancybox(
+            [
+                <?php 
+                    if(is_array($fancy_arr)){
+                        echo implode(",",$fancy_arr);
+                    }
+                ?>
+            ], 
+            {
+                'padding' : 10,
+                'margin' : 20,
+                'type' :'image',
+                'scrolling' : 'auto',
+                'autoScale' : 1,
+                'hideOnOverlayClick' : 1,
+                'overlayShow' : 1,
+                'overlayOpacity' : 0.5,
+                'overlayColor' : '#000',
+                'titleShow' : 1,
+                'titlePosition' : 'inside',
+                'transitionIn' : 'elastic',
+                'transitionOut' : 'elastic',
+                'changeFade' : 'fast',
+                'easingIn' : 'swing',
+                'easingOut' : 'swing',
+                'showCloseButton' : 1,
+                'showNavArrows' : 1,
+                'enableEscapeButton' : 1
+            });
+    });
+
+// ]]></script>
+<!-- FancyBox -->
+
+<script type="text/javascript">
+    function imageswitcher(imagename,imagezoom){	
+        //var newImg	=	imagename.src;
+        jQuery('#image1').attr('src',imagename);
+        jQuery('#zoom1').attr('href',imagename);
+    }
+</script>

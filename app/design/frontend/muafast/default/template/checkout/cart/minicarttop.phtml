@@ -1,0 +1,125 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+/**
+ * Shoping cart sidebar
+ *
+ * @see Mage_Checkout_Block_Cart_Sidebar
+ */
+
+?>
+
+<?php $_cartQty = $this->getSummaryCount() ?>
+<?php $count =  Mage::helper('checkout/cart')->getItemsCount(); ?>
+  <div class="cart-inner">
+   	 <?php if ($_cartQty > 0): ?>
+                <div class="cart-content" style="display: none;">
+                <div class="cart-indent">
+                    <div class="top">
+                        <p class="subtotal">
+                            <?php echo $this->__('Bạn đang có '.$count.' sản phẩm trong giỏ hàng') ?>
+                        </p>
+                    </div>
+                    <div class="middle">    
+                          <?php $_items = $this->getRecentItems($count) ?>
+                    <?php if(count($_items)): ?>
+                        
+                        <ol id="cart-sidebar" class="mini-products-list">
+
+                                    <?php foreach($_items as $_item): ?>
+                                        <?php echo $this->getItemHtml($_item) ?>
+                                    <?php endforeach; ?>
+                            <li class="item odd">
+                                <p>
+                                    <?php if ($this->canApplyMsrp()): ?>
+                                    <span class="map-cart-sidebar-total"><?php echo $this->__('ORDER TOTAL WILL BE DISPLAYED BEFORE YOU SUBMIT THE ORDER'); ?></span>
+                                    <?php else: ?>
+                                        <span class="label"><?php echo $this->__('Cart Subtotal:') ?></span> <?php echo Mage::helper('checkout')->formatPrice($this->getSubtotal()) ?>
+                                        <?php if ($_subtotalInclTax = $this->getSubtotalInclTax()): ?>
+                                            <br />(<?php echo Mage::helper('checkout')->formatPrice($_subtotalInclTax) ?> <?php echo Mage::helper('tax')->getIncExcText(true) ?>)
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </p>
+                            </li>
+                            </ol>
+                            <?php endif;?>
+                         <?php if($_cartQty && $this->isPossibleOnepageCheckout()): ?>
+                                <div class="actions">
+                                    <?php echo $this->getChildHtml('extra_actions') ?>
+                                    <button type="button" title="<?php echo $this->__('Checkout') ?>" class="button" onclick="setLocation('<?php echo $this->getCheckoutUrl() ?>')"><span><span><?php echo $this->__('Checkout') ?></span></span></button>
+                                </div>
+                        <?php endif ?>
+                  <!--  <script type="text/javascript">decorateList('cart-sidebar', 'none-recursive')</script>-->
+                    </div>
+                    <div class="bottom">
+                        <p class="subtotal"><?php echo $this->__('Tùy chọn giao hàng tận nơi , hoặc đến shop') ?></p>
+                    </div>
+                 </div>   
+                </div>
+<?php //endif; ?>
+<?php else: ?>
+    <div class="cart-content" style="display: none;">
+        <div class="cart-indent">
+            <div class="top">
+               <p class="subtotal">
+                   <?php echo $this->__('0 sản phẩm') ?>
+               </p>
+            </div>
+            <div class="middle">
+                <p  class="empty"><?php echo $this->__('Trong giỏ hàng chưa có sản phẩm nào') ?></p>
+                <div class="actions">
+                    <button type="button" title="<?php echo $this->__('Mua hàng') ?>" class="button" onclick="setLocation('<?php echo $this->getHomeUrl(); ?>')"><span><span><?php echo $this->__('Mua hàng') ?></span></span></button>
+                </div>
+            </div>
+            <div class="bottom">
+                <p class="subtotal"><?php echo $this->__('Tùy chọn giao hàng tận nơi , hoặc đến shop') ?></p>
+            </div>
+            <script type="text/javascript">decorateList('cart-sidebar', 'none-recursive')</script>
+        </div>
+     </div>  
+    <?php endif; ?>
+      <script type="text/javascript">		   
+                jQuery(document).ready(function(){
+                        var fl=false, 
+                        fl2=false;
+                        jQuery('.cart-inner .cart-content').hide();
+                        jQuery('.cart-mini   .amount, .cart-inner .cart-content').hover(function(){
+								jQuery('li.cart-mini').addClass('active');
+                                jQuery('.cart-inner .cart-content').stop(true, true).slideDown(0);
+								fl=true;
+                        },function(){
+                                jQuery('.cart-inner .cart-content').stop(true, true).delay(0).slideUp(0);
+                                jQuery('.cart-mini').removeClass('active'); 
+								fl=false;
+                        })
+                        
+                        
+                });  
+        </script> 
+  </div>
+
+  
+ 

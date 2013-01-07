@@ -1,0 +1,33 @@
+<?php
+    $_productCollection=$this->getLoadedProductCollection();
+    $_helper = $this->helper('catalog/output');
+?>
+<?php if(!$_productCollection->count()): ?>
+<p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+<?php else: ?>
+    <?php $_collectionSize = $_productCollection->count() ?>
+    <?php $_columnCount = 4; ?>
+    <?php $i=0; foreach ($_productCollection as $_product): ?>
+        <?php if ($i++%$_columnCount==0): ?>
+        <ul class="products-grid">
+        <?php endif ?>
+            <li class="<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
+                <a href="#" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>"style="background: url('<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(135); ?>') no-repeat center center transparent;" >
+				<span class="mm-items-hover">
+					Ao nu mau hong nhat
+				</span>
+				</a>
+            </li>
+        <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+        </ul>
+        <?php endif ?>
+        <?php endforeach ?>
+ 
+<?php endif; ?>
+<?php $page = $this->getRequest()->getParam('p'); ?>
+<?php if($page > 1): ?>
+<a class="mixnmatch_ajax" href="<?php echo $this->getRequest()->getParam('url'); ?>" p="<?php echo (int)$page - 1; ?>">Prev</a>
+<?php endif; ?>
+<?php if($page < $this->countpage()): ?>
+<a class="mixnmatch_ajax" href="<?php echo $this->getRequest()->getParam('url'); ?>" p="<?php echo (int)$page + 1; ?>">Next</a>
+<?php endif; ?>

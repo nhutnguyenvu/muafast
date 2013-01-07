@@ -1,0 +1,154 @@
+<?php 
+	if(($vendor_id=$this->getRequest()->getParam('vendor_id'))&&!$this->getRequest()->getParam('is_ajax')){
+	$urlvendor = "&vendor_id=".$vendor_id;
+	}
+	else{
+	$urlvendor = "";
+	}
+?>
+<?php $show = ($this->getItemsCount() > 1 || !Mage::getStoreConfig('amshopby/general/hide_one_value')) ?>
+ 
+<dt class="attr-price">
+	<span>
+		<span>
+			<?php echo $this->__($this->getName()) ?>
+			<!--<button class="drop-icon"><span>drop</span></button>-->
+			<img src="<?php echo $this->getSkinUrl('images/icon_drop.png'); ?>" class="drop-icon" />
+		</span>
+		
+	</span>
+</dt>
+<dd class="attr-price">
+    <ol <?php if ($this->getCollapsed() && !$this->getHasSelection()): ?> style="display:none" <?php endif ?>>
+        
+        <?php if (0 == $this->getDisplayType() && $show): // default ?>
+            <?php foreach ($this->getItems() as $_item): ?>
+                <li>
+                    <?php if ($_item->getCount() > 0): ?>
+                        <a class="amshopby-price" href="<?php echo $this->urlEscape($_item->getUrl()).$urlvendor  ?>"><?php echo $_item->getLabel() ?></a>
+                    <?php endif; ?>
+                    (<?php echo $_item->getCount() ?>)
+                </li>
+            <?php endforeach ?>
+        <?php elseif (1 == $this->getDisplayType() && $show): // dropdown ?>
+            <li>
+                <select onchange="if (this.value) setLocation(this.value)" class="amshopby-select amshopby-ajax-select">
+                    <!-- uncomment to show Filter name in the dropdown <option value=""><?php echo $this->getName() ?></option>-->
+                    <option value=""></option>
+                    <?php foreach ($this->getItems() as $_item): ?>
+                        <option  <?php if (Mage::app()->getRequest()->getParam('price') == $_item->getValue()) echo "selected" ?> 
+                            value="<?php echo $this->urlEscape($_item->getUrl()).$urlvendor ?>"><?php echo $_item->getLabel() ?> (<?php echo $_item->getCount() ?>)</option>
+                        <?php endforeach ?>
+                </select>
+            </li>
+        <?php elseif (3 == $this->getDisplayType()): // slider ?>
+
+            <li>
+                <div id="amshopby-slider" class="slider">
+                    <?php
+                    $sliderType = $this->getSliderType();
+
+                    $max = sprintf('%.0f', $this->_filter->getMaxPriceInt());
+                    $min = sprintf('%.0f', $this->_filter->getMinPriceInt());
+
+                    /*
+                     * Holds state of initial price position
+                     */
+                    $initialState = false;
+
+                    $currencySymbol = Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol();
+
+                    $fromPrice = $this->getPriceFrom();
+                    if (!is_numeric($fromPrice)) {
+                        $fromPrice = $min;
+                        $initialState = true;
+                    }
+
+                    /*
+                     * 	User changed price in text boxes 
+                     */
+                    if ($fromPrice <= $min) {
+                        $initialState = true;
+                    }
+
+                    $toPrice = $this->getPriceTo();
+                    if (!is_numeric($toPrice)) {
+                        $toPrice = $max;
+                    }
+
+                    $from = min($fromPrice, $min);
+                    $to = max($toPrice, $max);
+
+                    if ($from < 0.01 && $to < 0.01) {
+                        $to = sprintf('%.00f', $to);
+                    }
+
+
+                    $width = 170;
+
+                    $ratePP = ($to - $from) / $width;
+
+                    $firstOffset = ($max > 0.01 && !$initialState) ? ($fromPrice - $min) / $ratePP : 0;
+                    $secondOffset = ($to && $max > 0.01 && $toPrice < $max) ? ($toPrice - $min) / $ratePP : $width;
+
+                    $params = implode(',', array($width, $firstOffset, $secondOffset, $to, 'amshopby-price-', $from, $ratePP));
+                    ?>
+                    <?php
+                    /*
+                     * Current selection only
+                     */
+                    if ($sliderType == 0) {
+                        ?>
+                        <div class="handle selected" style="left:<?php echo $firstOffset ?>px">
+                        </div>
+                        <div class="handle" style="left:<?php echo $secondOffset ?>px">
+                        </div>
+
+                    </div>
+                    <div class="amshopby-slider-price amshopby-slider-price-from"><?php echo $currencySymbol ?><span id="amshopby-slider-price-from"><?php echo $fromPrice ?></span></div>
+                    <div class="amshopby-slider-price amshopby-slider-price-to"><?php echo $currencySymbol ?><span id="amshopby-slider-price-to"><?php echo $toPrice ?></span></div>
+                <?php } ?>
+                <?php
+                /*
+                 * With ranges
+                 */
+                if ($sliderType == 1) {
+                    ?>
+                    <div class="handle selected" style="left:<?php echo $firstOffset ?>px">
+                    </div>
+                    <div class="handle" style="left:<?php echo $secondOffset ?>px">
+                    </div>
+                    </div>
+
+
+                    <div class="amshopby-slider-price amshopby-slider-price-from"><?php echo $currencySymbol ?><?php echo $from ?></div>
+                    <div class="amshopby-slider-price amshopby-slider-price-to"><?php echo $currencySymbol ?><?php echo $to ?></div>
+                    <div class="amshopby-slider-price-range">
+                    <?php echo $currencySymbol ?><span id="amshopby-slider-price-from"><?php echo $fromPrice ?></span>&nbsp;-&nbsp;
+                    <?php echo $currencySymbol ?><span id="amshopby-slider-price-to"><?php echo $toPrice ?></span>
+                    </div>
+            <?php } ?>
+                <input type="hidden" id="amshopby-slider-param" value="<?php echo $params ?>" />
+            </li>     
+        <?php endif; ?>
+
+<?php if (Mage::getStoreConfig('amshopby/general/price_from_to')): ?>
+    <?php if (2 != $this->getDisplayType()): ?><li>&nbsp;</li><?php endif; ?>
+            <li>
+                <input type="text" size="2" value="<?php echo $fromPrice ?>" name="price_from" class="input-text" id="amshopby-price-from" /> - 
+                <input type="text" size="2" value="<?php echo $toPrice ?>" name="price_to" class="input-text" id="amshopby-price-to"/>
+                <button type="submit" title="<?php echo $this->__('Find') ?>" class="form-button button amshopby-price-find" name="price_find" id="amshopby-price-btn"><span><span><?php echo $this->__('Find') ?></span></span></button>
+            </li> 
+        <?php else: ?>
+            <input type="hidden" size="2" value="<?php if (isset($from)) {
+                echo $from;
+            } ?>" name="price_from" class="input-text" id="amshopby-price-from" /> 
+            <input type="hidden" size="2" value="<?php if (isset($to)) {
+                echo $to;
+            } ?>" name="price_to" class="input-text" id="amshopby-price-to"/>
+<?php endif; ?>
+        <li style="display:none">
+            <input type="hidden" id="amshopby-price-url" value="<?php echo Mage::helper('amshopby/url')->getFullUrl(array('price' => 'price-from-price-to')) ?>" />
+        </li>
+    </ol>
+</dd>

@@ -1,0 +1,143 @@
+<p>
+Bạn sẽ được hưởng lợi từ sự tiện lợi của các cửa hàng trực tuyến của muafast, Bạn có thể làm điều này ở giai đoạn thanh toán khi 
+hoàn thành đơn đặt hàng đầu tiên của bạn hoặc trước khi bạn bắt đầu mua sắm cho lần đầu tiên. <br/>
+Một khi bạn đã đăng ký, đơn đặt hàng trực tuyến trong tương lai, phần thưởng của bạn, lịch sử mua hàng, yêu thích, chi tiết và vị trí cửa hàng ưa thích sẽ được lưu lại cho thuận tiện cho bạn.
+</p>
+
+<!--
+<div class="fieldset">
+	<h2 class="legend" style="width: 140px;">Đăng nhập</h2>
+	<ul class="form-list">
+		<li>
+			<div>			
+				<div class="field">
+					<label class="required" for="email_address"><em>*</em>Địa chỉ email/tên tài khoản</label>
+					<div class="input-box">
+						<input type="text" class="input-text required-entry validate-email" value="" id="email_address" name="email">
+					</div>
+				</div>
+				
+				<div class="field">
+					<label class="required" for="loginpassword"><em>*</em>Mật khẩu</label>
+					<div class="input-box">
+						<input type="password" class="input-text required-entry" value="" id="loginpassword" name="loginpassword">
+					</div>
+				</div>
+				
+				<div style="padding: 18px 0px 0px; float: right;">
+					<button type="submit" title="Đăng nhập" class="button"><span><span>Đăng nhập</span></span></button>
+				</div>
+				
+			</div>
+		</li>
+		<li class="control">
+			<div class="field">
+				<div class="input-box">
+					<input type="checkbox" class="checkbox" id="is_remember" value="1" title="Tôi muốn nhận bản tin qua email" name="is_remember">
+				</div>
+				<label for="is_remember">Ghi nhớ</label>
+			</div>
+			<div class="field">
+				<a>Quên mật khẩu</a>
+			</div>
+		</li>
+	</ul>
+</div>
+-->
+
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+
+<form action="<?php echo $this->getUrl("vendor/quote/index"); ?>" id="registerForm" method="post">
+    
+    <div class="fieldset">
+
+        <h2 class="legend">Đăng kí gian hàng mới</h2>
+        <ul class="form-list">
+            <li class="from-sub-title">Thông tin tài khoản</li>
+            <li>
+                <div>
+                    <div class="field">
+                        <label class="required" for="fullname"><em>*</em>Họ và Tên</label>
+                        <div class="input-box">
+                            <input type="text" class="input-text required-entry" value="" id="fullname" name="fullname">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="required" for="vendor_email"><em>*</em>Email</label>
+                        <div class="input-box">
+                            <input type="text" class="input-text required-entry" value="" id="vendor_email" name="vendor_email">
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <div class="field">
+                        <label class="required" for="bussinessname"><em>*</em>Tên Kinh Doanh</label>
+                        <div class="input-box">
+                            <input type="text" class="input-text required-entry" value="" id="bussinessname" name="bussinessname">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="required" for="telephone"><em>*</em>Điện thoại</label>
+                        <div class="input-box">
+                            <input type="text" class="input-text required-entry" value="" id="telephone" name="telephone">
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li><hr class="line-hor-thin"></li>
+            <li class="from-sub-title">Thông tin gian hàng</li>
+            <li>
+                <div>
+                    <div class="field">
+                        <label class="required" for="boutiquename"><em>*</em>Tên gian hàng</label>
+                        <div class="input-box">
+                            <input type="text" class="input-text required-entry" value="" id="shop_name" name="boutiquename">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="required" for="address"><em>*</em>Địa chỉ</label>
+                        <div class="input-box">
+                            <input type="text" class="input-text required-entry" value="" id="address" name="address">
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <div class="field">
+                        <label class="required" for="website">Website của shop</label>
+                        <div class="input-box">
+                            <input type="text" class="input-text" value="" id="website" name="website">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="required" for="facebook">Facebook của shop</label>
+                        <div class="input-box">
+                            <input type="text" class="input-text" value="" id="shop_facebook" name="facebook">
+                        </div>
+                    </div>
+                </div>
+            </li>
+            
+            <li>
+                Hãy chia sẽ với chúng tôi về thương hiệu thời trang, cũng như công việc kinh doanh mà bạn muốn cùng muafast
+    xây dựng
+            </li>
+            <li>
+                <textarea class="required-entry" id="smalldescription" name="smalldescription" title="Thông Tin" value="1" style="width: 528px;"></textarea>
+            </li>
+            
+        </ul>
+        <div class="buttons-set" style="float: left; padding: 10px 20px;">
+            <p class="required">* Thông tin bắt buộc</p>
+            <button class="button" title="Gửi đi" type="submit"><span><span>Đăng kí</span></span></button>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+    var contactForm = new VarienForm('registerForm', true);
+//]]>
+</script>

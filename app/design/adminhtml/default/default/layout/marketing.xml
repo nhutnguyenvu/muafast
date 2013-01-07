@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <marketing_adminhtml_marketing_index>
+        <reference name="content">
+            <block type="marketing/adminhtml_marketing" name="marketing" />
+        </reference>
+    </marketing_adminhtml_marketing_index>
+</layout>

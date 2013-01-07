@@ -1,0 +1,104 @@
+<div class="login">
+    <p id="billing-guest-link"><?php echo $this->__('Please login here or') ?> <a href="javascript:;" onclick="winLogin.close()"><?php echo $this->__('go back') ?></a></p>
+    <form id="login-form" action="">
+    <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+    <fieldset>
+        <ul class="form-list">
+            <li class="field" id="login-message"></li>
+            <li class="field">
+                <label for="login-email" class="required"><em>*</em><?php echo $this->__('Email Address') ?></label>
+                <div class="input-box">
+                    <input type="text" class="input-text required-entry validate-email" id="login-email" name="login[username]" value="<?php echo $this->htmlEscape($this->getUsername()) ?>" />
+                </div>
+            </li>
+            <li class="field">
+                <label for="login-password" class="required"><em>*</em><?php echo $this->__('Password') ?></label>
+                <div class="input-box">
+                    <input type="password" class="input-text required-entry" id="login-password" name="login[password]" />
+                </div>
+            </li>
+        </ul>
+        <div id="login_spacer"></div>
+        <div class="buttons-set login">
+            <p class="required"><?php echo $this->__('* Required Fields') ?></p>
+            <a href="<?php echo $this->getUrl('customer/account/forgotpassword') ?>" class="f-left"><?php echo $this->__('Forgot your password?') ?></a>
+            <button id="btnLogin" type="button" class="button"><span><span><?php echo $this->__('Login') ?></span></span></button>
+            <span class="please-wait" id="login-please-wait" style="display:none;">
+                <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php echo $this->__('Login...') ?>" title="<?php echo $this->__('Login...') ?>" class="v-middle" /> <?php echo $this->__('Login...') ?>
+            </span>
+        </div>
+    </fieldset>
+    </form>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+    var loginForm = new VarienForm('login-form', true);
+    $('login-email').observe('keypress', bindLoginPost);
+    $('login-password').observe('keypress', bindLoginPost);
+    $('btnLogin').observe('click', onepageLogin);
+
+    function bindLoginPost(evt)
+    {
+        if (evt.keyCode == Event.KEY_RETURN) {
+            loginFormSubmit();
+        }
+    }
+
+    function onepageLogin()
+    {
+        if (loginForm.validator && loginForm.validator.validate()){
+            loginFormSubmit();
+        }
+    }
+
+    function loginFormSubmit()
+    {
+        var button = $('btnLogin');
+        button.disabled = true;
+        button.hide();
+        Element.show('login-please-wait');
+        $('login-message').update('');
+
+        url = '<?php echo $this->getUrl('*/*/loginPost'); ?>';
+        new Ajax.Request(
+            url, {
+                asynchronous: true,
+                method: 'post',
+                parameters: Form.serialize($('login-form')),
+                onSuccess: function(transport) {
+                    Element.hide('login-please-wait');
+                    button.disabled = false;
+                    button.show();
+                    if (transport && transport.responseText)
+                    {
+                        try
+                        {
+                            response = eval('(' + transport.responseText + ')');
+                        }
+                        catch (e)
+                        {
+                            response = {};
+                        }
+                    }
+
+                    if (response.error)
+                    {
+                        $('login-message').update('<div class="error-msg">' + response.message + '</div>');
+                        return;
+                    }
+
+                    if (response.message)
+                    {
+                        $('login-message').update('<div class="success-msg">' + response.message + '</div>');
+                    }
+
+                    if (response.redirect)
+                    {
+                        window.location.assign(response.redirect);
+                    }
+                }
+            }
+        );
+    }
+//]]>
+</script>

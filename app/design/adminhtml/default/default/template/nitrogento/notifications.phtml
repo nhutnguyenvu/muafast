@@ -1,0 +1,13 @@
+<?php
+/**
+ * NBS System
+ */
+?>
+<?php if(!$this->isFilesNotWriteable()):?>
+	<?php foreach($this->getFilesNotWriteable() as $file): ?>
+		<div class="notification-global">
+	    	<strong><?php echo $this->helper('nitrogento')->__('Problem :') ?></strong>
+	    	<?php echo Mage::helper('install')->__('Path "%s" must be writable.', $file) ?>
+		</div>
+	<?php endforeach; ?>	
+<?php endif;?>

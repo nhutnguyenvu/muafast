@@ -1,0 +1,293 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <favoredmindsall translate="label" module="vendor">
+            <label>FavoredMinds Extensions</label>
+            <sort_order>300</sort_order>
+        </favoredmindsall>
+    </tabs>
+    <sections>
+        <vendor translate="label" module="vendor">
+            <label>Vendor Setup</label>
+            <tab>favoredmindsall</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>100</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <general translate="label">
+                    <label>General</label>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <sort_order>10</sort_order>
+                    <fields>
+                        <disable translate="label">
+                            <label>Disable Vendor Plugin</label>
+                            <show_in_default>0</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                        </disable>
+                        <vendorproductlimit translate="label">
+                            <label>Vendor Maximum Products</label>
+                            <comment>0 - no maximum limits</comment>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>20</sort_order>
+                        </vendorproductlimit>
+                        <vendorproductminimum translate="label">
+                            <label>Vendor Minimum Allowed Products</label>
+                            <comment>0 - no minimum limits</comment>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>19</sort_order>
+                        </vendorproductminimum>
+                        <default_comission translate="label">
+                            <label>Default Store Commission</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>20</sort_order>
+                        </default_comission>
+                        <autoapprove translate="label">
+                            <label>Approve Vendors Automatically</label>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                        </autoapprove>
+                        <autoapproveproducts translate="label">
+                            <label>Approve Products Automatically</label>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>11</sort_order>
+                        </autoapproveproducts>
+                        <producttypes translate="label">
+                            <label>Available Product Types:</label>
+                            <comment>At least one product type should be selected</comment>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <can_be_empty>false</can_be_empty>
+                            <source_model>vendor/product_type</source_model>
+                        </producttypes>
+                        <sku_prefix translate="label">
+                            <label>Vendor SKU Prefix</label>
+                            <comment>Enable Vendor SKU prefix entering during the signup process</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>110</sort_order>
+                        </sku_prefix>
+                        <optionsexplanation translate="label">
+                            <label>Custom Options Explanation:</label>
+                            <comment></comment>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <can_be_empty>1</can_be_empty>
+                        </optionsexplanation>
+                        <logo_resize translate="label">
+                            <label>Resize Vendor Logo Image</label>
+                            <comment>Enable this to automatically resize any vendor logo</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>111</sort_order>
+                        </logo_resize>
+                        <logo_width translate="label">
+                            <label>Maximum Logo Width</label>
+                            <comment>no zero values allowed!</comment>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>112</sort_order>
+                            <depends>
+                                <logo_resize>1</logo_resize>
+                            </depends>
+                        </logo_width>
+                        <logo_height translate="label">
+                            <label>Maximum Logo Height</label>
+                            <comment>0 - determine the height in proportion to the original image size</comment>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>113</sort_order>
+                            <depends>
+                                <logo_resize>1</logo_resize>
+                            </depends>
+                        </logo_height>
+                        
+                        <vimage translate="label">
+                            <label>Vendor Image</label>
+                            <comment>Image for all vendors</comment>
+                            <upload_dir config="system/filesystem/media" scope_info="1">vendor</upload_dir>
+                            <backend_model>adminhtml/system_config_backend_image</backend_model>
+                            <base_url type="media" scope_info="1">vendor</base_url>
+                            <frontend_type>image</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>114</sort_order> 
+                        </vimage>
+                       
+                    </fields>
+                </general>
+                <email translate="label">
+                    <label>Email Settings</label>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <sort_order>20</sort_order>
+                    <fields>
+                        <senderaddress translate="label">
+                            <label>Mail Sender Address</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>10</sort_order>
+                        </senderaddress>
+                        <sendername translate="label">
+                            <label>Mail Sender Name</label>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>20</sort_order>
+                        </sendername>
+                        <newordertemplate translate="label">
+                            <label>New Order Vendor Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>30</sort_order>
+                        </newordertemplate>
+                        <newvendortemplate translate="label">
+                            <label>New Vendor Signup Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <sort_order>31</sort_order>
+                        </newvendortemplate>
+                        <statement_template translate="label">
+                            <label>Statement Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </statement_template>
+                    </fields>
+                </email>
+                <links translate="label">
+                    <label>Links Settings</label>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <sort_order>99</sort_order>
+                    <fields>
+                        <header translate="label">
+                            <label>Display Vendor link in header</label>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                        </header>
+                    </fields>
+                </links>
+                <sales translate="label">
+                    <label>Vendor Sales Statements Settings</label>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <sort_order>120</sort_order>
+                    <fields>
+                        <order_calculated translate="label">
+                            <label>Orders calculated in Vendor Sales Statements</label>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>select</frontend_type>
+                            <source_model>FavoredMinds_Vendor_Model_Adminhtml_Source_Sales</source_model>
+                            <sort_order>10</sort_order>
+                        </order_calculated>
+                    </fields>
+                </sales>
+                <vote translate="label">
+                    <label>Customer Voting</label>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <sort_order>99</sort_order>
+                    <fields>
+                        <timevote translate="label">
+                            <label>Time of Beetwen Two Votes(h)</label>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                        </timevote>
+                    </fields>
+                </vote>
+                <quantity_vendor translate="label">
+                    <label># Vendors Display</label>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <sort_order>99</sort_order>
+                    <fields>
+                        <qty_on_list translate="label">
+                            <label># Vendors On List</label>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                        </qty_on_list>
+						<qty_on_home translate="label">
+                            <label># Vendors Ưa chuộng</label>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                        </qty_on_home>
+                    </fields>
+                </quantity_vendor>
+            </groups>
+        </vendor>
+    </sections>
+</config>

@@ -1,0 +1,90 @@
+<?php 
+	if(($vendor_id=$this->getRequest()->getParam('vendor_id'))&&!$this->getRequest()->getParam('is_ajax')){
+	$urlvendor = "&vendor_id=".$vendor_id;
+	}
+	else{
+	$urlvendor = "";
+	}
+?>
+<dt class="attr-attr">
+	<span>
+		<span>
+			<?php echo $this->__($this->getName()) ?>
+			<!--<button class="drop-icon"><span>drop</span></button>-->
+			<img src="<?php echo $this->getSkinUrl('images/icon_drop.png'); ?>" class="drop-icon" />
+			<?php  foreach ($this->getItemsAsArray() as $item) :?>
+					<?php  if(isset($item['selected']) && $item['selected']==1):?>
+							<a  class="<?php echo $item['css'] ?>" href="<?php echo $item['url'] .$urlvendor ?>"><img src="<?php  echo $item['image'] ?>" title="<?php echo $item['label'] ?>" alt="<?php echo  $item['label'] ?>"></a>
+					<?php endif;	?>   
+				<?php  endforeach;  ?>
+		</span>
+	</span>
+</dt>
+<dd class="attr-attr">
+    <ol <?php if ($this->getCollapsed() && !$this->getHasSelection()): ?>style="display:none" <?php endif ?>>
+        <?php
+        switch ($this->getDisplayType()) {
+            case 0: // labels only
+                foreach ($this->getItemsAsArray() as $item) {
+                    echo '<li ' . $item['style'] . '><a class="' . $item['css'] . '" href="' . $item['url'] .$urlvendor. '">' . $item['label'] . '</a>' . $item['count'] . '</li>';
+                }
+                break;
+
+            case 1: // images only
+                echo '<li>';
+                foreach ($this->getItemsAsArray() as $item) {
+				if(!isset($item['selected'])){
+                    echo '<a ' . $item['style'] . ' class="' . $item['css'] . '" href="' . $item['url'] .$urlvendor. '"><img src="' . $item['image'] . '" title="' . $item['label'] . '" alt="' . $item['label'] . '"></a>';
+					}
+                }
+                echo '</li>';
+                break;
+
+            case 2: // images and labels
+                foreach ($this->getItemsAsArray() as $item) {
+                    echo '<li ' . $item['style'] . '><a class="' . $item['css'] . '" href="' . $item['url'] .$urlvendor. '">';
+                    if (!empty($item['image'])) {
+                        echo '<img src="' . $item['image'] . '" title="' . $item['label'] . '" alt="' . $item['label'] . '">';
+                    }
+                    echo $item['label'] . '</a>' . $item['count'] . '</li>';
+                }
+                break;
+
+            case 3: // dropdown
+                echo '<li><select onchange="if (this.value) setLocation(this.value)" class="amshopby-select amshopby-ajax-select">';
+                //echo '<option value="">' . $this->getName() . '</option>';
+                echo '<option value="' . $this->getRemoveUrl() . '"></option>';
+                foreach ($this->getItemsAsArray() as $item) {
+                    echo '<option ' . $item['css'] . ' value="' . $item['url'] .$urlvendor. '">' . $item['label'] . $item['count'] . '</option>';
+                }
+                echo '</select></li>';
+                break;
+
+            case 4: // 2 columns
+                $items = $this->getItemsAsArray();
+                $size = sizeof($items);
+                $half = ceil($size / 2);
+
+                echo '<li>';
+                echo '<div class="amshopby-column">';
+                for ($i = 0; $i < $half; $i++) {
+                    $item = $items[$i];
+                    echo '<a class="' . $item['css'] . '" href="' . $item['url'] .$urlvendor. '">' . $item['label'] . '</a>' . $item['count'] . '<br/>';
+                }
+                echo '</div>';
+                echo '<div class="amshopby-column">';
+                for ($i = $half; $i < $size; $i++) {
+                    $item = $items[$i];
+                    echo '<a class="' . $item['css'] . '" href="' . $item['url'] .$urlvendor. '">' . $item['label'] . '</a>' . $item['count'] . '<br/>';
+                }
+                echo '</div>';
+                echo '</li>';
+                break;
+        }
+        if ($this->getDisplayType() < 3 && $this->getShowLessMore()) {
+            echo '<li class="clearer"><a id="amshopby-more-' . $this->getRequestValue() . '" class="amshopby-more" href="#">' . $this->__('More ...') . '</a></li>';
+            echo '<li class="clearer"><a id="amshopby-less-' . $this->getRequestValue() . '" class="amshopby-less" href="#" style="display:none">' . $this->__('Less ...') . '</a></li>';
+        }
+        ?>
+    </ol>
+</dd>

@@ -1,0 +1,275 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/**
+ * @var Mage_Page_Block_Html_Header $this
+ */
+?>
+
+<script type="text/javascript">
+	var __lc = {};
+  __lc.license = 1944671;
+
+  (function() {
+    var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
+    lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
+  })();
+</script>
+
+<div class="header-container">
+    <div class="header">
+        <div class="quick-access">
+            <ul class="links">
+                <?php if(Mage::app()->getRequest()->getModuleName() == 'community'){ ?>
+                <li class="home"><a title="Trang chủ" href="<?php echo  Mage::helper('core/url')->getHomeUrl(); ?>">
+                    <img alt="" class="ui-home" src="<?php echo $this->getSkinUrl('images/dummy.gif') ?>" > <?php echo $this->__("Trang chủ") ?></a>
+                </li>
+				<?php } ?>
+<!--                <li>
+                    <a title="Lịch giảm giá" href="<?php echo $this->getUrl() ?>">
+                        <img alt="" class="ui-icon icon-02" src="<?php echo $this->getSkinUrl('images/dummy.gif') ?>"> <?php echo $this->__("Lịch giảm giá") ?>
+                    </a>
+
+                </li>
+                <li class="bor">
+                    <a class="top-link-checkout" title="Checkout" href="<?php echo $this->getUrl() ?>">
+                    <img alt="" class="ui-icon icon-03" src="<?php echo $this->getSkinUrl('images/dummy.gif') ?>" > <?php echo $this->__("Mời thêm bạn") ?></a>
+                </li>
+-->
+                <li class="bor">
+                    <a class="top-link-checkout" title="<?php echo $this->__('Shop') ?>" href="<?php echo $this->getUrl('vendor/index/vendorlist') ?>">
+                    <img alt="" class="ui-icon icon-18" src="<?php echo $this->getSkinUrl('images/dummy.gif') ?>" /> <?php echo $this->__("Shop") ?></a>
+                </li>
+				
+                <li class="bor displaynone">
+                    <a class="top-link-checkout" title="<?php echo $this->__('Cộng đồng') ?>" href="<?php echo $this->getUrl('community') ?>">
+                    <img alt="" class="ui-icon icon-20" src="<?php echo $this->getSkinUrl('images/dummy.gif') ?>" /> <?php echo $this->__("Cộng đồng") ?></a>
+                </li>
+                </ul>
+            <ul class="links last">
+                <?php if ($this->helper('customer')->isLoggedIn()): ?>
+                <?php $customer = Mage::getSingleton('customer/session')->getCustomer()->getData();?>
+                        <?php $helper = $this->helper('customer'); ?>
+                        <?php //$fullName = $helper->getCustomerName(); 
+                              $firstname = $customer['firstname'];
+                              $lastname = $customer['lastname'];?>
+                        <li class="last end">
+                            <a href="<?php echo $this->getUrl('customer/account/logout') ?>"><?php echo $this->__('Log Out') ?> </a>
+                        </li>
+                        <li class="last edit">
+                            <a href="<?php echo $this->getUrl('customer/account/edit') ?>"><?php echo $this->__('Xin Chào '.$firstname.' '.$lastname) ?> </a>
+                        </li>
+
+                <?php else: ?>
+                        <li class="last end">
+                            <a id="create" href="<?php echo $this->getUrl('customer/account/create') ?>" title="<?php echo $this->__('Register') ?>"><?php echo $this->__('Register') ?></a>
+                        </li>
+                        <li class="last">
+                            <a href="<?php echo $this->getUrl('customer/account/login') ?>" title="<?php echo $this->__('Log In') ?>"><?php echo $this->__('Log In') ?> </a>
+                        </li>
+                <?php endif; ?>
+
+                <li class="last cart-mini" >
+                    <a class="top-link-cart amount" href="<?php echo $this->getUrl('checkout/cart') ?>">
+                        <?php if($this->helper('checkout/cart')->getSummaryCount() == 0): ?>
+                        <span class="num-cart">0</span>
+                        <?php else: ?>
+                        <span class="num-cart"><?php echo  $this->helper('checkout/cart')->getSummaryCount(); ?></span>
+                        <?php endif; ?>
+                        <img alt="" class="ui-icon icon-04" src="<?php echo $this->getSkinUrl("images/dummy.gif") ?>" />
+                    </a>
+                </li>
+				
+            </ul>
+			<?php if($this->getRequest()->getControllerName()!="checkout_cart"):?>
+				<?php echo $this->getChildHtml('mini_cart_top') ?> 
+			<?php endif; ?>
+            <!--<p class="welcome-msg"><?php //echo $this->getWelcome() ?> <?php //echo $this->getAdditionalHtml() ?></p>-->
+            <?php //echo $this->getChildHtml('topLinks') ?>
+            <?php //echo $this->getChildHtml('store_language') ?>
+        </div>
+        <?php echo $this->getChildHtml('topContainer'); ?>
+    </div>
+</div>
+<div class="header-bottom">
+    <div class="header-nav-top">
+        <?php if ($this->getIsHomePage()):?>
+        <h1 class="logo"><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><img width="219" height="63" src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a></h1>
+        <?php else:?>
+        <h1 class="logo"><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><img width="219" height="63" src="<?php echo $this->getLogoSrc() ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a></h1>
+        <?php endif?>
+        <div class="search-top">
+             <?php echo $this->getChildHtml('topSearch') ?>
+             <p id="tag-search">Tìm kiếm: Thời trang, Mỹ phẩm, Giày dép, Nước hoa...</p>
+        </div>
+        <div class="note-right">
+            <div class="hotline"><img src="<?php echo $this->getSkinUrl('images/hotline.png') ?>" alt="hotline" />
+                <span>
+					<i>Hỗ trợ khách hàng: 0903 714 769</i>
+					<br />
+					<i>Hỗ trợ Shop: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 0989 100 742</i>
+				</span>
+			</div>
+            <div class="social-icon">
+                <img src="<?php echo $this->getSkinUrl('images/social-list.png') ?>" alt="FaceBook" />
+            </div>
+        </div>
+    </div>
+    <?php echo $this->getChildHtml('topMenu') ?>
+</div>
+<?php echo $this->getChildHtml('breadcrumbs') ?>
+<!-- From Contact -->
+<div style="display: none;" id="loadings"><img src="<?php echo $this->getSkinUrl('images/loading10.gif')?>" alt="Loading Animation" /></div>
+<div style="display:none;" class="overlay-contact"></div>
+<div class="contact-content" style="display:none;">
+	<a class="lightbox-close-2" href="javascript:void(0)" >
+        <img alt="" src="<?php echo $this->getSkinUrl("images/close_color.png"); ?>">
+	</a>
+	<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+	<div class="page-title">
+		<h1><?php echo Mage::helper('contacts')->__('Contact Us') ?></h1>
+	</div>
+	<div id="feedback" style="display:none;">Cảm ơn bạn đã gửi thông tin cho chúng tôi! Click <a href="<?php $this->getHomeUrl(); ?>">vào đây</a> để quay về trang chủ</div>
+	<form id="contactForm" action="<?php echo $this->getUrl('contacts/index/post')?>" name="contactForm">
+		<div class="fieldset">
+			<h2 class="legend"><?php echo Mage::helper('contacts')->__('Contact Information') ?></h2>
+			<ul class="form-list">
+				<li class="fields">
+					<div class="field">
+						<label for="name" class="required"><em>*</em><?php echo Mage::helper('contacts')->__('Name') ?></label>
+						<div class="input-box">
+							<input name="name" id="name" title="<?php echo Mage::helper('contacts')->__('Name') ?>" value="<?php echo $this->htmlEscape($this->helper('contacts')->getUserName()) ?>" class="input-text required-entry" type="text" />
+						</div>
+					</div>
+					<div class="field">
+						<label for="cemail" class="required"><em>*</em><?php echo Mage::helper('contacts')->__('Email') ?></label>
+						<div class="input-box">
+							<input name="cemail" id="cemail" title="<?php echo Mage::helper('contacts')->__('Email') ?>" value="<?php echo $this->htmlEscape($this->helper('contacts')->getUserEmail()) ?>" class="input-text required-entry validate-email" type="text" />
+						</div>
+					</div>
+				</li>
+				<li>
+					<label for="telephone"><?php echo Mage::helper('contacts')->__('Telephone') ?></label>
+					<div class="input-box">
+						<input name="telephone" id="telephone" title="<?php echo Mage::helper('contacts')->__('Telephone') ?>" value="" class="input-text" type="text" />
+					</div>
+				</li>
+				<li class="wide">
+					<label for="comment" class="required"><em>*</em><?php echo Mage::helper('contacts')->__('Comment') ?></label>
+					<div class="input-box">
+						<textarea name="comment" id="comment" title="<?php echo Mage::helper('contacts')->__('Comment') ?>" class="required-entry input-text" cols="5" rows="3"></textarea>
+					</div>
+				</li>
+				<li>
+					<div class="captcha" style="float:left">
+						<a href="javascript:void(0)" id="cregister">reset</a>
+						<img src="<?php echo $this->getUrl('sociallogin/index/captcha')?>?width=124&height=30&characters=5" id='captchaimgc' alt="captcha" />
+					</div><br/><br/>
+					<label for="message"><?php echo $this->__('Vui lòng nhập mã trên :')?></label>
+					<div class="input-box">
+						<input id="security_code_c" style="width: 229px;" class="input-text required-entry"  name="security_code_c" type="text" />
+						<div id="security_code_error_c" class="popup_error_msg_c"></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="buttons-set">
+			<p class="required"><?php echo Mage::helper('contacts')->__('* Required Fields') ?></p>
+			<input type="text" name="hideit" id="hideit" value="" style="display:none !important;" />
+			<button type="button" onclick="fsubm()" title="<?php echo Mage::helper('contacts')->__('Submit') ?>" class="button"><span><span><?php echo Mage::helper('contacts')->__('Submit') ?></span></span></button>
+			<img style="display:none;" src="<?php echo $this->getSkinUrl("images/loader.gif"); ?>" id="loading"/>
+		</div>
+	</form>
+	
+</div>
+<div class="content-link" style="">
+	<a href="javascript:void(0);"><img src="<?php echo $this->getSkinUrl("images/Feedback.png") ?>" alt=""/></a>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+    
+    function fsubm(){ 
+		var contactForm = new VarienForm('contactForm', true);
+		var security_code_c = document.getElementById("security_code_c").value;	
+		if(security_code_c=='')
+		{
+			jQuery('security_code_c').addClassName("validation-failed");
+			jQuery('security_code_error_c').innerHTML='<div style="" id="advice-required-entry-security-code" class="validation-advice"><?php echo $this->__('This field is required'); ?></div>';
+			
+		}else{
+			//jQuery('security_code_c').removeClassName("validation-failed");
+			jQuery('security_code_error_c').innerHTML='';   
+		}
+			
+		 if (contactForm.validator.validate()) {
+			  new Ajax.Updater(
+				{success:'contactForm'}, 
+				'<?php echo $this->getUrl('contacts/index/post') ?>', 
+				{
+					method:'post', 
+					action:"/contacts/index/post", 
+					asynchronous:true, 
+					evalScripts:false, 
+					onComplete:function(request, json){
+						Element.hide('contactForm');
+						Element.show('feedback');
+					}, 
+				 onLoading:function(request, json){Element.show('loading');}, 
+				 parameters:Form.serialize($('contactForm'))
+			 });	
+		 }
+   }
+//]]>
+</script>
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+	
+		jQuery('#cregister').click(function(){
+			var d = new Date();
+			jQuery("#captchaimgc").attr("src", "<?php echo $this->getUrl('sociallogin/index/captcha')?>?width=124&height=30&characters=5&"+d.getTime());
+		})
+	
+        jQuery('div.content-link a').click(function(){
+			jQuery('body,html').animate({
+				scrollTop: 0
+			}, 800);
+            jQuery('.overlay-contact').fadeIn();
+            jQuery('div.contact-content').fadeIn();
+        })
+        
+        jQuery('.lightbox-close-2').click(function(){
+            jQuery('div.contact-content').fadeOut();
+            jQuery('.overlay-contact').fadeOut();
+        })
+        
+        jQuery('.overlay-contact').click(function(){
+			jQuery(this).fadeOut();
+            jQuery('div.contact-content').fadeOut();
+        })
+    })
+</script>

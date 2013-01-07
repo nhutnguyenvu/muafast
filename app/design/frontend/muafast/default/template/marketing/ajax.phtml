@@ -1,0 +1,135 @@
+<script type="text/javascript">
+    jQuery(document).ready(function(){                    
+        jQuery('#link-share').click(function(){
+            jQuery(this).select();
+        })
+    })
+</script>
+<?php
+//if($this->checkLogin()) :
+?>
+<script src='http://connect.facebook.net/en_US/all.js'></script>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=117966418364784";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+    
+<style type="text/css">
+    #detail-image{ margin: 0 auto; width: 48%; margin-top: 20px;font-size: 15px;float: left;}
+    #control-button{}
+    #control-button span{ margin: 0 15px;}
+    #control-button .dela{}
+    #description_detail{ margin-top: 10px; float:left; padding-left:10px; width:48%;}
+    #description_detail h4{text-transform: uppercase;border-bottom: 2px dotted #BBB;}
+    #description_detail #content-desc{padding: 10px 0 10px 10px;}
+    #detail-image h2{font-size: 15px;}
+    .share-btn{float: right; padding-right: 5px; cursor: pointer;}
+    .namefb_app{float:left;}
+    div.fb-like{float:right;width:100px;}
+    
+    .app_reward{
+       padding-bottom:20px;
+    }
+    .app_content{margin: 0 auto; padding: 10px;width:100%;}
+    .app_content .app_login{margin: 0 auto; width:183px;}
+    .app_content h1{font-family: time news roman; font-style: italic;font-weight: bold;font-size: 30px; color: #ea0000; margin: 0 auto;width: 330px;text-shadow:1px 1px #ccc; padding-bottom: 5px;}
+</style>
+<?php $session_fbid =  Mage::getSingleton('core/session')->getFacebookID(); ?>
+<div class="app_content">
+    <h1>"Tôi Đẹp Trong Mắt Ai?"</h1>
+    <?php $imageId = $this->getRequest()->getParam('imageId'); ?>
+    <?php $row = $this->showDetail($imageId) ?>
+        <div id="detail-image">
+        <?php //if($this->helper('customer')->isLoggedIn()): ?>
+            <?php $customer_id = $row['user_id']; ?>
+            <?php $customer_name = $this->showCustomerName($customer_id) ;?>
+            <?php $userId = Mage::helper('customer')->getCustomer()->getId(); ?>
+
+            <?php if(isset($userId) && $customer_id == $userId): ?>
+                <p class="namefb_app"><?php echo $this->__('Xin chào ').'<strong>'.$customer_name.'</strong>' ?> (<span class="edit"><a href="<?php echo $this->getUrl('marketing/index/upload') ?>"><?php echo $this->__('Thay hình')?></a></span>)</p>
+            <?php else : ?>
+                <p class="namefb_app"><?php echo 'Bạn xem hình của <strong>'.$customer_name.'</strong>'; ?></p>
+            <?php endif; ?>    
+        <?php //endif; ?>
+              <?php if($this->checkLogin()):?>   
+            <div class="fb-like" data-href="<?php echo $this->getUrl('marketing/index/detail').'?imageId='.$row['marketing_id'] ?>" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
+            
+               <p><a class="share-btn" onclick='postToFeed(); return false;'><img src="<?php echo $this->getSkinUrl("images/facebook_counter.png") ?>"/></a></p>
+			   <?php else: ?>
+			   
+			   <table style="float: right; margin: 0px 0px 15px;padding: 5px;" >
+					<tr>
+						<td>
+						<i>Vui lòng đăng nhập để bình chọn</i>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						<div class="sl_clearfix" id="login">
+						<?php Mage::getSingleton('core/session')->unsFacebookID(); ?>
+							<a id='facebook_login' title="Facebook Login" onclick='fblogin();'>  
+							<span class="f_icon_left icon_left_grid"></span>    
+							   <button type="button" class="fb_login inner_social_grid"  name="send">
+								   <?php echo $this->__('Đăng nhập Facebook'); ?></button>   
+							<span class="f_icon_right icon_right_grid"></span>
+							<img id="progress_image_facebooklogin" style="display:none" src="<?php echo $this->getSkinUrl('images/sociallogin/ajax-loader.gif'); ?>" alt="loading please wait" /></a>
+						</div>
+						</td>
+					</tr>
+				</table>
+			   
+               <?php endif; ?>
+                <p id='msg'></p>
+
+                <script> 
+                  FB.init({appId: "475180275856560", status: true, cookie: true});
+
+                  function postToFeed() {
+                    // calling the API ...
+                    var obj = {
+                      method: 'feed',
+                      redirect_uri: '<?php echo $this->getUrl("marketing/index/detail/") ?>?imageId=<?php echo $row['marketing_id'] ?>',
+                      link: '<?php echo $this->getUrl("marketing/index/detail/") ?>?imageId=<?php echo $row['marketing_id'] ?>',
+                      picture: '<?php echo Mage::getBaseUrl('media').'marketing/'.$row['photo']; ?>',
+                      name: '<?php echo 'Tôi đẹp trong mắt ai?'; ?>',
+                      caption: 'Hãy like ủng hộ cho <?php echo $customer_name; ?> nhé!',
+                      description: '<?php echo strip_tags(str_replace(array("\r", "\n"), '', $row['description'])); ?>',
+                    };
+
+                    function callback(response) {
+                      document.getElementById('msg').innerHTML = "Post ID: " + response['post_id'];
+                    }
+
+                    FB.ui(obj, callback);
+                  }
+
+                </script>
+
+            <img src="<?php echo Mage::getBaseUrl('media').'marketing/'.$row['photo']; ?>" alt="<?php echo $row['photo'] ?>" style=" width: 90%;" />
+
+            
+        </div>
+		<div id="description_detail">
+			<div class="ajax-reward app_reward">
+                    <img src="<?php echo $this->getSkinUrl("images/khuyen-mai.jpg") ?>" />
+            </div>
+			<h4>Copy link để share cho bạn bè</h4>
+                <input style="margin: 20px 0; text-align: center; padding: 5px" id='link-share' type="text" value="<?php echo $this->getUrl("marketing/index/detail/").'?imageId='.$row['marketing_id'] ?>" size="76" />
+            <h4><?php echo $this->__('Description')?></h4>
+			<p id="content-desc"><?php echo $row['description']?></p>
+
+
+                <h4><?php echo $this->__('Bình luận')?></h4>
+                <div id="fb-root"></div>
+                
+                <div class="fb-comments" style="height: 350px !important; overflow: scroll;" data-href="<?php echo $this->getUrl("marketing/index/detail/").'?imageId='.$row['marketing_id'] ?>" data-width="500" data-num-posts="10"></div>
+                <!--<span><a href="<?php echo $this->getUrl('marketing/index/toideptrongmatai') ?>"><?php echo $this->__('Quay về trang Slide Anh')?></a></span>-->
+            </div>
+        </div>
+
+</div>

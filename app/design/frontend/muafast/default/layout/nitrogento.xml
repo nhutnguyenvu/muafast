@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<layout>
+    <add_sprite_css>
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><file>css/sprite.css</file></action>
+        </reference>
+    </add_sprite_css>
+    
+    <nitrogento_disable_reports_product_display_v13>
+        <reference name="right">
+            <action method="unsetChild"><block>right.reports.product.viewed</block></action>
+            <action method="unsetChild"><block>left.reports.product.viewed</block></action>
+            <action method="unsetChild"><block>right.reports.product.compared</block></action>
+        </reference>
+    </nitrogento_disable_reports_product_display_v13>
+    
+    <nitrogento_disable_reports_product_display_v14>
+        <reference name="right">
+            <remove name="right.reports.product.viewed"/>
+            <remove name="left.reports.product.viewed"/>
+            <remove name="right.reports.product.compared"/>
+        </reference>
+    </nitrogento_disable_reports_product_display_v14>
+</layout>

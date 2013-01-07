@@ -1,0 +1,23 @@
+<?php $vendorList = $this->getVendorList(); ?>
+<h3 id="title-main"><?php echo $this->__("Gian hàng"); ?></h3>
+<?php if(count($vendorList) > 0):?>
+<?php echo $this->getChildHtml('search') ?>
+<?php endif; ?>
+<div class="category-products" id="listvendor" >
+<?php $page_arr = $this->getPagination(); ?>
+		<div class="toolbar">
+			<div class="pager">
+			<?php if(count($page_arr) > 0): ?>  
+				
+				 <input type="hidden" value="<?php echo intval($page_arr['last']) ?>" id="last_page" />
+				<?php if($page_arr['last'] > 1): ?>
+					<?php if($page_arr['last'] > $page_arr['page_number']): ?>
+					<a class="next  lnk-next-1" href="<?php echo $this->getUrl('vendor/index/vendorlist')."?page=".(intval($page_arr['page_number']) + 1); ?>">
+						</a>
+					<?php endif; ?>
+				<?php endif; ?>
+				<?php endif; ?>
+			</div>
+		</div>	
+<?php echo $this->getChildHtml('productlist') ?>
+</div>	

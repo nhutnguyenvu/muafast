@@ -1,0 +1,13 @@
+<?php
+
+    $helper = Mage::app()->getHelper('vendor');
+    $vendor_id = $this->getRequest()->getParam("vendor_id");
+    $vendor_data = $helper->getVendorUserInfo($vendor_id); 
+    $vendor = Mage::getModel("vendor/vendor")->load($vendor_id);
+    
+    $vendor_logo = $this->getLogoSrcFrontEnd($vendor);
+    //echo count($_productCollection);
+?>
+<meta property="og:image" content="<?php echo $vendor_logo ?>" /> 
+<meta property="og:title" content="<?php echo $vendor_data['company_name'] ?>" /> 
+<meta property="og:description" content="<?php echo $vendor_data['aboutcompany']; ?>" /> 

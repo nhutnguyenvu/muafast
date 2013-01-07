@@ -1,0 +1,581 @@
+<?php
+$_order = Mage::getModel('sales/order')->load($this->getRequest()->getParam('id'));
+
+//print_r($_order);
+//die;
+$order_real_id = $this->getRequest()->getParam('id');
+
+$totalShipping = $_order->getBaseShippingAmount();
+
+$total_qty_ordered = intval($_order->getTotalQtyOrdered());
+
+$totalShippingVendor = 0;
+
+$orderAdminDate = $this->formatDate($_order->getCreatedAtDate(), 'medium', true);
+$orderStoreDate = $this->formatDate($_order->getCreatedAtStoreDate(), 'medium', true);
+
+$_helper = Mage::app()->getHelper('vendor');
+//echo $_helper->getVendorUserId();
+
+if ($_helper->vendorIsLogged()) {
+  $_vendor = $_helper->getVendorUserInfo($_helper->getVendorUserId());
+  $vendor_id = $_vendor['vendor_id'];
+}
+else { $vendor_id = 0; }
+
+$store_commision = @$_vendor["commission"];
+$commission = 100 - @$_vendor["commission"] * 1;
+
+//read all the status history
+$write 		= Mage::getSingleton('core/resource')->getConnection('core_write');
+$vs		= $_helper->getTableName("vendors_sales");
+$vsh		= $_helper->getTableName("vendors_sales_history");
+if($vendor_id!=0){
+    $result		= $write->query("select vsh.*, vs.* from `$vs` as vs, `$vsh` as vsh where vs.order_real_id='$order_real_id' and (vs.vendor_id = '$vendor_id') and vs.vendorsales_id = vsh.vendorsales_id;");
+}
+else{
+    $result		= $write->query("select vsh.*, vs.* from `$vs` as vs, `$vsh` as vsh where vs.order_real_id='$order_real_id'and vs.vendorsales_id = vsh.vendorsales_id;");
+}
+
+$_order_history = array();
+while($line = $result->fetch()) {
+  //arrange tracking in array
+  $_order_history[$line['created_date']][] = $line;
+}
+?>
+<div class="content-header">
+  <table cellspacing="0" class="grid-header">
+    <tr>
+      <td><h3><?php echo $_helper->__('View Vendor Sales')?> <?php echo Mage::registry('vendorsales_data')->getIncrementId()?></h3></td>
+    </tr>
+  </table>
+</div>
+
+<!--Order Information-->
+<div class="entry-edit">
+<?php if ($_order->getEmailSent()):
+$_email = Mage::helper('sales')->__('the order confirmation email was sent');
+else:
+$_email = Mage::helper('sales')->__('the order confirmation email is not sent');
+endif; ?>
+<div class="entry-edit-head">
+<h4 class="icon-head head-account"><?php echo Mage::helper('sales')->__('Order # %s', $_order->getRealOrderId()) ?> (<?php echo $_email ?>)</h4>
+</div>
+<div class="fieldset">
+<table cellspacing="0" class="form-list">
+<tr>
+  <td class="label"><label><?php echo Mage::helper('sales')->__('Order Date') ?></label></td>
+  <td><strong><?php echo $orderAdminDate ?></strong></td>
+</tr>
+<?php if ($orderAdminDate != $orderStoreDate):?>
+<tr>
+  <td class="label"><label><?php echo Mage::helper('sales')->__('Order Date (%s)', $_order->getCreatedAtStoreDate()->getTimezone()) ?></label></td>
+  <td><strong><?php echo $orderStoreDate ?></strong></td>
+</tr>
+<?php endif;?>
+<tr>
+  <td class="label"><label><?php echo Mage::helper('sales')->__('Order Status') ?></label></td>
+  <td><strong><span id="order_status"><?php echo $_order->getStatusLabel() ?></span></strong></td>
+</tr>
+<?php if($_order->getRemoteIp()): ?>
+<tr>
+  <td class="label"><label><?php echo Mage::helper('sales')->__('Placed from IP') ?></label></td>
+  <td><strong><?php echo $_order->getRemoteIp();
+	echo ($_order->getXForwardedFor())?' (' . $_order->getXForwardedFor() . ')':''; ?></strong></td>
+</tr>
+<?php endif; ?>
+<?php if($_order->getGlobalCurrencyCode() != $_order->getBaseCurrencyCode()): ?>
+<tr>
+  <td class="label"><label><?php echo Mage::helper('sales')->__('%s / %s rate:', $_order->getGlobalCurrencyCode(), $_order->getBaseCurrencyCode()) ?></label></td>
+  <td><strong><?php echo $_order->getBaseToGlobalRate() ?></strong></td>
+</tr>
+<?php endif; ?>
+<?php if($_order->getBaseCurrencyCode() != $_order->getOrderCurrencyCode()): ?>
+<tr>
+  <td class="label"><label><?php echo Mage::helper('sales')->__('%s / %s rate:', $_order->getOrderCurrencyCode(), $_order->getBaseCurrencyCode()) ?></label></td>
+  <td><strong><?php echo $_order->getBaseToOrderRate() ?></strong></td>
+</tr>
+<?php endif; ?>
+</table>
+</div>
+</div>
+
+<div class="clear"></div>
+<?php if (!$_order->getIsVirtual()): ?>
+<div class="box-left">
+  <!--Shipping Address-->
+  <div class="entry-edit">
+    <div class="entry-edit-head">
+      <h4 class="icon-head head-shipping-address"><?php echo Mage::helper('sales')->__('Shipping Address') ?></h4>
+    </div>
+    <fieldset>
+      <address><?php echo $_order->getShippingAddress()->getFormated(true) ?></address>
+    </fieldset>
+  </div>
+</div>
+<?php endif; ?>
+<div class="box-right">
+  <!--Shipping & Handling Box-->
+  <div class="entry-edit">
+    <div class="entry-edit-head">
+      <h4 class="icon-head head-billing-address"><?php echo Mage::helper('sales')->__('Shipping & Handling Information') ?></h4>
+    </div>
+    <fieldset>
+      <address>
+	<b><?php echo $_order->getShippingDescription() ?></b>
+	<?php //echo $_order->formatPrice($_order->getShippingAmount()); ?>
+      </address>
+    </fieldset>
+  </div>
+</div>
+
+<div class="clear"></div>
+
+<div class="grid np">
+  <div class="hor-scroll">
+    <table class="data order-tables" summary="<?php echo $this->__('Items Ordered') ?>">
+      <col width="380" />
+      <col width="130" />
+      
+      <?php if($vendor_id==0): ?>
+      <col width="130" />
+      <col width="130" />
+      <?php endif;?>
+      <col width="130" />
+      <col width="130" />
+      <col width="130" />
+      <thead>
+        <tr class="headings" style="background: none repeat scroll 0 0 #6F8992; color: #fff;">
+          <th><?php echo $this->__('Products') ?></th>
+	  <th><?php echo $this->__('Vendor') ?></th>
+      <?php if($vendor_id==0): ?>
+	  <th><?php echo $this->__('Store Earnings') ?></th>
+	  <th><?php echo $this->__('Store Commission') ?></th>
+      <?php endif;?>
+      <th class="a-center"><?php echo $this->__('Qty') ?></th>
+          <th class="a-right"><?php echo $this->__('Price') ?></th>
+	  <th class="a-right"><?php echo $this->__('Shipping') ?></th>
+      <th class="a-right"><?php echo $this->__('Total Price for Item') ?></th>
+	  <th class="a-right"><?php echo $this->__('Vendor Earnings') ?></th>
+        </tr>
+      </thead>
+      <?php $_items = $_order->getItemsCollection(); ?>
+      <?php $_index = 0; ?>
+      <?php $_count = $_items->count(); ?>
+      <tbody>
+        <?php
+	$totalprice = 0;
+	$total_vendor_amount = 0;
+	
+	$totalProductInCart = 0;
+    
+	foreach ($_items as $_item):
+
+          if ($_helper->vendorIsLogged()) {
+            if ($product = Mage::getModel('catalog/product')->load($_item->getProductId())) {
+              $manufacturer = $product->getManufacturer();
+              if ($manufacturer != $_vendor['vendor_code']) {
+                continue;
+              }
+            } else {
+              continue;
+            }
+          }
+          if ($_item->getParentItem()) continue; 
+	
+	  $totalProductInCart++;
+	endforeach;
+
+        foreach ($_items as $_item):
+
+	  
+
+            if ($_helper->vendorIsLogged()) {
+
+                if ($product = Mage::getModel('catalog/product')->load($_item->getProductId())) {
+                    $manufacturer = $product->getManufacturer();
+                    if ($manufacturer != $_vendor['vendor_code']) {
+                        continue;
+                    }
+                } else {
+                    continue;
+                }
+            }
+            if ($_item->getParentItem()) continue; 
+            $totalprice += $this->helper('checkout')->getPriceInclTax($_item) * intval($_item->getQtyOrdered()); 
+	?>
+        <tr class="border" id="order-item-row-<?php echo $_item->getId() ?>">
+          <td>
+		<b><?php echo $this->htmlEscape($_item->getName()) ?></b>
+		<br/><b>SKU: </b><?php echo $this->htmlEscape(Mage::helper('core/string')->splitInjection($_item->getSku())) ?>
+        
+                <?php 
+			$product_type = $this->htmlEscape($_item->getProductType());
+			if(isset($product_type) && $product_type == 'configurable') {
+				$product_options = $_item->getProductOptions();
+				if(isset($product_options) && $product_options != '') {
+
+					foreach($product_options['attributes_info'] as $keys => $values) {
+						if(isset($values["label"]) && ($values["label"] != '')) {
+							echo "<br/>&nbsp;<b><i>".$values["label"]."</i></b><br/>&nbsp;&nbsp;".$values["value"];
+						}
+					}
+
+				}
+
+
+				/*
+				$write       = Mage::getSingleton('core/resource')->getConnection('core_write');
+				$item_id     = $_item->getItemId();
+				$table       = Mage::getSingleton('core/resource')->getTableName('sales_flat_order_item'); 
+				$resultqry   = $write->query("select name from `$table` where parent_item_id = '".$item_id."';");
+				$lineqry     = $resultqry->fetch();
+
+				if(isset($lineqry["name"]) && ($lineqry["name"] != '')) {
+					echo "<br/>".$lineqry["name"];
+				}
+				*/
+			}
+
+			if($vendor_id == 0) {
+			    if ($product = Mage::getModel('catalog/product')->load($_item->getProductId())) {
+				$manufacturer = $product->getManufacturer();
+
+				$write       = Mage::getSingleton('core/resource')->getConnection('core_write');
+				$table       = Mage::getSingleton('core/resource')->getTableName('vendors'); 
+				$resultqry   = $write->query("select commission, company_name from `$table` where vendor_code = '".$manufacturer."';");
+				$lineqry     = $resultqry->fetch();
+
+				if(isset($lineqry["commission"]) && ($lineqry["commission"] != '')) {
+					$commission = $lineqry["commission"];
+					$store_commision = $commission;
+					$_vendor['company_name'] = $lineqry["company_name"];
+				}
+				$commission = 100 - $commission * 1;
+			    }
+			}
+			
+
+			$_incl = $this->helper('checkout')->getPriceInclTax($_item) * intval($_item->getQtyOrdered()) ;
+            
+            
+            //echo $_incl;
+            
+			$item_vendor_amount = round(($_item->getQtyOrdered() * (($this->helper('checkout')->getPriceInclTax($_item) / 100) * $commission)), 2);				
+            //echo $item_vendor_amount;
+            //die;
+			$total_vendor_amount += $item_vendor_amount;
+            
+
+		?>
+        <br/><a href="<?php echo $product->getProductUrl() ?>" target="_blank"> <b><?php echo $this->__("Click vào đây đề thấy hình ảnh sản phẩm")?></b> </a>
+		<?php echo $this->htmlEscape($_item->getDescription()) ?>
+                
+		<?php if($this->helper('giftmessage/message')->getIsMessagesAvailable('order_item', $_item) && $_item->getGiftMessageId()): ?>
+			<a href="#" id="order-item-gift-message-link-<?php echo $_item->getId() ?>" class="gift-message-link" onclick="return giftMessageToogle('<?php echo $_item->getId() ?>')"><?php echo $this->__('Gift Message') ?></a>
+                <?php endif; ?>
+          </td>
+          
+	  <td><?php echo $this->htmlEscape(Mage::helper('core/string')->splitInjection($_vendor['company_name'])) ?></td>
+      <?php if($vendor_id==0): ?>
+	  <td><?php echo $_order->formatPrice($_incl-$item_vendor_amount); ?></td>  
+	  <td><?php if($store_commision != '' ) { echo $store_commision."%"; } ?></td>
+      <?php endif; ?>
+	  <td class="a-center">
+		  <span class="nobr">
+		      <?php if ($_item->getQtyOrdered() > 0): ?>
+			<?php echo $this->__('Ordered'); ?>: <strong><?php echo $_item->getQtyOrdered()*1 ?></strong><br />
+		      <?php endif; ?>
+		      <?php if ($_item->getQtyShipped() > 0): ?>
+			<?php echo $this->__('Shipped'); ?>: <strong><?php echo $_item->getQtyShipped()*1 ?></strong><br />
+		      <?php endif; ?>
+		      <?php if ($_item->getQtyCanceled() > 0): ?>
+			<?php echo $this->__('Canceled'); ?>: <strong><?php echo $_item->getQtyCanceled()*1 ?></strong><br />
+		      <?php endif; ?>
+		      <?php if ($_item->getQtyRefunded() > 0): ?>
+			<?php echo $this->__('Refunded'); ?>: <strong><?php echo $_item->getQtyRefunded()*1 ?></strong><br />
+		      <?php endif; ?>
+		  </span>
+	  </td>
+      
+	  <td class="a-right">
+              <?php if ($this->helper('tax')->displaySalesBothPrices() || $this->helper('tax')->displaySalesPriceExclTax()): ?>
+            <span class="price-excl-tax">
+                <?php if ($this->helper('tax')->displaySalesBothPrices()): ?>
+                    <?php if (!Mage::helper('weee')->typeOfDisplay($_item, array(1, 4), 'sales') && (float)$_item->getWeeeTaxAppliedAmount()): ?>
+                    <span class="cart-price">
+                    <?php endif; ?>
+                    <span class="label"><?php echo $this->__('Excl. Tax'); ?>:</span>
+                    <?php if (!Mage::helper('weee')->typeOfDisplay($_item, array(1, 4), 'sales') && (float)$_item->getWeeeTaxAppliedAmount()): ?>
+                    </span>
+                    <?php endif; ?>
+                    <?php endif; ?>
+                <?php if (Mage::helper('weee')->typeOfDisplay($_item, array(1, 4), 'sales') && (float)$_item->getWeeeTaxAppliedAmount()): ?>
+              <span class="cart-tax-total" onclick="taxToggle('eunit-item-tax-details<?php echo $_item->getId(); ?>', this, 'cart-tax-total-expanded');">
+                    <?php else: ?>
+                <span class="cart-price">
+                      <?php endif; ?>
+                        
+                      <?php if (Mage::helper('weee')->typeOfDisplay($_item, array(0, 1, 4), 'sales') && (float)$_item->getWeeeTaxAppliedAmount()): ?>
+                        <?php echo $_order->formatPrice($_item->getPrice()+$_item->getWeeeTaxAppliedAmount()+$_item->getWeeeTaxDisposition()); ?>
+                      <?php else: ?>
+                        <?php echo $_order->formatPrice($_item->getPrice()) ?>
+                      <?php endif; ?>
+
+                </span>
+
+
+                    <?php if (Mage::helper('weee')->getApplied($_item)): ?>
+
+                <span class="cart-tax-info" id="eunit-item-tax-details<?php echo $_item->getId(); ?>" style="display:none;">
+                        <?php if (Mage::helper('weee')->typeOfDisplay($_item, 1, 'sales') && (float)$_item->getWeeeTaxAppliedAmount()): ?>
+                  <small>
+                            <?php foreach (Mage::helper('weee')->getApplied($_item) as $tax): ?>
+                    <span class="nobr"><?php echo $tax['title']; ?>: <?php echo $_order->formatPrice($tax['amount']); ?></span>
+                            <?php endforeach; ?>
+                  </small>
+                        <?php elseif (Mage::helper('weee')->typeOfDisplay($_item, 2, 'sales') && (float)$_item->getWeeeTaxAppliedAmount()): ?>
+                          <?php foreach (Mage::helper('weee')->getApplied($_item) as $tax): ?>
+                  <span class="nobr"><small><?php echo $tax['title']; ?>: <?php echo $_order->formatPrice($tax['amount_incl_tax']); ?></small></span>
+                          <?php endforeach; ?>
+                        <?php elseif (Mage::helper('weee')->typeOfDisplay($_item, 4, 'sales') && (float)$_item->getWeeeTaxAppliedAmount()): ?>
+                  <small>
+                            <?php foreach (Mage::helper('weee')->getApplied($_item) as $tax): ?>
+                    <span class="nobr"><?php echo $tax['title']; ?>: <?php echo $_order->formatPrice($tax['amount_incl_tax']); ?></span>
+                            <?php endforeach; ?>
+                  </small>
+                        <?php endif; ?>
+                </span>
+
+                      <?php if (Mage::helper('weee')->typeOfDisplay($_item, 2, 'sales') && (float)$_item->getWeeeTaxAppliedAmount()): ?>
+                <span class="cart-tax-total" onclick="taxToggle('eunit-item-tax-details<?php echo $_item->getId(); ?>', this, 'cart-tax-total-expanded');">
+                  <span class="nobr"><?php echo Mage::helper('weee')->__('Total'); ?>:<br /> <?php echo $_order->formatPrice($_item->getPrice()+$_item->getWeeeTaxAppliedAmount()+$_item->getWeeeTaxDisposition()); ?></span>
+                </span>
+                      <?php endif; ?>
+                    <?php endif; ?>
+              </span>
+              <br />
+                <?php endif; ?>
+                <?php if ($this->helper('tax')->displaySalesBothPrices() || $this->helper('tax')->displaySalesPriceInclTax()): ?>
+              <span class="price-incl-tax">
+                    <?php if ($this->helper('tax')->displaySalesBothPrices()): ?>
+                      <?php if (!Mage::helper('weee')->typeOfDisplay($_item, array(1, 4), 'sales') && (float)$_item->getWeeeTaxAppliedAmount()): ?>
+                <span class="cart-price">
+                        <?php endif; ?>
+                  <span class="label"><?php echo $this->__('Incl. Tax'); ?>:</span>
+                        <?php if (!Mage::helper('weee')->typeOfDisplay($_item, array(1, 4), 'sales') && (float)$_item->getWeeeTaxAppliedAmount()): ?>
+                </span>
+                      <?php endif; ?>
+                    <?php endif; ?>
+                    <?php $_incl = $this->helper('checkout')->getPriceInclTax($_item) * intval($_item->getQtyOrdered()); ?>
+                    <?php if (Mage::helper('weee')->typeOfDisplay($_item, array(1, 4), 'sales') && (float)$_item->getWeeeTaxAppliedAmount()): ?>
+                <span class="cart-tax-total" onclick="taxToggle('unit-item-tax-details<?php echo $_item->getId(); ?>', this, 'cart-tax-total-expanded');">
+                      <?php else: ?>
+                  <span class="cart-price">
+                        <?php endif; ?>
+
+                        <?php if (Mage::helper('weee')->typeOfDisplay($_item, array(0, 1, 4), 'sales') && (float)$_item->getWeeeTaxAppliedAmount()): ?>
+                          <?php echo $_order->formatPrice($_incl+$_item->getWeeeTaxAppliedAmount()); ?>
+                        <?php else: ?>
+                          <?php echo $_order->formatPrice($_incl-$_item->getWeeeTaxDisposition()) ?>
+                        <?php endif; ?>
+
+                  </span>
+
+
+                      <?php if (Mage::helper('weee')->getApplied($_item)): ?>
+
+                  <span class="cart-tax-info" id="unit-item-tax-details<?php echo $_item->getId(); ?>" style="display:none;">
+                          <?php if (Mage::helper('weee')->typeOfDisplay($_item, 1, 'sales') && (float)$_item->getWeeeTaxAppliedAmount()): ?>
+                    <small>
+                              <?php foreach (Mage::helper('weee')->getApplied($_item) as $tax): ?>
+                      <span class="nobr"><?php echo $tax['title']; ?>: <?php echo $_order->formatPrice($tax['amount']); ?></span>
+                              <?php endforeach; ?>
+                    </small>
+                          <?php elseif (Mage::helper('weee')->typeOfDisplay($_item, 2, 'sales') && (float)$_item->getWeeeTaxAppliedAmount()): ?>
+                            <?php foreach (Mage::helper('weee')->getApplied($_item) as $tax): ?>
+                    <span class="nobr"><small><?php echo $tax['title']; ?>: <?php echo $_order->formatPrice($tax['amount_incl_tax']); ?></small></span>
+                            <?php endforeach; ?>
+                          <?php elseif (Mage::helper('weee')->typeOfDisplay($_item, 4, 'sales') && (float)$_item->getWeeeTaxAppliedAmount()): ?>
+                    <small>
+                              <?php foreach (Mage::helper('weee')->getApplied($_item) as $tax): ?>
+                      <span class="nobr"><?php echo $tax['title']; ?>: <?php echo $_order->formatPrice($tax['amount_incl_tax']); ?></span>
+                              <?php endforeach; ?>
+                    </small>
+                          <?php endif; ?>
+                  </span>
+
+                        <?php if (Mage::helper('weee')->typeOfDisplay($_item, 2, 'sales') && (float)$_item->getWeeeTaxAppliedAmount()): ?>
+                  <span class="cart-tax-total" onclick="taxToggle('unit-item-tax-details<?php echo $_item->getId(); ?>', this, 'cart-tax-total-expanded');">
+                    <span class="nobr"><?php echo Mage::helper('weee')->__('Total incl. tax'); ?>:<br /> <?php echo $_order->formatPrice($_incl+$_item->getWeeeTaxAppliedAmount()); ?></span>
+                  </span>
+                        <?php endif; ?>
+                      <?php endif; ?>
+                </span>
+                  <?php endif; ?>
+                </td>
+		<?php
+			if($vendor_id == 0) {
+				//$item_shipping = $totalShipping / $totalProductInCart;
+                $item_shipping = (floatval($totalShipping) / $total_qty_ordered) * intval($_item->getQtyOrdered());
+                //$totalShippingVendor += $item_shipping;
+			}else{
+                
+				$item_shipping = (floatval($totalShipping) / $total_qty_ordered) * intval($_item->getQtyOrdered());
+                $totalShippingVendor += $item_shipping;
+                
+			}
+		?>
+		<td class="a-right">
+			<?php echo $_order->formatPrice($item_shipping); ?>
+		</td>
+        <td><?php echo $_order->formatPrice($_incl) ?></td>
+		<td class="a-right">
+			<?php
+				echo $_order->formatPrice($item_vendor_amount);
+			?>
+		</td>
+	
+                <!--
+                <?php if ($this->helper('tax')->displaySalesBothPrices() || $this->helper('tax')->displaySalesPriceExclTax()): ?>
+                <th class="a-right"><?php echo $_order->formatPrice($_item->getRowTotal()) ?></th>
+                <?php endif; ?>
+                <?php if ($this->helper('tax')->displaySalesBothPrices() || $this->helper('tax')->displaySalesPriceInclTax()): ?>
+                <th class="a-right"><?php echo $_order->formatPrice($this->helper('checkout')->getSubtotalInclTax($_item)); ?></th>
+                <?php endif; ?>
+                -->
+        </tr>
+		
+
+
+	<?php if($this->helper('giftmessage/message')->getIsMessagesAvailable('order_item', $_item) && $_item->getGiftMessageId()): ?>
+      <tr class="border<?php echo ($_index++ > $_count ?' last':'') ?>" id="order-item-gift-message-<?php echo $_item->getId() ?>" style="display:none;">
+	    <?php $_giftMessage=$this->helper('giftmessage/message')->getGiftMessageForEntity($_item); ?>
+	<td class="gift-message-row" colspan="7">
+	  <a href="#" title="<?php echo $this->__('Close') ?>" onclick="return giftMessageToogle('<?php echo $_item->getId() ?>');" class="btn-close"><?php echo $this->__('Close') ?></a>
+	  <dl class="gift-message">
+	    <dt><strong><?php echo $this->__('From:') ?></strong> <?php echo $this->htmlEscape($_giftMessage->getRecipient()) ?></dt>
+	    <dt><strong><?php echo $this->__('To:') ?></strong> <?php echo $this->htmlEscape($_giftMessage->getSender()) ?></dt>
+	    <dd><?php echo $this->helper('giftmessage/message')->getEscapedGiftMessage($_item) ?></dd>
+	  </dl>
+	</td>
+      </tr>
+	<?php endif ?>
+      <?php endforeach; ?>
+    <?php if($vendor_id==0):?>
+      <?php $colspan = 8 ?>
+    <?php else:?>   
+      <?php $colspan = 6 ?>
+    <?php endif;?>  
+    <?php if($vendor_id==0)?>
+    <tr>
+	      <td valign="middle" align="right" colspan="<?php echo $colspan ?>" style="padding:5px 9px 5px 9px;">
+            <?php echo $this->__("Total Price")?>: 
+	      </td>
+	      <td valign="middle" align="right" style="padding:5px 9px 5px 9px; ">
+		<b><?php echo $_order->formatPrice($totalprice); ?></b>
+	      </td>
+	</tr>
+
+	<tr>
+	      <td valign="middle" align="right" colspan="<?php echo $colspan ?>" style="padding:5px 9px 5px 9px;">
+		<?php echo $this->__("Total Shipping") ?>:
+	      </td>
+	      <td valign="middle" align="right" style="padding:5px 9px 5px 9px;">
+		<b><?php if($vendor_id == 0): ?> 
+                <?php echo $_order->formatPrice($totalShipping); ?>
+            <?php else: ?>
+            
+            <?php echo $_order->formatPrice($totalShippingVendor); ?>
+            
+            <?php endif ?> 
+                
+                
+             
+        </b>
+	      </td>
+	</tr>
+    
+	<tr>
+	      <td valign="middle" align="right" colspan="<?php echo $colspan ?>" style="padding:5px 9px 5px 9px;">
+            <?php echo $this->__("Order Total") ?>:
+	      </td>
+	      <td valign="middle" align="right" style="padding:5px 9px 5px 9px;">
+              
+		<b>
+            <?php  if($vendor_id == 0): ?>
+            <?php  echo $_order->formatPrice($totalprice + $totalShipping); ?>    
+            <?php else: ?>
+            <?php echo $_order->formatPrice($totalprice + $totalShippingVendor); ?>
+           <?php endif; ?>         
+                 
+       </b>             
+	      </td>
+	</tr>
+    
+	<tr>
+	      <td valign="middle" align="right" colspan="<?php echo $colspan ?>" style="padding:5px 9px 5px 9px;">
+                <b><?php echo $this->__("Total Vendor Earnings") ?></b>:
+	      </td>
+	      <td valign="middle" align="right" style="padding:5px 9px 5px 9px;">
+		<b><?php echo $_order->formatPrice($total_vendor_amount); ?></b>
+	      </td>
+	</tr>	
+
+	<tr>
+	      <td valign="middle" align="right" colspan="<?php echo $colspan ?>" style="padding:5px 9px 5px 9px;">
+		<b><?php echo $this->__("Vendor Payment = Total Shipping + Total Vendor Earnings") ?></b>
+	      </td>
+	      <td valign="middle" align="right" style="padding:5px 9px 5px 9px;">
+		<b>
+            <?php if($vendor_id == 0):?>
+                <?php echo $_order->formatPrice($total_vendor_amount + $totalShipping);  ?>
+            <?php else:?>
+                <?php echo $_order->formatPrice($totalShippingVendor + $total_vendor_amount) ?>
+            <?php endif;?>    
+                
+        </b>
+	      </td>
+	</tr>
+	
+    </tbody>
+</table>
+        </div>
+        </div>
+        <br />
+        <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__("Tracking Information") ?></h4>
+            <div class="form-buttons"></div>
+        </div>
+        <div id="vendorsales_tracking" class="fieldset ">
+            <div class="hor-scroll">
+            <ul class="note-list">
+                <?php
+                foreach ($_order_history as $_date => $_history):
+                ?>
+                <li>
+                    <strong><?php echo $_date; ?></strong><br />
+                    <?php foreach ($_history as $_id => $_details): ?>
+                        <strong><?php echo $_details['status'] ?></strong> -
+                        <?php
+                        if ($_details['tracking_code'] != ''):?>
+                            tracking number added:<?php echo $_details['tracking_code'] ?><br>
+                        <?php endif;?>
+                        <?php if ((float) $_details['adjustment'] != 0):?>
+                        Adjustment: <?php echo $_order->formatPrice($_details['adjustment']) ?><br>
+                        <?php endif; ?>
+                        <small><?php echo $_details['comments'] ?></small>
+                        <?php if(!empty($_details['product_name'])): ?>
+                            (<?php echo $_details['product_name']; ?>)
+                        <?php else: ?>
+                            <?php echo "" ?>
+                        <?php endif; ?>    
+                        <br>
+                    <?php endforeach; ?>
+                </li>
+                <?php endforeach; ?>
+            </ul>
+            </div>
+        </div>
+        </div>

@@ -1,0 +1,35 @@
+<?php
+$statement = Mage::getModel('vendor/vendor_statement')->load($this->getRequest()->getParam('id'));
+$vendor = Mage::getModel('vendor/vendor')->load($statement->getVendorId());
+?>
+<div class="content-header">
+  <table cellspacing="0" class="grid-header">
+    <tr>
+      <td><h3><?=$this->__('Pay Vendor Statement #')?><?=$statement->getStatementId()?></h3></td>
+    </tr>
+  </table>
+</div>
+<div class="entry-edit">
+  <div class="entry-edit-head">
+    <h4 class="icon-head head-edit-form fieldset-legend">Payment Information</h4>
+    <div class="form-buttons"></div>
+  </div>
+  <div id="vendorsales_tracking" class="fieldset ">
+    <div class="hor-scroll">
+      <ul>
+        <li>Vendor: <?php echo $vendor->getCompanyName(); ?>
+        <li>Email: <?php echo $vendor->getEmail(); ?>
+        <li>Paypal Email: <?php echo $vendor->getPaypal(); ?>
+        <li>Payment total: <?php echo $statement->getTotalPayout(); ?>
+      </ul>
+      <form name="_xclick" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+      <input type="hidden" name="cmd" value="_xclick">
+      <input type="hidden" name="business" value="<?php echo $vendor->getPaypal() != '' ? $vendor->getPaypal() : $vendor->getEmail(); ?>">
+      <input type="hidden" name="currency_code" value="USD">
+      <input type="hidden" name="item_name" value="Comission Payout <?php echo $statement->getStatementId(); ?>">
+      <input type="hidden" name="amount" value="<?php echo round($statement->getTotalPayout(), 2); ?>">
+      <input type="image" src="https://www.paypal.com/en_US/i/btn/btn_paynow_LG.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+      </form>
+    </div>
+  </div>
+</div>

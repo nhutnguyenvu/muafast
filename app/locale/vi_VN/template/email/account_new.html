@@ -1,0 +1,54 @@
+﻿<!--@subject Welcome, {{var customer.name}}! @-->
+
+<style type="text/css">
+body,td { color:#2f2f2f; font:11px/1.35em Verdana, Arial, Helvetica, sans-serif; }
+</style>
+
+<div style="font:11px/1.35em Verdana, Arial, Helvetica, sans-serif;">
+    <table cellspacing="0" cellpadding="0" border="0" width="98%" style="margin-top:10px; font:11px/1.35em Verdana, Arial, Helvetica, sans-serif; margin-bottom:10px;">
+        <tr>
+            <td align="center" valign="top">
+                <!-- [ header starts here] -->
+                <table cellspacing="0" cellpadding="0" border="0" width="650">
+                    <tr>
+                        <td valign="top">
+                            <a href="{{store url=""}}"><img src="{{skin url="images/logo-black.png" _area='frontend'}}" alt="Muafast"  style="margin-bottom:10px;" border="0"/></a></td>
+                    </tr>
+                </table>
+
+                <!-- [ middle starts here] -->
+                <table cellspacing="0" cellpadding="0" border="0" width="650">
+                    <tr>
+                        <td valign="top">
+                            <p><strong>Kính gởi  {{var customer.name}}</strong>,<br/>
+                            Chào mừng bạn đến với hệ thống siêu thị trực tuyến  <strong>{{var store.getFrontendName()}}</strong>. Để đăng nhập hệ thống mời bạn <a href="{{store url="customer/account/"}}" style="color:#1E7EC8;">Click vào đây</a> hoặc <a href="{{store url="customer/account/"}}" style="color:#1E7EC8;">Click vào đây hoặc Click vào đây để kiểm tra thông tin tài khoản</a></p>
+
+                      <p style="border:1px solid #BEBCB7; padding:13px 18px; background:#F8F7F5; ">
+                                Thông tin đăng nhập tài khoản:<br/>
+                                E-mail: {{var customer.email}}<br/>
+                                Mật khẩu: {{var customer.password}}<p>
+
+                            <p>Sau khi đăng nhập hệ thống bạn có th:</p>
+
+                      <ul>
+                                <li>Đặt hàng nhanh chóng</li>
+                                <li>Theo dõi trạng thái đơn hàng</li>
+                                <li>Xem thông tin đơn hàng</li>
+                                <li>Tạo & Thay đổi địa chỉ giao hàng, nhận hàng, thanh toán.</li>
+                                <li>Đổi thông tin mật khẩu</li>
+                                <li>Tham gia chương trình gởi quà tặng cho người thân.</li>
+                          </ul>
+
+                            <p>N&#7871;u b&#7841;n g&#7863;p s&#7921; c&#7889; nh&#432; th&#7871; n&agrave;o, m&#7901;i b&#7841;n email qua <a href="mailto:support@ttstech.com">support@ttstech.com</a> Ho&#7863;c g&#7885;i cho ch&uacute;ng t&ocirc;i s&#7889;: (84-8)<span class="nobr"> 39168992 - 39168993 - 39168994</span><span class="nobr">. </span> T&#7915; th&#7913; 2 &#273;&#7871;n th&#7913; 7, s&aacute;ng t&#7915; 7h30 - 11h30 chi&#7873;u t&#7915; 1h30 - 5h30. Ngo&agrave;i gi&#7901; xin li&ecirc;n h&#7879; qua s&#7889;: 090.2006.206</p>
+                          <p>C&#7843;m &#417;n b&#7841;n!</p>
+                          
+						<strong>{{var store.getFrontendName()}}</strong>
+
+                      </td>
+                    </tr>
+                </table>
+
+            </td>
+        </tr>
+    </table>
+</div>

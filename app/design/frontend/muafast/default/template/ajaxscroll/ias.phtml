@@ -1,0 +1,31 @@
+<?php if (Mage::getStoreConfigFlag('catalog/frontend/useajaxscroll')): ?>
+<?php 
+// Get the default setting for grid or list mode
+$productListMode = Mage::getStoreConfig('catalog/frontend/list_mode');
+if ($productListMode == 'grid-list')
+	$productListMode = 'grid';
+elseif ($productListMode == 'list-grid')
+	$productListMode = 'list';
+
+// Check if this setting is overwritten by the user
+if ($this->getRequest()->getParam('mode')) {
+	if($this->getRequest()->getParam('mode') == 'grid')
+		$productListMode = 'grid';
+	else
+		$productListMode = 'list';
+}
+?>
+<script type="text/javascript">
+jQuery.ias({
+	container : '.category-products',
+	<?php if ($productListMode == 'grid'): ?>
+	item: '.products-grid',
+	<?php else: ?>
+	item: '.products-list',
+	<?php endif; ?>
+	pagination: '.toolbar .pager',
+	next: '.next',
+	loader: '<img src="<?php echo($this->getSkinUrl('images/ajaxscroll/loader.gif')); ?>" /> <?php echo __('Đang tải dữ liệu'); ?>'
+});
+</script>
+<?php endif; ?>

@@ -1,0 +1,45 @@
+<div class="content-header">
+    <table cellspacing="0">
+        <tr>
+            <td><h3><?php echo Mage::helper('nitrogento')->__('Htaccess Config') ?></h3></td>
+            <td class="form-buttons"><button onclick="configForm.submit();" type="button" class="scalable"><span><?php echo Mage::helper('nitrogento')->__('Save Config') ?></span></button></td>
+         </tr>
+    </table>
+</div>
+<form action="<?php echo $this->getSaveHtaccessConfigUrl() ?>" method="post" id="config_edit_form">
+    <?php echo $this->getBlockHtml('formkey')?>
+    <table class="form-list">
+        <tr>
+            <td class="scope-label">
+                <input type="checkbox" name="activate[deflate]" <?php echo $this->isActivatedHtaccessConfig('deflate') ? 'checked="checked"' : ''?>>
+            </td>
+            <td class="scope-label">
+                <?php echo Mage::helper('nitrogento')->__('Activate htaccess deflate')?>
+            </td>
+        </tr>
+        <tr>
+            <td class="scope-label">
+                <input type="checkbox" name="activate[expire]" <?php echo $this->isActivatedHtaccessConfig('expire') ? 'checked="checked"' : ''?>>
+            </td>
+            <td class="scope-label">
+                <?php echo Mage::helper('nitrogento')->__('Activate htaccess expire')?>
+            </td>
+        </tr>
+        <?php echo $this->getChildHtml('config_time_expire') ?>
+        <tr>
+            <td class="scope-label">
+                <input type="checkbox" name="activate[etags]" <?php echo $this->isActivatedHtaccessConfig('etags') ? 'checked="checked"' : ''?>>
+            </td>
+            <td class="scope-label">
+                <?php echo Mage::helper('nitrogento')->__('Activate htaccess etags')?>
+            </td>
+        </tr>
+    </table>
+</form>
+<br/>
+<div class="label">
+    <?php echo $this->__('You can learn more about this config at <a href="http://www.nbs-system.com/blog/technique/faq/optimisations-grace-au-fichier-htaccess/">nbs-system blog</a>')?>
+</div>
+<script type="text/javascript">
+    var configForm = new varienForm('config_edit_form');
+</script>

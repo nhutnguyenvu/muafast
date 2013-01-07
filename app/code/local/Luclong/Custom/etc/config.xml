@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Luclong_Custom>
+            <version>0.1.0</version>
+        </Luclong_Custom>
+    </modules>
+    <frontend>
+        <routers>
+			 <contacts>
+                <args>
+                    <modules>
+                         <Luclong_Custom before="Mage_Contacts">Luclong_Custom_Contacts</Luclong_Custom>
+                    </modules>
+                </args>
+            </contacts>
+            <custom>
+                <use>standard</use>
+                <args>
+                    <module>Luclong_Custom</module>
+                    <frontName>custom</frontName>
+                </args>
+            </custom>
+        </routers>
+        <layout>
+            <updates>
+                <custom>
+                    <file>custom.xml</file>
+                </custom>
+            </updates>
+        </layout>
+    </frontend>
+    <global>
+        <helpers>
+            <custom>
+                <class>Luclong_Custom_Helper</class>
+            </custom>
+        </helpers>
+        <blocks>
+            <custom>
+                <class>Luclong_Custom_Block</class>
+            </custom>
+        </blocks>
+        <rewrite>
+            <custom_catalogsearch_advanced>
+                <from><![CDATA[#^/catalogsearch/advanced/#]]>
+                </from>
+                <to>/custom/catalogSearch_advanced/</to>
+            </custom_catalogsearch_advanced>
+		
+        </rewrite>
+		
+    </global>
+</config> 

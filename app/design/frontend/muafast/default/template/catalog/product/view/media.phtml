@@ -1,0 +1,130 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/**
+ * Product media data template
+ *
+ * @see Mage_Catalog_Block_Product_View_Media
+ */
+?>
+<?php
+$_product = $this->getProduct();
+$_helper = $this->helper('catalog/output');
+?>
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+        jQuery(".cloudzoom").cloudZoom();
+    });
+</script> 
+
+<?php if ($_product->getImage() != 'no_selection' && $_product->getImage()): ?>
+    <p class="product-image product-image-zoom">
+        <?php
+        $image = $this->helper('catalog/image')->init($_product, 'image');
+        
+        $_img = '<img id="image" class="cloudzoom" 
+            data-cloudzoom = "{\'zoomImage\':\'$image\'}"
+            src="' . $this->helper('catalog/cropimage')->cropImage(PRODUCT_DETAIL_WIDTH, PRODUCT_DETAIL_HEIGHT, $image) . '" alt="' . $this->htmlEscape($this->getImageLabel()) . '" title="' . $this->htmlEscape($this->getImageLabel()) . '"  />';
+        echo $_helper->productAttribute($_product, $_img, 'image');
+        ?>
+    </p>
+    <p><a id="fancybox" href="javascript:;" >view zoom</a></p>
+    <?php /*<p class="zoom-notice" id="track_hint"><?php echo $this->__('Double click on above image to view full picture') ?></p>
+    <div class="zoom">
+        <img id="zoom_out" src="<?php echo $this->getSkinUrl('images/slider_btn_zoom_out.gif') ?>" alt="<?php echo $this->__('Zoom Out') ?>" title="<?php echo $this->__('Zoom Out') ?>" class="btn-zoom-out" />
+        <div id="track">
+            <div id="handle"></div>
+        </div>
+        <img id="zoom_in" src="<?php echo $this->getSkinUrl('images/slider_btn_zoom_in.gif') ?>" alt="<?php echo $this->__('Zoom In') ?>" title="<?php echo $this->__('Zoom In') ?>" class="btn-zoom-in" />
+    </div>
+    <script type="text/javascript">
+        //<![CDATA[
+        Event.observe(window, 'load', function() {
+            product_zoom = new Product.Zoom('image', 'track', 'handle', 'zoom_in', 'zoom_out', 'track_hint');
+        });
+        //]]>
+    </script>
+     * 
+     */?>
+<?php else: ?>
+    <p class="product-image">
+        <?php
+        $image = $this->helper('catalog/image')->init($_product, 'image');
+        $_img = '<img src="' . $this->helper('catalog/cropimage')->cropImage(PRODUCT_DETAIL_WIDTH, PRODUCT_DETAIL_HEIGHT, $image) . '" alt="' . $this->htmlEscape($this->getImageLabel()) . '" title="' . $this->htmlEscape($this->getImageLabel()) . '" />';
+        echo $_helper->productAttribute($_product, $_img, 'image');
+        ?>
+    </p>
+<?php endif; ?>
+<?php if (count($this->getGalleryImages()) > 0): ?>
+    <div class="more-views">
+        <ul>
+            <?php /*
+            <?php foreach ($this->getGalleryImages() as $_image): ?>
+                <?php
+                    $image = $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile());
+                    $fancy_arr[] = "'".$image."'";
+                ?>
+                <li>
+                    <a href="#" onclick="popWin('<?php echo $this->getGalleryUrl($_image) ?>', 'gallery', 'width=300,height=300,left=0,top=0,location=no,status=yes,scrollbars=yes,resizable=yes'); return false;" title="<?php echo $this->htmlEscape($_image->getLabel()) ?>"><img src="<?php echo $this->helper('catalog/cropimage')->cropImage(56, 56, $image); ?>" width="56" height="56" alt="<?php echo $this->htmlEscape($_image->getLabel()) ?>" /></a>
+                </li>
+            <?php endforeach; ?>
+             * 
+             */?>
+            <?php foreach ($this->getGalleryImages() as $_image): ?>
+                <?php
+                    $image_thumnail = $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile());
+                    $image = $this->helper('catalog/image')->init($this->getProduct(), 'image', $_image->getFile());
+                    $fancy_arr[] = "'".$image."'";
+                ?>
+                <li>
+                    <a href="javascript:void(0);" onclick="imageswitcher('<?php echo $this->helper('catalog/cropimage')->cropImage(PRODUCT_DETAIL_WIDTH, PRODUCT_DETAIL_HEIGHT, $image);?>','<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'image', $_image->getFile()) ?>');" title="<?php echo $this->htmlEscape($_image->getLabel()) ?>"><img src="<?php echo $this->helper('catalog/cropimage')->cropImage(56, 56, $image_thumnail); ?>" width="56" height="56" alt="<?php echo $this->htmlEscape($_image->getLabel()) ?>" /></a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
+<!-- FancyBox -->
+   <script type="text/javascript">// <![CDATA[    
+
+           jQuery("#fancybox").click(function() {
+           jQuery.fancybox(
+           [
+               <?php 
+                   if(isset($fancy_arr)&&is_array($fancy_arr)){
+                       echo implode(",",$fancy_arr);
+                   }
+               ?>
+           ], 
+           {
+               'padding'           : 0,
+               'transitionIn'      : 'none',
+               'transitionOut'     : 'none',
+               'type'              : 'image',
+               'changeFade'        : 0
+           });
+       });
+
+   // ]]></script>
+   <!-- FancyBox -->

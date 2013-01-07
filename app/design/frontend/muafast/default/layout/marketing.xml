@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
+        </reference>
+    </default>
+    <marketing_index_index>
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/toideptrongmatai.css</name>
+                <params/>
+            </action>
+        </reference>
+        <remove name="header"/>
+        <remove name="footer"/>
+        <reference name="content">
+            <block type="marketing/marketing" name="toideptrongmatai.marketing.header" template="marketing/toideptrongmatai_header.phtml" />
+            <block type="marketing/marketing" name="marketing" template="marketing/home.phtml" />
+        </reference>
+    </marketing_index_index>
+    
+    <marketing_index_toideptrongmatai>
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/toideptrongmatai.css</name>
+                <params/>
+            </action>
+            <action method="removeItem">
+                <type>skin_js</type>
+                <name>js/custom.js</name>
+            </action>
+        </reference>
+        <remove name="header"/>
+        <remove name="footer"/>
+        <reference name="content">
+            <block type="marketing/marketing" name="toideptrongmatai.marketing.header" template="marketing/toideptrongmatai_header.phtml" />
+            <block type="marketing/marketing" name="toideptrongmatai.marketing" template="marketing/toideptrongmatai.phtml" />
+        </reference>
+    </marketing_index_toideptrongmatai>
+    
+    <marketing_index_upload>
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/jquery.form.js</name>
+                <params/>
+            </action>	
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/toideptrongmatai.css</name>
+                <params/>
+            </action>
+        </reference>
+        <remove name="header"/>
+        <remove name="footer"/>
+        <reference name="content">
+            <block type="marketing/marketing" name="toideptrongmatai.marketing" template="marketing/toideptrongmatai_header.phtml" />
+            <block type="marketing/marketing" name="upload.marketing" template="marketing/upload.phtml" />
+        </reference>
+    </marketing_index_upload>
+    
+    <marketing_index_list>
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/toideptrongmatai.css</name>
+                <params/>
+            </action>
+        </reference>
+        <remove name="header"/>
+        <remove name="footer"/>
+        <reference name="content">
+            <block type="marketing/marketing" name="toideptrongmatai.marketing.header" template="marketing/toideptrongmatai_header.phtml" />
+            <block type="marketing/marketing" name="list.marketing" template="marketing/list.phtml" />
+        </reference>
+    </marketing_index_list>
+    
+    <marketing_index_detail>
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/toideptrongmatai.css</name>
+                <params/>
+            </action>
+        </reference>
+        <remove name="header"/>
+        <remove name="footer"/>
+        <reference name="content">
+            <block type="marketing/marketing" name="toideptrongmatai.marketing.header" template="marketing/toideptrongmatai_header.phtml" />
+            <block type="marketing/marketing" name="detail.marketing" template="marketing/detail.phtml" />
+        </reference>
+    </marketing_index_detail>
+	
+    <marketing_index_ajax>
+      
+            <block type="marketing/marketing" name="ajax.marketing" template="marketing/ajax.phtml" />
+       
+    </marketing_index_ajax>
+</layout> 

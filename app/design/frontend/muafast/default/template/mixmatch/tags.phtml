@@ -1,0 +1,16 @@
+	<?php $_tags = $this->getTags(); ?>
+	<?php foreach ($_tags as $tag): ?>
+	<?php if($this->getProductbyTag($tag->getId())->getId()):?>
+    <?php $image = $this->helper('catalog/image')->init($this->getProductbyTag($tag->getId()), 'small_image'); ?>
+				<li>
+					<a class="mixnmatch_ajax" href="<?php echo $this->getUrl('mixmatch/index/ajax') . "?tag=" . $tag->getId() ?>" >
+						
+						<img  width="55px" height="55px" src="<?php echo $this->helper('catalog/cropimage')->cropImage(55, 55, $image); ?>"  alt="<?php echo $tag->getName() ?>" title="<?php echo $tag->getName() ?>"/>
+						
+						<span><?php echo $tag->getName() ?></span>
+					</a>
+				</li>
+			
+	<?php endif; ?>
+	<?php endforeach; ?>
+	

@@ -1,0 +1,118 @@
+<?php $options = $this->getOptions() ?>
+<?php if (count($options)): ?>
+    <div class="amshopby-wrapper">
+        <?php foreach ($options as $opt): ?>
+            <div class="amshopby-descr">
+                <div class="category-head">
+                    <h2><?php echo $opt['title'] ?></h2>
+                </div>
+                <?php if ($opt['image']): ?>
+                    <img alt="<?php echo $opt['title'] ?>" src="<?php echo $opt['image'] ?>" class="amshopby-logo"/>
+                <?php endif ?>
+                <?php echo Mage::helper('catalog')->__($opt['descr']) ?>
+                <?php echo $opt['cms_block'] ?>
+            </div>
+            <div style="clear:both"></div>
+        <?php endforeach ?>
+    </div>
+    <div style="clear:both"></div>
+<?php endif ?>
+<script type="text/javascript">
+
+    jQuery(window).load(function() {
+        /* Expand category list */
+	
+        jQuery('div.ex_col span#exp').live("click",function(){
+            jQuery(this).css('display','none');
+            jQuery('div.ex_col span#coll').css('display','block');
+            jQuery('#season-menu-scroll').css('height','auto');
+            jQuery('ul.lst-category-1').css('height','auto');
+        });
+		
+        jQuery('div.ex_col span#coll').live("click",function(){
+            jQuery(this).css('display','none');
+            jQuery('div.ex_col span#exp').css('display','block');
+            jQuery('#season-menu-scroll').css('height','43px');
+            jQuery('ul.lst-category-1').css('height','32px');
+        });
+		
+        // Color
+        jQuery('dl.color img.drop-icon').live('hover',
+        function(event){
+            if (event.type == 'mouseenter') {
+                                        
+                jQuery('#season-menu-scroll dd ol').hide();
+                jQuery(this).attr("src","<?php echo $this->getSkinUrl('images/icon_drop_hover.png') ?>");
+                jQuery('dl.color ol').css('display','block');
+                                        
+            }else{
+                jQuery(this).attr("src","<?php echo $this->getSkinUrl('images/icon_drop.png') ?>");
+            }
+        });
+		
+        jQuery('dl.color dd.attr-attr ol').live('hover',
+        function(event){
+            if (event.type == 'mouseenter') {
+                jQuery('#season-menu-scroll dd ol').hide();
+                jQuery(this).css('display','block');
+                jQuery('dl.color img.drop-icon').attr("src","<?php echo $this->getSkinUrl('images/icon_drop_hover.png') ?>");
+            }else{
+                jQuery(this).css('display','none');
+                jQuery('dl.color img.drop-icon').attr("src","<?php echo $this->getSkinUrl('images/icon_drop.png') ?>");
+            }
+        });
+		
+        // Price
+		
+        jQuery('dl.price img.drop-icon').live('hover',
+        function(event){
+            if (event.type == 'mouseenter') {
+                jQuery('#season-menu-scroll dd ol').hide();
+                jQuery(this).attr("src","<?php echo $this->getSkinUrl('images/icon_drop_hover.png') ?>");
+                jQuery('dl.price ol').css('display','block');
+            }else{
+                jQuery(this).attr("src","<?php echo $this->getSkinUrl('images/icon_drop.png') ?>");
+            }
+				
+        });
+		
+        jQuery('dl.price dd.attr-price ol').live('hover',
+        function(event){
+            if (event.type == 'mouseenter') {
+                jQuery('#season-menu-scroll dd ol').hide();
+                jQuery(this).css('display','block');
+                jQuery('dl.price img.drop-icon').attr("src","<?php echo $this->getSkinUrl('images/icon_drop_hover.png') ?>");
+            }else{
+                jQuery(this).css('display','none');
+                jQuery('dl.price img.drop-icon').attr("src","<?php echo $this->getSkinUrl('images/icon_drop.png') ?>");
+            }
+        });
+        
+        jQuery('div.expand #exp img').live('hover',
+        function(event){
+            if (event.type == 'mouseenter') {
+                jQuery(this).attr("src","<?php echo $this->getSkinUrl('images/expand_cate_hover.png') ?>");
+            }else{
+                jQuery(this).attr("src","<?php echo $this->getSkinUrl('images/expand_cate.png') ?>");
+            }
+				
+        });
+		
+        jQuery('div.expand #coll img').live('hover',
+        function(event){
+            if (event.type == 'mouseenter') {
+                jQuery(this).attr("src","<?php echo $this->getSkinUrl('images/collapse_cate_hover.png') ?>");
+            }else{
+                jQuery(this).attr("src","<?php echo $this->getSkinUrl('images/collapse_cate.png') ?>");
+            }
+				
+        });
+        
+        jQuery('#season-menu-scroll').live('hover',
+        function(event){
+            if (event.type == 'mouseleave') {
+                jQuery('#season-menu-scroll dd ol').hide();
+            }		
+        });
+    });
+</script>

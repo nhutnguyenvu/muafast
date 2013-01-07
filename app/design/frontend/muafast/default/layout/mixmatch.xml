@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+		
+    </default>
+	  <customer_account>
+        <!-- Mage_Sales -->
+        <reference name="customer_account_navigation_two">
+            <action method="addLink" translate="label" module="mixmatch"><name>collection</name><path>mixmatch/customer/</path><label>Mixmatch Collection</label></action>  
+        </reference>
+    </customer_account>
+
+    <mixmatch_index_index>
+		<reference name="head">
+            <action method="addItem"><type>js</type><name>jquery/jquery.js</name></action>
+			<action method="addItem"><type>skin_js</type><name>js/jquery.form.js</name></action>
+			<action method="addItem"><type>skin_js</type><name>js/mixmatch.js</name></action>
+			<action method="addItem"><type>skin_js</type><name>js/jquery-collision-1.0.1.js</name></action>
+			<action method="addItem"><type>skin_css</type><name>css/mixmatch.css</name></action>
+        </reference>
+		<reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+        <reference name="content">
+			<block type="mixmatch/mixmatch" name="mixmatch" template="mixmatch/mixmatch.phtml" >
+				<block type="mixmatch/mixmatch" name="category" as="category" template="mixmatch/category.phtml"/>
+				<block type="mixmatch/mixmatch" name="vendor" as="vendor" template="mixmatch/vendor.phtml"/>
+				<block type="mixmatch/mixmatch" name="tags" as="tags" template="mixmatch/tags.phtml"/>
+			</block>
+        </reference>
+    </mixmatch_index_index>
+	 <mixmatch_index_ajax>
+	  <block type="mixmatch/mixmatch" name="mixnmatch_result_list" template="mixmatch/list.phtml"/>
+	 </mixmatch_index_ajax>
+	
+	 <mixmatch_index_ajaxsearch>
+	  <block type="mixmatch/mixmatch" name="category" template="mixmatch/category.phtml"/>
+	 </mixmatch_index_ajaxsearch>
+	 
+	 <mixmatch_customer_index>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
+        </reference>
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/community.css</name>
+                <params/>
+            </action>
+        </reference>
+        <!--<reference name="left">
+            <remove name="sale.reorder.sidebar" /></reference>-->
+        <reference name="content">
+            <block type="customer/account_navigation" name="customer_account_navigation_two" before="-" template="customer/account/navigation.phtml">     
+                <action method="addLink" translate="label" module="customer"><name>account</name><path>customer/account/</path><label>Account Dashboard</label></action>
+                <action method="addLink" translate="label" module="customer"><name>account_edit</name><path>customer/account/edit/</path><label>Account Information</label></action>
+                <action method="addLink" translate="label" module="customer"><name>address_book</name><path>customer/address/</path><label>Address Book</label></action>   
+                <!--<action method="addLink" translate="label" module="mixmatch"><name>mixmatch</name><path>mixmatch/index/index/</path><label>Mixmatch</label></action>-->
+                <action method="addLink" translate="label" module="mixmatch"><name>collection</name><path>mixmatch/customer/</path><label>Mixmatch Collection</label></action>  
+               	<action method="addLink" translate="label" module="rewardpoints" ifconfig="rewardpoints/config/enabled"><name>reward_points</name><path>rewardpoints/rewardpoints/</path><label>My Reward Points</label></action>	  
+            </block>
+			<block type="mixmatch/mixmatch" name="category" template="mixmatch/customer.phtml"/>
+        </reference>
+
+	 </mixmatch_customer_index>
+	 <mixmatch_customer_ajax>
+            <block type="mixmatch/mixmatch" name="ajax.mixmatch" template="mixmatch/ajax-customer.phtml" />
+    </mixmatch_customer_ajax>
+    
+    <mixmatch_index_productajax>
+            <block type="mixmatch/mixmatch" name="mixnmatch_product_detail" template="mixmatch/ajax-product.phtml" />
+    </mixmatch_index_productajax>
+    
+    <mixmatch_index_collection>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
+        </reference>
+        <reference name="content">
+			<block type="mixmatch/mixmatch" name="category" template="mixmatch/collection.phtml"/>
+        </reference>
+    </mixmatch_index_collection>
+    
+</layout> 

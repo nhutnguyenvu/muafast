@@ -1,0 +1,97 @@
+﻿<div id="fb-root"></div>
+<script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/vi_VN/all.js#xfbml=1";
+    fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        jQuery("a.lightbox-ajax").click(function(){
+			jQuery('.img-loading').fadeIn();
+			jQuery('.overlay').fadeIn();
+			
+			jQuery('body,html').animate(
+				{scrollTop:0},800
+			);
+				
+			var val = jQuery(this).attr('alt');
+			
+			ajaxCall = jQuery.ajax({
+ 			  url: "<?php echo $this->getUrl('marketing/index/ajax') ?>",
+			  type: "POST",
+			  data: {imageId : val},
+			  dataType: "json",
+			  success: function( html ){
+				jQuery('.img-loading').fadeOut();
+                jQuery('.result').fadeIn();
+				//jQuery('div.result').empty().append(html);
+				jQuery('div.result').append(html);
+				try{
+				   FB.XFBML.parse(); 
+				}catch(ex){}
+			  }
+			});
+		});
+        
+        jQuery(".overlay").click(function(){
+			if(ajaxCall) ajaxCall.abort();
+			jQuery(this).fadeOut();
+			jQuery('.result').fadeOut();
+			jQuery('div.result').html('');
+			jQuery('div.result').html('<a class="lightbox-close" href="javascript:void(0)"><img src="<?php echo $this->getSkinUrl('images/close_color.png') ?>"/></a><img class="img-loading" src="<?php echo $this->getSkinUrl('images/amshopby-overlay.gif') ?>"/>')
+		});
+		jQuery(".lightbox-close").live('click',function(){
+			if(ajaxCall) ajaxCall.abort();
+			jQuery(".overlay").fadeOut();
+			jQuery('.result').fadeOut();
+			jQuery('div.result').html('');
+			jQuery('div.result').html('<a class="lightbox-close" href="javascript:void(0)"><img src="<?php echo $this->getSkinUrl('images/close_color.png') ?>"/></a><img class="img-loading" src="<?php echo $this->getSkinUrl('images/amshopby-overlay.gif') ?>"/>')
+		})
+    })
+</script>
+<?php $session_fbid =  Mage::getSingleton('core/session')->getFacebookID(); ?>
+<?php $face_like = Mage::getModel('marketing/marketing')->getCollection()->addFilter('status', 1);
+        $tong = count($face_like) ?>
+<div class="app_content">
+    <p style="margin: 0; text-align: left;"><i>Đã có <b><?php echo $tong ?></b> bạn tham gia dự thi</i></p>
+    <div class="slide-facebook">
+        <ul style="margin: 0 auto; overflow: hidden; text-align: center; width: 95%;">
+        <?php foreach($face_like as $item): ?>
+            <li class="image-list" >
+                <a alt="<?php echo $item['marketing_id']; ?>" class="lightbox-ajax" href="javascript:void(0)"><img src="<?php echo Mage::helper('marketing')->resize($item['photo'],100,150); ?>" alt="" />
+                    <?php $customer_id = $item['user_id']; ?>
+                    <?php $customer_name = $this->showCustomerName($customer_id) ;?>
+                    <span class="detail-img">
+                        <h5><?php echo $customer_name?></h5>
+                       <?php if($this->checkLogin()):?>  
+                        <div data-href="<?php echo $this->getUrl('marketing/index/detail').'?imageId='.$item['marketing_id'] ?>" class="fb-like" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
+						<?php else: ?>
+			   
+			   <table style="float: right; padding: 5px 3px 7px 0px;" >
+					<tr>
+						<td>
+						<div class="sl_clearfix" id="login" style="display: block; margin: 0px 5px;">
+						<?php Mage::getSingleton('core/session')->unsFacebookID(); ?>
+							<a id='facebook_login' title="Facebook Login" onclick='fblogin();'>  
+							   <button type="button" class="f_icon_left icon_left_grid"  name="send" style="border: medium none;"></button>   
+							<span class="f_icon_right icon_right_grid" style="margin-left: -9px;"></span>
+							<img id="progress_image_facebooklogin" style="display:none" src="<?php echo $this->getSkinUrl('images/sociallogin/ajax-loader.gif'); ?>" alt="loading please wait" /></a>
+						</div>
+						</td>
+					</tr>
+				</table>
+                        <?php endif ?>
+                    </span>
+                </a>
+            </li>
+        <?php endforeach; ?>
+        </ul>
+    </div>
+</div>
+<div class="result">
+	<a class="lightbox-close" href="javascript:void(0)"><img src="<?php echo $this->getSkinUrl('images/close_color.png') ?>"/></a>
+	<img class="img-loading" src="<?php echo $this->getSkinUrl('images/amshopby-overlay.gif') ?>"/>
+</div>

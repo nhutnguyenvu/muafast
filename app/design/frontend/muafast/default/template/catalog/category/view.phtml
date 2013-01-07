@@ -1,0 +1,120 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Category view template
+ *
+ * @see Mage_Catalog_Block_Category_View
+ */
+?>
+<?php
+//$_helper    = $this->helper('catalog/output');
+//$_category  = $this->getCurrentCategory();
+
+
+//$_imgHtml   = '';
+//if ($_imgUrl = $_category->getImageUrl()) {
+//    $_imgHtml = '<p class="category-image"><img src="'.$_imgUrl.'" alt="'.$this->htmlEscape($_category->getName()).'" title="'.$this->htmlEscape($_category->getName()).'" /></p>';
+//    $_imgHtml = $_helper->categoryAttribute($_category, $_imgHtml, 'image');
+//}
+?>
+
+<?php /*
+<div class="page-title title-all-page">
+    <?php if($this->IsRssCatalogEnable() && $this->IsTopCategory()): ?>
+        <a href="<?php echo $this->getRssLink() ?>" class="link-rss"><?php echo $this->__('Subscribe to RSS Feed') ?></a>
+    <?php endif; ?>
+    <h2><?php echo $_helper->categoryAttribute($_category, $_category->getName(), 'name') ?></h2>
+    <ul>
+        <li><?php echo $this->__("Share this shop and") ?> <span><?php echo $this->__("earn cash") ?></span></li>
+        <li>
+            <a title="" href="#"><img alt="" class="ui-icon icon-10" src="<?php echo $this->getSkinUrl("images/dummy.gif") ?>"></a>
+            <a title="" href="#"><img alt="" class="ui-icon icon-11" src="<?php echo $this->getSkinUrl("images/dummy.gif") ?>"></a>
+            <a title="" href="#"><img alt="" class="ui-icon icon-12" src="<?php echo $this->getSkinUrl("images/dummy.gif") ?>"></a>
+            <a title="" href="#"><img width="73" height="20" alt="" src="<?php echo $this->getSkinUrl("images/img_fb.jpg") ?>"></a>
+        </li>
+    </ul>
+</div>
+*/?>
+<?php
+/* nghiadt - remove banner html
+<div class="product-view store-review">
+
+    <div class="product-essential">
+            <div class="product-shop">
+                <div class="product-name">
+                    <h1><?php echo $_category->getName() ?></h1>
+                </div>
+                <div class="short-description">
+                    <?php if($_description=$_category->getDescription()): ?>
+                        <?php echo $_helper->categoryAttribute($_category, $_description, 'description') ?>
+                    <?php endif; ?>
+                    <!--
+                    <h2>Quần sort màu</h2>
+                    <div class="std">Đây là sản phẩm [<span>Nhập trực tiếp HQ</span>] nên đơn hàng của quý khách sẽ được kiểm tra và xử lý trong khoảng <span>2 tuần</span></div>
+                    -->
+                </div>
+                <div class="block-comment">
+                    <div class="user-comment">
+                        <h2><a title="Kate canary" href="#"><span>Kate canary</span></a></h2>
+                        <dl>
+                            <dt><a title="Kate canary" href="#"><img width="100" height="100" alt="Kate canary" src="<?php echo $this->getSkinUrl("images/upload/img_min_1.jpg") ?>"></a></dt>
+                            <dd>
+                                The 10-song disc also features the track "Like A Fool," which was included in the video game Rock Band 2 as part of a 20-song download pack
+                                <span>Kate canary, Copywriter, muafast</span>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="product-img-box">
+                <?php 
+                $_imgHtml   = '';
+                if ($_imgUrl = $_category->getImageUrl()) {
+                    $_imgHtml = '<p class="product-image product-image-zoom"><img id="image" style="width: 364px; left: 0px; top: 0px;" width="364" height="360" src="'.$_imgUrl.'" alt="'.$this->htmlEscape($_category->getName()).'" title="'.$this->htmlEscape($_category->getName()).'" /></p>';
+                    $_imgHtml = $_helper->categoryAttribute($_category, $_imgHtml, 'image');
+                }
+                if($_imgUrl)
+                    echo $_imgHtml;
+            
+                ?>
+                <!--<p class="product-image product-image-zoom"> <img width="364" height="360" title="" alt="" src="images/upload/visu_img_2.jpg" id="image" style="width: 364px; left: 0px; top: 0px;"></p>-->
+            </div>
+            <div class="clearer"></div>
+    </div>
+</div>
+*/?>
+<?php if($this->isContentMode()): ?>
+    <?php echo $this->getCmsBlockHtml() ?>
+
+<?php elseif($this->isMixedMode()): ?>
+    <?php echo $this->getCmsBlockHtml() ?>
+    <?php echo $this->getProductListHtml() ?>
+
+<?php else: ?>
+    <?php echo $this->getProductListHtml() ?>
+<?php endif; ?>

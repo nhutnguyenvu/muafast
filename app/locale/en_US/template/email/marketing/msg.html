@@ -1,0 +1,39 @@
+<!--@subject Welcome, {{var customername}}! @-->
+<!--@vars
+{"store url=\"\"":"Store Url",
+"skin url=\"images/logo_email.gif\" _area='frontend'":"Email Logo Image",
+}
+@-->
+
+<!--@styles
+body,td { color:#2f2f2f; font:11px/1.35em Verdana, Arial, Helvetica, sans-serif; }
+@-->
+<div style="font: 11px/1.35em Verdana, Arial, Helvetica, sans-serif;">
+	<table style="margin-top: 10px; font: 11px/1.35em Verdana,Arial,Helvetica,sans-serif; margin-bottom: 10px; width: 98%;" border="0" cellspacing="0" cellpadding="0">
+	<tbody>
+	<tr>
+	<td align="center" valign="top"><!-- [ header starts here] -->
+		<table style="width: 650px;" border="0" cellspacing="0" cellpadding="0">
+		<tbody>
+		<tr>
+		<td valign="top"><img style="margin-bottom: 10px;" src="{{skin url="images/logo_email1.gif" _area='frontend'}}" alt="" border="0" /></td>
+		</tr>
+		</tbody>
+		</table>
+	<!-- [ middle starts here] -->
+		<table style="width: 650px;" border="0" cellspacing="0" cellpadding="0">
+		<tbody>
+		<tr>
+		<td valign="top">
+		<p><strong>Dear {{htmlescape var=$name}}</strong>,<br /> H&igrave;nh d? thi c?a b?n d&atilde; du?c ki?m duy?t.</p>
+		<br />
+		<p>I</p>
+		</td>
+		</tr>
+		</tbody>
+		</table>
+	</td>
+	</tr>
+	</tbody>
+	</table>
+</div>

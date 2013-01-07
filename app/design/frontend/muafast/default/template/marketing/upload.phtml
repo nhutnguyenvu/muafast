@@ -1,0 +1,100 @@
+<?php 
+$session_face =  Mage::getSingleton('core/session')->getFacebookID(); 
+ $write = Mage :: getSingleton ( 'core/resource' )-> getConnection ('core_write'); 
+            $readresult = $write -> query("SELECT *
+                                    FROM ".Mage::getSingleton('core/resource')->getTableName('marketing')."
+                                    WHERE face_id = $session_face
+                                  ");
+            $row = $readresult->fetch();
+			
+?>
+<?php if(!empty($session_face)): ?>
+<style type="text/css">
+    
+</style>
+
+<div class="app_content">
+
+    <?php 
+	if(isset($row['photo'])){$action= $this->getUrl('marketing/index/update');}else{
+	$action= $this->getUrl('marketing/index/save');
+	} ?>
+   
+    <div class="upload-form">
+        <span class="msg-text"></span>
+        <form id="doc-form" name="doc-form" method="post" action="<?php echo $action ?>" enctype="multipart/form-data">
+            <h4><?php echo $this->__('Gửi lại thông tin của bạn tại đây')?></h4>
+            <div class="text">
+                <input type="file" title="File" name="photo" id="edit-upload-photo" />
+				<img id="icon_image"width="100" height="100" src="<?php echo Mage::getBaseUrl('media').'marketing/'.$row['photo'];?>" alt=""/><br />
+                <span class="error-img">* Bạn chưa chọn hình ảnh!</span>
+            </div>
+            <div class="text">
+                <label>Nội dung <i>(* tối đa 300 kí tự)</i>: </label><br />
+                <textarea id="description" name="description" cols="80" rows="10" maxlength="300"><?php echo $row['description'] ?></textarea><br />
+                <span class="error-desc">* Bạn chưa nhập nội dung!</span>
+                <br/>
+            </div>
+            <div class="button">
+			
+            <input type="hidden" id="imgId" name="imgId" value="<?php if(isset($row['photo'])){echo $row['marketing_id'];} ?>" />
+            
+                <input type="hidden" name="user_id" value="<?php echo Mage::helper('customer')->getCustomer()->getId();?>" />
+                <button type="submit" class="button upload" title="Post lên facebook" name="btsubmit"><span><span>Cập nhập</span></span></button>
+                <span id='ajax_loader_upload' style='display:none'><img src='<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif')?>'/></span>
+            </div>
+            
+        </form>
+    </div>
+   
+
+
+<script> 
+    (function() {
+        var loading = jQuery('#ajax_loader_upload');
+        var status = jQuery('.msg-text');
+        
+        function validate(){
+            if(jQuery('#upload-photo').val() == ''){
+                jQuery('span.error-img').show();
+                return false;
+            }else jQuery('span.error-img').hide();
+            
+            if(jQuery('#description').val() == ''){
+                jQuery('span.error-desc').show();
+                return false;
+            }else jQuery('span.error-desc').hide();
+            
+            return true;
+        }
+        
+        jQuery('#doc-form').ajaxForm({
+		
+            beforeSubmit: validate,
+            beforeSend: function() {
+                loading.show();
+            },
+            uploadProgress: function(event, position, total, percentComplete) {
+                loading.hide();
+            },
+			 dataType: 'json',
+            success: function(data) {
+                //jQuery('#doc-form').hide();
+                loading.hide();
+				 jQuery('#edit-upload-photo').val("");
+                 jQuery('.msg-text').html(data.message);
+				
+                  jQuery('#icon_image').attr('src',data.image);  
+				 // jQuery('#description').val(data.des);
+				  if(data.act!=""){
+                   jQuery('#doc-form').attr('action',data.act);
+				   jQuery('#imgId').val(data.id);
+				  }
+            }
+        }); 
+
+    })();       
+</script> 
+<?php else: ?>
+	<?php echo'<p style="width:200px;margin:0 auto;">Vui lòng đăng nhập!</p>'; ?>
+<?php endif; ?>

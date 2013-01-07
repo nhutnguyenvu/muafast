@@ -1,0 +1,147 @@
+<?php /*
+	$sql = "UPDATE ".Mage::getSingleton('core/resource')->getTableName('marketing')." SET count_like=2033 WHERE marketing_id='18'";
+	$connection = Mage::getSingleton('core/resource')->getConnection('core_write');     
+	try {
+		$connection->query($sql);
+	} catch (Exception $e){
+		echo $e->getMessage();
+	}*/
+?>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/jquery-1.7.1.min.js')?>"></script>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/vi_VN/all.js#xfbml=1";
+    fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+<script type="text/javascript">
+     jQuery.noConflict();
+</script>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/jquery.isotope.min.js')?>"></script>
+<div class="app_content">
+    <?php $session_fbid =  Mage::getSingleton('core/session')->getFacebookID(); ?>
+
+    <?php $face_like = Mage::getModel('marketing/marketing')->getCollection()
+                                                            ->addFilter('status', 1)
+                                                            ->setPageSize(50); ?>
+	<?php $face_like->getSelect()->order(new Zend_Db_Expr('RAND()')); ?>
+	
+    <div style="clear: both;" class="slide-facebook">
+        
+        <section id="content">
+          <div id="container" class="transitions-enabled infinite-scroll clearfix">
+           <?php foreach($face_like as $item): ?>
+            <?php $count = $item['count_like'] ?>
+              <?php 
+					if($count == 0){
+						$class = 'lv-1'; 
+						$image = Mage::helper('marketing')->resizecustom($item['photo'],100,130);
+					}elseif($count > 0 && $count <= 10){
+                        $class = 'lv-2';
+						$image = Mage::helper('marketing')->resizecustom($item['photo'],210,270);
+                    }elseif ( $count > 10 && $count <= 500 ) { $class = 'lv-3'; $image = Mage::helper('marketing')->resizecustom($item['photo'],320,410);}
+                     elseif ( $count > 500 && $count <= 1000 ) { $class = 'lv-4'; $image = Mage::helper('marketing')->resizecustom($item['photo'],430,550);}
+                     elseif ( $count > 1000 && $count <= 3000 ) { $class = 'lv-5'; $image = Mage::helper('marketing')->resizecustom($item['photo'],540,690);}
+              ?>    
+              <?php $customer_id = $item['user_id']; ?>
+                <?php $customer_name = $this->showCustomerName($customer_id) ;?>
+                <div class="masonry-bricks <?php echo $class ?>">
+                    <a class="lightbox-ajax" alt="<?php echo $item['marketing_id']; ?>" href="javascript:void(0)">
+                        <img src="<?php echo $image; ?>" alt="<?php echo $customer_name ?>" />
+                        <span class="detail-img" style=" position: absolute;">
+                            <h5><?php echo $customer_name ?></h5>
+                        <?php if($this->checkLogin()):?>    
+                            <div data-href="<?php echo $this->getUrl('marketing/index/detail').'?imageId='.$item['marketing_id'] ?>" class="fb-like" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
+						<?php else: ?>
+			   
+						   <table style="float: right; padding: 5px 3px 7px 0px;" >
+								<tr>
+									<td>
+									<div class="sl_clearfix" id="login" style="display: block; margin: 0px 5px;">
+									<?php Mage::getSingleton('core/session')->unsFacebookID(); ?>
+										<a id='facebook_login' title="Facebook Login" onclick='fblogin();'>  
+										   <button type="button" class="f_icon_left icon_left_grid"  name="send" style="border: medium none;"></button>   
+										<span class="f_icon_right icon_right_grid" style="margin-left: -9px;"></span>
+										<img id="progress_image_facebooklogin" style="display:none" src="<?php echo $this->getSkinUrl('images/sociallogin/ajax-loader.gif'); ?>" alt="loading please wait" /></a>
+									</div>
+									</td>
+								</tr>
+							</table>
+                        <?php endif; ?>
+                        </span>
+                    </a>
+                                                          
+                </div>  
+            <?php endforeach; ?>
+            </div>
+        </section>
+    </div>
+</div>
+<div class="result">
+	<a class="lightbox-close" href="javascript:void(0)"><img src="<?php echo $this->getSkinUrl('images/close_color.png') ?>"/></a>
+	<img class="img-loading" src="<?php echo $this->getSkinUrl('images/amshopby-overlay.gif') ?>"/>
+</div>
+<script>
+
+  jQuery(function(){
+		var $container = jQuery('#container');
+		$container.isotope({
+			masonry: {columnWidth: 240}
+		});
+		// change size of clicked element
+		$container.delegate( '.element', 'click', function(){
+			jQuery(this).toggleClass('large');
+			$container.isotope('reLayout');
+		});
+    });
+</script>
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		
+		jQuery("a.lightbox-ajax").click(function(){
+			jQuery('.overlay').fadeIn();
+            jQuery('.img-loading').fadeIn();
+			jQuery('.result').fadeIn();
+			jQuery('body,html').animate(
+				{scrollTop:0},800
+			);
+				
+			var val = jQuery(this).attr('alt');
+			
+			ajaxCall = jQuery.ajax({
+ 			  url: "<?php echo $this->getUrl('marketing/index/ajax') ?>",
+			  type: "POST",
+			  data: {imageId : val},
+			  dataType: "json",
+			  success: function( html ){
+				jQuery('.img-loading').fadeOut();
+                jQuery('.result').fadeIn();
+				//jQuery('div.result').empty().append(html);
+				jQuery('div.result').append(html);
+				try{
+				   FB.XFBML.parse(); 
+				}catch(ex){}
+			  }
+			});
+		});
+		
+		jQuery(".overlay").click(function(){
+			if(ajaxCall) ajaxCall.abort();
+			jQuery(this).fadeOut();
+			jQuery('.result').fadeOut();
+			jQuery('div.result').html('');
+			jQuery('div.result').html('<a class="lightbox-close" href="javascript:void(0)"><img src="<?php echo $this->getSkinUrl('images/close_color.png') ?>"/></a><img class="img-loading" src="<?php echo $this->getSkinUrl('images/amshopby-overlay.gif') ?>"/>')
+		});
+		jQuery(".lightbox-close").live('click',function(){
+			if(ajaxCall) ajaxCall.abort();
+			jQuery(".overlay").fadeOut();
+			jQuery('.result').fadeOut();
+			jQuery('div.result').html('');
+			jQuery('div.result').html('<a class="lightbox-close" href="javascript:void(0)"><img src="<?php echo $this->getSkinUrl('images/close_color.png') ?>"/></a><img class="img-loading" src="<?php echo $this->getSkinUrl('images/amshopby-overlay.gif') ?>"/>')
+		})
+		
+	});
+</script>

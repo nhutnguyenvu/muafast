@@ -1,0 +1,120 @@
+<?php
+    $order = $this->getOrder();
+    $helper = Mage::app()->getHelper('vendor');
+    $is_login = $helper->vendorIsLogged();
+
+    
+?>
+<?php if($is_login): ?>
+    <?php if(!empty($order)): ?>
+        <?php $itemCollection = $order->getAllVisibleItems(); ?>
+            <?php $itemlist = array(); $i=0; ?>
+            <?php foreach ($itemCollection as $item): ?>
+                <?php $itemlist[$i] = $item->getId(); ?>
+
+                <?php $i++; ?>
+                <div class="item_label">
+                    <span><?php echo $item->getName() ?>   </span>
+                    
+                    <br/><b>SKU: </b><?php echo $this->htmlEscape(Mage::helper('core/string')->splitInjection($item->getSku())) ?>
+
+                <?php
+                    $product_type = $this->htmlEscape($item->getProductType());
+                    if(isset($product_type) && $product_type == 'configurable') {
+                        $product_options = $item->getProductOptions();
+                        if(isset($product_options) && $product_options != '') {
+
+                            foreach($product_options['attributes_info'] as $keys => $values) {
+                                if(isset($values["label"]) && ($values["label"] != '')) {
+                                    echo "<br/>&nbsp;<b><i>".$values["label"]."</i></b><br/>&nbsp;&nbsp;".$values["value"];
+                                }
+                            }
+
+                        }
+                    }
+                ?>
+				
+			
+
+                </div>
+                <div class="item_action order_<?php echo $order->getId() ?>">
+                    <?php $is_item = $item->getItemCheckedStatus();?>
+
+                    <?php $is_checked = false; ?>
+                    <?php if($is_item == FavoredMinds_Vendor_Helper_Vendor::IS_IN_SALE): ?>
+                        <?php $is_checked = true; ?>
+                        <span>C <input class="check" type="radio" name="order_<?php echo $item->getId() ?>" id="order_o<?php echo $item->getId() ?>" checked="checked" value="<?php echo $item->getId() ?>o"/> </span>
+                    <?php else:?>
+                        <span>C <input class="check" type="radio" name="order_<?php echo $item->getId() ?>" id="order_o<?php echo $item->getId() ?>" value="<?php echo $item->getId() ?>o"/> </span>
+                    <?php endif;?>
+                    <?php if($is_item == FavoredMinds_Vendor_Helper_Vendor::IS_OUT_SALE): ?>
+                        <?php $is_checked = true; ?>
+
+                        <span>H <input class="check" type="radio" name="order_<?php echo $item->getId() ?>" id="order_f<?php echo $item->getId() ?>" checked="checked" value="<?php echo $item->getId() ?>f"/> </span>
+                    <?php else:?>
+                        <span>H <input class="check" type="radio" name="order_<?php echo $item->getId() ?>" id="order_f<?php echo $item->getId() ?>" value="<?php echo $item->getId() ?>f"/> </span>
+                    <?php endif;?>
+
+                </div>
+            <?php endforeach;?>
+
+
+            <?php $item_split_list = implode(",", $itemlist)?>
+            <?php $status = $order->getStatus();?>
+            <?php $allowStatus = $this->getStatusAllowedUpdating() ?>
+
+            <?php if(in_array($status,$allowStatus)): ?>
+                <?php if(!$is_checked): ?>
+                    <div class="action update"  id="update_<?php echo $order->getId() ?>" > <a href="javascript:void(0)" onclick="update_item('<?php echo  $item_split_list  ?>','<?php echo $order->getId() ?>')"  > <?php echo $this->__("Cập nhật") ?></a> </div>
+                    <div class="action loading" id="loading_<?php echo $order->getId() ?>" style="display:none" > Đang cập nhật...</div>
+                    <div class="action updated" id="updated_<?php echo $order->getId() ?>"style="display:none"> Đã cập nhật </div>
+                <?php else: ?>
+                    <div class="action updated" id="updated_<?php echo $order->getId() ?>" > Đã cập nhật </div>
+                <?php endif; ?>
+            <?php else: ?>
+                    
+                    <div class="action updated" id=""> <?php echo $this->__("Hết hạn cập nhật") ?></div>
+            <?php endif; ?>
+    <?php endif; ?>
+<?php else: ?>
+     <?php if(!empty($order)): ?>
+        <?php $itemCollection = $order->getAllVisibleItems(); ?>
+            <?php $itemlist = array(); $i=0; ?>
+            <?php foreach ($itemCollection as $item): ?>
+                <?php $itemlist[$i] = $item->getId(); ?>
+
+                <?php $i++; ?>
+                <div class="item_label">
+                    <span><?php echo $item->getName() ?>   </span>
+
+                </div>
+                <div class="item_action order_<?php echo $order->getId() ?>">
+                    <?php $is_item = $item->getItemCheckedStatus();?>
+
+                    <?php $is_checked = false; ?>
+                    <?php if($is_item == FavoredMinds_Vendor_Helper_Vendor::IS_IN_SALE): ?>
+         
+                        <span>C <input class="check" type="radio" name="order_<?php echo $item->getId() ?>" id="order_o<?php echo $item->getId() ?>" checked="checked" value="<?php echo $item->getId() ?>o"/> </span>
+                    <?php else:?>
+                        <span>C <input class="check" type="radio" name="order_<?php echo $item->getId() ?>" id="order_o<?php echo $item->getId() ?>" value="<?php echo $item->getId() ?>o"/> </span>
+                    <?php endif;?>
+                    <?php if($is_item == FavoredMinds_Vendor_Helper_Vendor::IS_OUT_SALE): ?>
+         
+
+                        <span>H <input class="check" type="radio" name="order_<?php echo $item->getId() ?>" id="order_f<?php echo $item->getId() ?>" checked="checked" value="<?php echo $item->getId() ?>f"/> </span>
+                    <?php else:?>
+                        <span>H <input class="check" type="radio" name="order_<?php echo $item->getId() ?>" id="order_f<?php echo $item->getId() ?>" value="<?php echo $item->getId() ?>f"/> </span>
+                    <?php endif;?>
+                        
+
+                </div>
+            <?php endforeach;?>
+
+
+            <?php $item_split_list = implode(",", $itemlist)?>         
+            <div class="action update"  id="update_<?php echo $order->getId() ?>" > <a href="javascript:void(0)" onclick="update_item('<?php echo  $item_split_list  ?>','<?php echo $order->getId() ?>')"  > <?php echo $this->__("Cập nhật") ?></a> </div>
+            <div class="action loading" id="loading_<?php echo $order->getId() ?>" style="display:none" > Đang cập nhật...</div>
+            <div class="action updated" id="updated_<?php echo $order->getId() ?>"style="display:none"> Đã cập nhật </div>
+         
+    <?php endif; ?>
+<?php endif; ?>

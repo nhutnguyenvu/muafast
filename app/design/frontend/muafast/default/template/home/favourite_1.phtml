@@ -1,0 +1,61 @@
+<?php ?>
+
+<div class="box best-selling">
+    
+    <?php $vendorList = $this->getVendorsOnHomePage(); ?>
+
+    <h3><?php echo $this->__("Gian hàng") ?> <span><?php echo $this->__("Được Ưa Chuộng") ?></span></h3>
+    <?php $count = count($vendorList); ?>
+    <?php if($count > 0): ?>
+    <ul class="top-shop">
+        <?php $i=1; ?>
+
+        <?php foreach ($vendorList as $vendor): ?>
+        <?php $class = "" ?>
+        <?php if($i%2==0): ?>
+        <?php $class = "class='last'" ?>
+        <?php endif; ?>
+        <li <?php echo $class ?> >
+            <?php $url_vendor = $this->getUrl("catalogsearch/result")."?manufacturer=".$vendor['vendor_code']."&q=1"; ?>
+            <?php $logo = $this->getLogoSrcFrontEnd($vendor) ?>
+            <?php $description = $vendor->getAboutcompany(); ?>
+            <?php $companyName = $vendor->getCompanyName(); ?>
+            <?php if(strlen($description) > MAXIMUM_HP_DES): ?>
+                    <?php $description = substr($description,0,MAXIMUM_HP_DES)."..."; ?>
+            <?php endif; ?>
+  
+            <a href="<?php echo $url_vendor ?>" >
+                <img class="product-img" src="<?php echo $logo ?>" width="458" height="458" alt="" >
+            </a>
+            <p class="product-description">
+                <a href="<?php echo $url_vendor ?>">
+                    <span><?php echo $companyName ?></span>
+                    <?php echo $description ?>
+                    
+                    <img src="<?php echo $this->getSkinUrl("images/dummy.gif") ?>" class="ui-icon icon-06" alt="" />
+                </a>
+            </p>
+            <!--
+            <p class="sale-description">
+                <a href="#" title="">
+                    <span>Sale end in 2 days and 7 hours</span>
+                    <img src="<?php //echo $this->getSkinUrl("images/dummy.gif") ?>" class="ui-icon icon-07"  alt="" />
+                </a>
+            </p>
+            -->
+        </li>
+        <?php $i++; ?>
+        <?php endforeach;?>
+   <?php endif; ?>
+       
+    </ul>
+    <!--
+    <ul class="lst-slide">
+        <li><a href="#" title=""><img src="<?php //echo $this->getSkinUrl("images/dummy.gif") ?>" class="ui-icon icon-05" alt="" /></a></li>
+        <li><a href="#" title=""><img src="<?php //echo $this->getSkinUrl("images/dummy.gif") ?>" class="ui-icon icon-05" alt="" /></a></li>
+        <li><a href="#" title=""><img src="<?php //echo $this->getSkinUrl("images/dummy.gif") ?>" class="ui-icon icon-05 active" alt="" /></a></li>
+        <li><a href="#" title=""><img src="<?php //echo $this->getSkinUrl("images/dummy.gif") ?>" class="ui-icon icon-05" alt="" /></a></li>
+        <li><a href="#" title=""><img src="<?php //echo $this->getSkinUrl("images/dummy.gif") ?>" class="ui-icon icon-05" alt="" /></a></li>
+    </ul>
+    -->
+</div>

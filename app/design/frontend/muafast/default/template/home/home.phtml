@@ -1,0 +1,100 @@
+<?php //$productFeaturedList = $this->getFeaturedProduct();
+//$productFeaturedList = array();
+//Mage::helper('amshopby')->init($productFeaturedList);?>
+<div style="display: none;" class="overlay"></div>
+<div class="home-spot">
+    <?php echo $this->getChildHtml("feature"); ?>
+    <div id="detail-christmas-banner" style="display: none;">
+        <a class="lightbox-close-2" href="javascript:void(0)">
+            <img alt="" src="<?php echo $this->getSkinUrl('images/close_color.png') ?>" /></a>
+        <p>
+            <h3 style="font-weight: bold;">CHƯƠNG TRÌNH GIẢM GIÁ SALE UP TO 50% TẠI MUAFAST.
+            CƠ HỘI MUA HÀNG TRÚNG IPAD Mini
+            VÀ CHƯƠNG TRÌNH "SẢN PHẨM 0 ĐỒNG MỖI NGÀY CÙNG MUAFAST"</h3><br />
+            
+            <span>Nhân dịp khai trương chính thức vào ngày 24/12/2012 và chào mừng các ngày lễ lớn, mạng xã hội điện tử thời trang muốn dành những món quà thật đặc biệt cho tất cả các tín đồ thời trang. Muafast hân hạnh mang đến cho bạn cơ hội được mua sắm thỏa thích với giá được sale up to 50 % từ ngày 20/12 - 30/12/2012.
+            Ngoài ra, cứ 3 tuần 1 lần từ ngày 20/12 Muafast sẽ dành tặng 1 chiếc ipad mini cho bất kì chủ nhân có mã số order may mắn!
+            Chương trình "Sản phẩm 0 đồng cùng Muafast": mỗi ngày, Muafast sẽ dành một số lượng sản phẩm 0 đồng cho khách hàng. Khách hàng thực hiện order sản phẩm nhanh nhất sẽ được free sản phẩm đó!
+            Hãy định hình cho mình một phong cách ngay bây giờ và sẵn sàng tham gia vào chuỗi sự kiện đặc biệt trên của Muafast. Còn gì hấp dẫn hơn khi vừa chọn được một trang phục thật ưng ý và dành được những phần quà hấp dẫn!!! Hãy đến với website http://www.muafast.com/ để trải nghiệm một phong cách mua sắm thật thú vị và làm cho mình trở nên thật xinh đẹp trong không khí rộn ràng vào những ngày cuối năm này bạn nhé! ^^.
+            </span><br />
+            MUAFAST, MANG TỚI KHÔNG KHÍ LỄ HỘI CHO BẠN!!!
+        </p>
+    </div>
+    <div class="box best-selling">
+        <div class="banner-slider" style="">
+            <div class="banner first" ><a href="http://facebook.com/muafast">
+                <img src="<?php echo $this->getSkinUrl('images/banner-fanpage.png') ?>" alt="banner-quangcao" width="300" height="150" /></a>
+            </div>
+            <div class="banner"><a href="javascript:void(0)"  id="gift-lightbox">
+                <img src="<?php echo $this->getSkinUrl('images/banner-sale.jpg') ?>" alt="sale" width="320" height="150" /></a>
+            </div>
+            <div class="banner last" ><a href="<?php echo $this->getUrl('vendor/index/vendorlist/') ?>">
+                <img src="<?php echo $this->getSkinUrl('images/banner-vender.png') ?>" alt="banner-vender" width="300" height="150" /></a>
+            </div>
+        </div>
+        <div style="clear: both; width: 100%;"></div>
+    </div>
+    <?php echo $this->getChildHtml("favourite"); ?>
+    <div class="box best-selling" id="slide_vendor">
+        <?php echo $this->getChildHtml("slide"); ?>
+    </div>
+</div>
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+        jQuery('.banner-slider #gift-lightbox').click(function(){
+            jQuery('.overlay').fadeIn();
+            jQuery('#detail-christmas-banner').fadeIn();
+        })
+        
+        jQuery('.lightbox-close-2').click(function(){
+            jQuery('#detail-christmas-banner').fadeOut();
+            jQuery('.overlay').fadeOut();
+        })
+        
+        jQuery('.overlay').click(function(){
+            jQuery('#detail-christmas-banner').fadeOut();
+            jQuery(this).fadeOut();
+        })
+    })
+</script>
+<script type="text/javascript">
+
+    function home_slider_carousel_initCallback(carousel)
+    {
+        // Disable autoscrolling if the user clicks the prev or next button.
+        carousel.buttonNext.bind('click', function() {
+            carousel.startAuto(0);
+        });
+
+        carousel.buttonPrev.bind('click', function() {
+            carousel.startAuto(0);
+        });
+
+        // Pause autoscrolling if the user moves with the cursor over the clip.
+        carousel.clip.hover(function() {
+            carousel.stopAuto();
+        }, function() {
+            carousel.startAuto();
+        });
+    };
+
+    // Ride the carousel...
+    jQuery(document).ready(function() {
+        jQuery("#home-top-slider").jcarousel({
+            pager: true,
+            scroll: 1,
+            visible: 1,
+            auto: 6,
+            wrap: 'last',
+            buttonPrevHTML: '<a class="btn-previous" title="<?php echo $this->__("Previous") ?>" href="javascript:void(0)"><p class="prev_slider"></p></a>',
+            buttonNextHTML: '<a class="btn-continue" title="<?php echo $this->__("Continue") ?>" href="javascript:void(0)"><p class="next_slider"></p></a>',
+            initCallback: home_slider_carousel_initCallback
+        });
+
+        jQuery("ul.jcarousel-pager").each(function(){
+            var pagerWidth = jQuery(this).children("li:first").width() * jQuery(this).children().length;
+            jQuery(this).css("width", pagerWidth);
+            jQuery(this).addClass("jcarousel-pager-center");
+        });
+    });
+</script>

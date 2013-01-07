@@ -1,0 +1,445 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/**
+ * Product view template
+ *
+ * @see Mage_Catalog_Block_Product_View
+ * @see Mage_Review_Block_Product_View
+ */
+?>
+<?php
+$_helper = $this->helper('catalog/output');
+$_product = $this->getProduct();
+// $_category  = Mage::registry('current_category');
+$vendor_code = $_product->getManufacturer();
+
+$vendor_block = $this->getLayout()->getBlockSingleton("vendor/vendor_renderer_vendor");
+
+
+$vendor_data = $vendor_block->getVendorInfo($vendor_code);
+
+$vendor = Mage::getModel("vendor/vendor")->load($vendor_data['vendor_id']);
+
+$vendorId = $vendor->getVendorId();
+//$url_vendor = $this->getUrl("vendor/index/productlist")."?vendor_id=$vendorId";
+$url_vendor = Mage::getBaseUrl().$vendor['path'];
+if($vendor->getId()){
+ $vendor_logo = $vendor_block->getLogoSrcFrontEnd($vendor);
+}
+//$logo = $this->getLogoSrcFrontEnd($vendor);
+//$description = $vendor->getAboutcompany();
+$companyName = $vendor->getCompanyName();
+//$vendor_logo = $vendor->getLogoSrcFrontEnd($vendor);
+//$description = MyString::split(MAXIMUM_HP_DES_SLIDE, $description);
+
+?>
+<script type="text/javascript">
+    var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+</script>
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<!-- Group Product -->
+<?php if($_product->isGrouped()){ ?>
+<div class="page-title title-all-page">
+    <h2 class="shop-name"><?php echo $this->__('Trang phục ') ?><span><?php echo $_product->getName() ?></span></h2>
+    <ul>
+        <li><?php echo $this->__("Share this shop and") ?> <span><?php echo $this->__("earn cash") ?></span></li>
+        <li>
+            <div id="fb-root"></div>
+            <script src="http://connect.facebook.net/en_US/all.js#appId=204703199589477&amp;xfbml=1"></script>
+        <fb:like href="<?php //the_permalink() ?>" send="false" width="90" show_faces="false" action="like" font="" layout="button_count" ></fb:like>
+        </li>
+    </ul>
+</div>  
+<div class="product-view group-product">
+    <div class="product-essential">
+            <div class="no-display">
+                <input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+                <input type="hidden" name="related_product" id="related-products-field" value="" />
+            </div>
+            <div class="product-img-box">
+            <form action="<?php echo $this->getSubmitUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if ($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>
+                <div class="top-left-view">
+                         <p class="details"><?php echo $_product->getShortDescription() ?></p>
+                         <img src="<?php echo $this->helper('catalog/image')->init($_product, 'image')->resize(500,360); ?>" alt="" /></a> 
+                        <div class="add-to-box">
+                                    <?php if ($_product->isSaleable()): ?>
+                                        <?php echo $this->getChildHtml('addtocart') ?>
+                                    <?php endif; ?>
+                                    <?php //echo $this->getChildHtml('addto') ?>
+                        </div> 
+                </div>    
+                <div class="top-right-view">
+                    <?php $proId = $_product->getId(); 
+                        $write = Mage :: getSingleton ( 'core/resource' )-> getConnection ( 'core_write' ); 
+                        $readresult = $write -> query("SELECT user_id 
+                                            FROM ".Mage::getSingleton('core/resource')->getTableName('mixmatch')."
+                                            WHERE product_id = '$proId'");
+                        $row = $readresult -> fetch();    
+                        $uId = $row['user_id'];          
+                ?>
+                    <div id="detail-customer">
+                    <img width="50" height="50" src="<?php echo $this->getSkinUrl('images/default-avatar.png')?>" alt="avatar" />
+                        <?php $customer = Mage::getModel('customer/customer')->load($row['user_id'])->getData();?>
+                        <?php $firstname = $customer['firstname'];
+                              $lastname = $customer['lastname'];?>
+                        <a href="<?php echo $this->getUrl('customer/account/edit') ?>"><?php echo $firstname.' '.$lastname ?> </a>
+                        <ul class="customer-link">
+                            <li><a href="#"><?php echo $this->__('Xu hướng')?></a></li>
+                            <li><a href="<?php echo $this->getUrl('mixmatch/customer') ?>"><?php echo $this->__('Bộ sưa tập')?></a> | </li>
+                            <li><a href="#"><?php echo $this->__('Nhận tin')?></a> | </li>
+                        </ul>
+                    </div>
+                     <div class="product-detail-zone-price">
+                        <?php echo $this->getChildHtml('product_type_data') ?>
+                        <?php echo $this->getTierPriceHtml() ?>
+                        <?php if (!$this->hasOptions()): ?>
+                        
+                        <?php echo $this->getChildHtml('extra_buttons') ?>
+                        <?php elseif (!$_product->isSaleable()): ?>
+                        <div class="add-to-box">
+                                <?php echo $this->getChildHtml('addto') ?>
+                        </div>
+                        <?php endif; ?>
+    
+                        <?php if ($_product->isSaleable() && $this->hasOptions()): ?>
+                        <div class="product-detail-zone-container2">
+                                <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+               </form> 
+            </div>
+ 
+            <div class="product-shop">
+                <div class="comment-face">
+                 <?php echo $this->getChildHtml('review_form')  ?>
+                 <?php 
+                    $_reviews = Mage::getModel('review/review')->getCollection()
+                    ->addStoreFilter(Mage::app()->getStore()->getId())
+                    ->addStatusFilter('approved')
+                    ->addEntityFilter('product', $_product->getId())
+                    ->setDateOrder(); // You can filter the results
+                    foreach($_reviews as $re){ ?>
+                    <div class="list-review">
+                        <img width="50" height="50" src="<?php echo $this->getSkinUrl('images/default-avatar.png')?>" alt="avatar" />
+                        <div class="reviews">
+                            <span style="color: #0C8CEB;"><?php echo $re['nickname'];?></span><br />
+                            <span style="color: #CCC;"><i><?php echo $re['created_at'];?></i></span><br />
+                            <span><?php echo $re['detail'];?></span>
+                        </div>
+                    </div>
+                    <?php }?> 
+                </div>
+                
+                <div class="list-product">
+                    <h4><?php echo $this->__('Bộ sưu tập của ').$firstname.' '.$lastname; ?></h4>
+                    <ul class="group-item">
+                        <?php $readresult_product = $write -> query("SELECT product_id 
+                                                FROM ".Mage::getSingleton('core/resource')->getTableName('mixmatch')."
+                                                WHERE user_id = 31 AND product_id <> 3339");
+                        $row_product = $readresult_product -> fetchAll(); 
+                        foreach($row_product as $item): 
+                        $gproductfull = Mage::getModel('catalog/product')->load($item['product_id']);
+                        ?>
+                        <li><img src="<?php echo $this->helper('catalog/image')->init($gproductfull, 'image')->resize(180,150); ?>" alt="" />
+                            <p class="detail">
+                                <b><?php echo $gproductfull->getName() ?></b><br />
+                                <a class="buys" href="<?php echo $gproductfull->getProductUrl() ?>" title="<?php echo $this->__('Chi tiết')?>">
+                                    <img src="<?php echo $this->getSkinUrl('images/btn_buy.png')?>" alt="muafast" />
+                                </a>
+                            </p>
+                        </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </div>
+    </div>
+</div>
+<!-- End Group Product -->
+<?php }else{?>
+<div class="page-title title-all-page">
+    <h2 class="shop-name">
+        <a href="<?php echo $url_vendor;?>"><?php echo $this->__('Sản phẩm của ') ?><span><?php echo $companyName; ?></span></a>
+    </h2>
+    <ul>
+        <li><?php echo $this->__("Share this shop and") ?> <span><?php echo $this->__("earn cash") ?></span></li>
+        <li>
+            <!-- <a title="" href="#"><img alt="" class="ui-icon icon-10" src="<?php echo $this->getSkinUrl("images/dummy.gif") ?>" ></a> -->
+<!--            <a title="" href="#"><img alt="" class="ui-icon icon-11" src="<?php echo $this->getSkinUrl("images/dummy.gif") ?>"></a>-->
+            <!-- <a title="" href="#"><img alt="" class="ui-icon icon-12" src="<?php echo $this->getSkinUrl("images/dummy.gif") ?>"></a> -->
+        </li>
+        <li>
+            <div id="fb-root"></div>
+            <script src="http://connect.facebook.net/en_US/all.js#appId=204703199589477&amp;xfbml=1"></script>
+        <fb:like href="<?php //the_permalink() ?>" send="false" width="90" show_faces="false" action="like" font="" layout="button_count" ></fb:like>
+        </li>
+    </ul>
+</div>
+<div class="product-view">
+    <div class="product-essential">
+        <form action="<?php echo $this->getSubmitUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if ($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>
+            <div class="no-display">
+                <input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+                <input type="hidden" name="related_product" id="related-products-field" value="" />
+            </div>
+            <div class="product-img-box">
+                <?php echo $this->getChildHtml('media') ?>
+            </div>
+            <div class="product-shop">
+                <div class="product-name">
+                    <h1><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
+                </div>
+                <?php /*
+                <div class="short-description">
+                    <div class="std">
+                        <?php echo $_product->getShortDescription(); ?>
+                        
+                          <?php $brand = $_product->getAttributeText("manufacturer") ?>
+                          <?php if (!empty($brand)): ?>
+                          <span><?php echo $this->__("Brand") ?>:</span>
+                          <span> <?php echo $_product->getAttributeText("manufacturer") ?></span>
+                          <?php endif; ?>
+                        
+                    </div>
+                </div>
+                */ ?>
+
+                <div class="product-sku">
+                    <?php echo $this->__("Mã sản phẩm:"); ?> <?php echo $_product->getSku(); ?>
+                </div>
+
+                <?php //echo $this->getReviewsSummaryHtml($_product, false, true) ?>
+                <div class="ratings">
+                    <!-- 
+                    <p class="lnk-return"><a href="#">return to Qi Cashmere</a></p>
+                    <?php echo $this->getChildHtml('addto') ?>
+                    -->
+                </div>
+
+                <?php echo $this->getChildHtml('alert_urls') ?>
+
+                <div class="product-detail-zone-price">
+					 <?php if($_product->getRewardPointProduct()):?>
+						<div class="short-description">
+							<?php echo Mage::helper('rewardpoints')->__("You will earn <b>%s</b> for buying this product",Mage::helper('rewardpoints')->formatPoints($_product->getRewardPointProduct()))?>
+						</div>
+					<?php endif;?>
+                    <?php echo $this->getChildHtml('product_type_data') ?>
+                    <?php echo $this->getTierPriceHtml() ?>
+                    <?php if (!$this->hasOptions()): ?>
+                    <div class="add-to-box">
+                            <?php if ($_product->isSaleable()): ?>
+                                <?php echo $this->getChildHtml('addtocart') ?>
+                            <?php endif; ?>
+                            <?php //echo $this->getChildHtml('addto') ?>
+                    </div>
+                        <?php echo $this->getChildHtml('extra_buttons') ?>
+                    <?php elseif (!$_product->isSaleable()): ?>
+                    <div class="add-to-box">
+                            <?php echo $this->getChildHtml('addto') ?>
+                    </div>
+                    <?php endif; ?>
+
+                    <?php if ($_product->isSaleable() && $this->hasOptions()): ?>
+                    <div class="product-detail-zone-container2">
+                            <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+                    </div>
+                    <?php endif; ?>
+                </div>
+
+                <?php echo $this->getChildHtml('extrahint') ?>
+
+                <?php if($vendor_data['vendor_id']): ?>
+                <div class="ratings"></div>
+                <div class="product-collateral product-collateral-shopdes">
+                    <table class="data-table">
+                        <colgroup><col width="25%">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                            <tr class="first odd">
+                                <th class="label">
+                                    <img class="shop-logo" src="<?php echo $vendor_logo ?>" />
+                                </th>
+                                <td class="data last">
+                                        <?php if($vendor['aboutcompany']): ?>
+                                    <div class="rich-text">
+                                                <?php echo $vendor['aboutcompany']; ?>
+                                    </div>
+                                    <br/>
+                                    <br/>
+                                        <?php endif; ?>
+                                </td>
+                            </tr>
+                            <tr class="last even">
+                                <th></th>
+                                <td>
+                                    <a class="shop-delivery" href="<?php echo Mage::getBaseUrl() . $vendor['path']  ?>"><?php echo $this->__("Xem thêm sản phảm của shop") ?></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <?php endif; ?>
+                <?php foreach ($this->getChildGroup('detailed_info', 'getChildHtml') as $alias => $html): ?>
+                <div class="box-collateral <?php echo "box-{$alias}" ?>">
+                        <?php /*
+                              <?php if ($title = $this->getChildData($alias, 'title')): ?>
+                              <b class="bold1"><?php echo $this->escapeHtml($title); ?></b>
+                              <?php endif; ?>
+                        */ ?>
+                        <?php echo $html; ?>
+                </div>
+                <?php endforeach; ?>
+
+                <div class="clearer"></div>
+                <?php /*
+                  <?php if ($_product->getShortDescription()): ?>
+                  <div class="short-description">
+                  <b class="bold1"><?php echo $this->__('Quick Overview') ?></b>
+                  <div class="std"><?php echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?></div>
+                  <!-- <div class="about-mf">
+                  <div class="block-about">
+                  <p><?php echo $this->__("We guarantee that Fab is authorized to sell this product and that every brand we sell is authentic.") ?></p>
+                  </div>
+                  </div>-->
+
+                  </div>
+                  <?php endif; ?>
+                */ ?>
+
+                <?php
+                /*
+                <div class="clearer"></div>
+                <div class="product-essential">
+                    <?php echo $this->getChildHtml('other'); ?>
+                </div>
+
+                <div class="clearer"></div>
+                <?php if ($_product->isSaleable() && $this->hasOptions()): ?>
+                    <div class="product-detail-zone-container1">
+                        <?php echo $this->getChildChildHtml('container1', '', true, true) ?>
+                    </div>
+                <?php endif; ?>
+                */?>
+            </div>
+
+        </form>
+        <div class="clearer"></div>
+        <div><?php // echo $this->getChildHtml('upsell_products') ?></div>
+
+    </div>
+	<a id="msg" href="#inline" style="display:none"></a>
+	<div style="display:none" >
+		<div id="inline" >
+			<p class="msg-text"></p>
+			<a href="javascript:;" onclick="jQuery.fancybox.close();">Close</a>
+		</div>
+	</div>
+</div>
+<?php } // $parentIds = Mage::getModel('catalog/product_type_grouped')->getParentIdsByChild($_product->getId());
+//var_dump($parentIds);
+ ?>
+  <script type="text/javascript">
+	jQuery.noConflict();
+	jQuery(document).ready(function(){
+		jQuery("#msg").fancybox({
+			'modal' : true,
+		});	
+	});
+    //<![CDATA[
+        var productAddToCartForm = new VarienForm('product_addtocart_form');
+    	productAddToCartForm.submit = function(button, url) {
+		if (this.validator.validate()) {
+			var form = this.form;
+			var oldUrl = form.action;
+			if (url) {
+				form.action = url;
+			}
+			var e = null;
+			// Start of our new ajax code
+			if (!url) {
+				url = jQuery('#product_addtocart_form').attr('action');
+			}
+			url = url.replace("checkout/cart","ajax/index"); // New Code
+			var data = jQuery('#product_addtocart_form').serialize();
+			data += '&isAjax=1';
+			jQuery('#ajax_loader').show();
+			try {
+				jQuery.ajax( {
+					url : url,
+					dataType : 'json',
+					type : 'post',
+					data : data,
+					success : function(data) {
+						jQuery('#ajax_loader').hide();
+//                        alert(data.status + ": " + data.message);
+						if(data.status == 'ERROR'){
+							jQuery('.msg-text').html(data.message);
+							jQuery('#msg').trigger('click');
+						}else{
+							if(jQuery('.cart-inner')){
+								jQuery('.cart-inner').replaceWith(data.sidebar);
+							}
+							//alert(data.toplink);
+							if(jQuery('.header .links .cart-mini .num-cart')){
+							   jQuery('.header .links .cart-mini .num-cart').html(data.toplink);
+							}
+							//jQuery('.cart-inner .cart-content').stop(true, true).delay(0).slideDown(0);
+							jQuery('.cart-inner .cart-content').slideDown(0);
+							//setTimeout(function(){
+								//jQuery('.cart-inner .cart-content').stop(true, true).delay(0).slideUp(0);
+							//},1500);
+						}
+					}
+				});
+			} catch (e) {
+			}
+			// End of our new ajax code
+			this.form.action = oldUrl;
+			if (e) {
+				throw e;
+			}
+		}
+	}.bind(productAddToCartForm);
+    productAddToCartForm.submitLight = function(button, url){
+            if(this.validator) {
+                var nv = Validation.methods;
+                delete Validation.methods['required-entry'];
+                delete Validation.methods['validate-one-required'];
+                delete Validation.methods['validate-one-required-by-name'];
+                if (this.validator.validate()) {
+                    if (url) {
+                        this.form.action = url;
+                    }
+                    this.form.submit();
+                }
+                Object.extend(Validation.methods, nv);
+            }
+        }.bind(productAddToCartForm);
+    //]]>
+    </script>

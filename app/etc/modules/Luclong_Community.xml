@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Luclong_Community>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Luclong_Community>
+    </modules>
+</config> 

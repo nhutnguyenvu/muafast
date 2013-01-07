@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<layout version="1.0.0">
+	<PRODUCT_TYPE_configurable translate="label" module="catalog">
+        <reference name="product.info.options.configurable"><action method="setTemplate"><template>autoswatchesplus/catalog/product/view/type/options/configurable.phtml</template></action></reference>
+		<reference name="head"><action method="addCss"><stylesheet>css/swatches.css</stylesheet><params>media="screen"</params></action></reference>
+	</PRODUCT_TYPE_configurable>
+	<catalog_product_view translate="label">
+		<reference name="product.info.media"><action method="setTemplate"><template>autoswatchesplus/catalog/product/view/media.phtml</template></action></reference>
+	</catalog_product_view>
+</layout>

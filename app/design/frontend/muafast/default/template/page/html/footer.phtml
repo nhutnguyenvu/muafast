@@ -1,0 +1,97 @@
+<?php
+
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+$block = Mage::getBlockSingleton("Mage_Page_Block_Html_Header");
+?>
+<div class="footer-container">
+    <hr class="line-hor-thin"/>
+    <div class="footer-top">
+        
+        <div class="footer-logo">
+            <img src="<?php echo $this->getSkinUrl('images/logo-black.png') ?>" alt="<?php echo $block->getLogoAlt() ?>" />
+        </div>
+        <ul>              
+            <li class="shipping"><?php echo $this->__("Giao hàng tận nơi") ?></li>
+            <li class="return"><?php echo $this->__("Đổi trả hàng dễ dàng - tiện lợi") ?></li>
+            <li class="last payment"><?php echo $this->__("Thanh toán khi nhận hàng") ?></li>
+      <!--  <li><?php echo $this->getChildHtml('newsletter') ?> </li>-->
+        </ul>
+         
+    </div>
+    <div class="footer-middle">
+        <ul class="first">
+            <li class="first"><?php echo $this->__("Về Muafast") ?></li>
+            <li><a href="<?php echo $this->getUrl('quy-che-hoat-dong-muafast') ?>"><?php echo $this->__("Quy chế hoạt động") ?></a></li>
+            <li><a href="<?php echo $this->getUrl('thong-cao-bao-chi') ?>"><?php echo $this->__("Báo chí/Truyền Thông") ?></a></li>
+            <li><a href="<?php echo $this->getUrl('quy-dinh-giao-dich') ?>"><?php echo $this->__("Quy định giao dịch") ?></a></li>
+            <li class="last"><a href="<?php echo $this->getUrl('ho-tro-khach-hang') ?>"><?php echo $this->__("Hỗ trợ khách hàng") ?></a></li>
+        </ul>
+        <ul>              
+            <li class="first"><?php echo $this->__("Mua sắm cùng Muafast") ?></li>
+            <li><a href="<?php echo $this->getUrl('tai-sao-mua-sam-cung-muafast') ?>"><?php echo $this->__("Tại sao mua sắm cùng Muafast?") ?></a></li>
+            <li><a href="<?php echo $this->getUrl('huong-dan-nguoi-mua') ?>"><?php echo $this->__("Hướng dẫn người mua") ?></a></li>
+            <li><a href="<?php echo $this->getUrl('bao-ve-nguoi-mua') ?>"><?php echo $this->__("Bảo vệ người mua") ?></a></li>
+            <li class="last"><a href="<?php echo $this->getUrl('cac-cau-hoi-thuong-gap') ?>"><?php echo $this->__("Các câu hỏi thường gặp") ?></a></li>
+        </ul>
+        <ul>              
+            <li class="first"><?php echo $this->__("Kinh Doanh cùng Muafast") ?></li>
+            <li><a href="<?php echo $this->getUrl('tai-sao-kinh-doanh-cung-muafast') ?>"><?php echo $this->__("Tại sao kinh doanh cùng Muafast?") ?></a></li>
+            <li><a href="<?php echo $this->getUrl('tro-thanh-doi-tac-cua-muafast') ?>"><?php echo $this->__("Trở thành đối tác của Muafast") ?></a></li>
+            <li class="last"><a href="<?php echo $this->getUrl('cac-cau-hoi-thuong-gap-kinh-doanh') ?>"><?php echo $this->__("Các câu hỏi thường gặp") ?></a></li>
+        </ul>
+        <ul class="last">              
+            <li class="first"><?php echo $this->__("Kết nối với muafast") ?></li>
+            <li class="last footer-face">
+				<!--<a href="http://facebook.com/muafast"><?php echo $this->__("Kết nối Facebook") ?></a>-->
+				<address>
+					<!-- <a title="" href="#"><img alt="" class="ui-icon icon-08" src="<?php echo $this->getSkinUrl("images/dummy.gif") ?>"></a>-->
+					<a title="" href="http://www.facebook.com/muafast"><img alt="" class="ui-icon icon-09" src="<?php echo $this->getSkinUrl("images/dummy.gif") ?>"></a>
+				</address>
+			</li>
+
+        </ul>
+    </div>
+	
+    <div class="footer footer-bottom">
+	<?php /*
+        <ul>              
+            <li class="first"><a href=""><?php echo $this->__("Thông tin") ?></a></li>
+            <li><a href=""><?php echo $this->__("Điều khoản sử dụng") ?></a></li>
+            <li><a href=""><?php echo $this->__("Quyền riêng tư") ?></a></li>
+            <li class="last privacy"><a title="Liên hệ" href=""><?php echo $this->__("Liên hệ") ?></a></li>
+        </ul>
+		*/?>
+    </div>
+	
+    <div class="footer-end">
+		<p><strong>Copyright @ 2012 muafast.com</strong></p>
+        <p><strong>Đơn vị chủ quản: Công ty cổ phần Lục Long</strong></p>
+		<span><strong>Địa chỉ: </strong>258/7 Trần Hưng Đạo, Q1, Tp.HCM - Số ĐKKD: 0401512171</span>
+	</div>
+</div>
+

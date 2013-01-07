@@ -1,0 +1,51 @@
+<!--@subject Payment Transaction Failed Reminder @-->
+
+<table>
+    <thead>
+        <tr>
+            <th>Thanh to&aacute;n kh&ocirc;ng th&agrave;nh c&ocirc;ng.</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <p>
+                    <b>Reason</b><br />
+                    {{var reason}}
+                </p>
+                <p>
+                  <b>Kh&aacute;ch h&agrave;ng:</b><br />
+                    <a href="mailto:{{var customerEmail}}">{{var customer}}</a> &lt;{{var customerEmail}}&gt;
+                </p>
+          <p>
+                    <b>M&#7863;t h&agrave;ng</b><br />
+                    {{var items}}
+                </p>
+                <p>
+                  <b>T&#7893;ng c&#7897;ng:</b><br />
+                    {{var total}}
+                </p>
+          <p>
+    <b>&#272;&#7883;a ch&#7881; thanh to&aacute;n:</b><br />
+                    {{var billingAddress.format('html')}}
+                </p>
+  <p>
+<b>&#272;&#7883;a ch&#7881; nh&#7853;n h&agrave;ng:</b><br />
+                    {{var shippingAddress.format('html')}}
+                </p>
+  <p>
+          <b>Ph&#432;&#417;ng th&#7913;c v&#7853;n chuy&#7875;n:</b><br />
+                    {{var shippingMethod}}
+                </p>
+          <p>
+            <b>Ph&#432;&#417;ng th&#7913;c thanh to&aacute;n:</b><br />
+                    {{var paymentMethod}}
+                </p>
+          <p>
+            <b>Th&#7901;i gian:</b><br />
+                    {{var dateAndTime}}
+                </p>
+          </td>
+        </tr>
+    </tbody>
+</table>

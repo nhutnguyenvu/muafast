@@ -1,0 +1,106 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/* @var $this Mage_Core_Block_Template */
+/* @var $catalogSearchHelper Mage_Catalogsearch_Helper_Data */
+$catalogSearchHelper =  $this->helper('catalogsearch');
+?>
+<form id="search_mini_form" action="<?php echo $this->getUrl('catalogsearch/advanced/result') ?>" method="get">
+	
+	<div class="form-search">
+		<!--<div id="search-title"><span><?php echo $this->__('Tìm kiếm') ?></span></div>-->
+		<div id="search-title">
+			<div id="dd" class="wrapper-dropdown-3" tabindex="1">
+				<span>Tìm kiếm</span>
+				<ul class="dropdown">
+					<li><a href="#" id="name" ><i class="icon-envelope icon-large"></i>Tên sản phẩm</a></li>
+					<li><a href="#" id="sku"><i class="icon-truck icon-large"></i>Mã sản phẩm</a></li>
+					<li><a href="#" id="vendor"><i class="icon-plane icon-large"></i>Tên Shop</a></li>
+				</ul>
+			</div>
+		</div>
+        <input id="search" type="text" name="name" value="<?php echo $catalogSearchHelper->getEscapedQueryText() ?>" class="input-text" maxlength="<?php echo $catalogSearchHelper->getMaxQueryLength();?>" />
+        <button type="submit" title="<?php echo $this->__('Search') ?>" class="button"></button>
+        <div id="search_autocomplete" class="search-autocomplete"></div>
+        <script type="text/javascript">
+        //<![CDATA[
+            var searchForm = new Varien.searchForm('search_mini_form', 'search', '<?php echo $this->__('Search entire store here...') ?>');
+           /* searchForm.initAutocomplete('<?php echo $catalogSearchHelper->getSuggestUrl() ?>', 'search_autocomplete');*/
+            jQuery(document).ready(function(){
+                
+                if(jQuery("#search").val()=="1"){
+                    jQuery("#search").val("");
+                }
+            });
+            
+        //]]>
+        </script>
+		
+		<script type="text/javascript">
+			function DropDown(el) {
+				this.dd = el;
+				this.placeholder = this.dd.children('span');
+				this.opts = this.dd.find('ul.dropdown > li');
+				this.val = '';
+				this.index = -1;
+				this.initEvents();
+			}
+			DropDown.prototype = {
+				initEvents : function() {
+					var obj = this;
+					obj.dd.on('click', function(event){
+				
+						jQuery(this).toggleClass('active');
+						return false;
+					});
+					obj.opts.on('click',function(){
+							
+						var opt = jQuery(this);
+						obj.val = opt.text();
+						obj.index = opt.index();
+						obj.placeholder.text(obj.val);
+						jQuery('#search').attr('name',jQuery("a",this).attr('id'));
+					});
+				},
+				getValue : function() {
+					return this.val;
+				},
+				getIndex : function() {
+					return this.index;
+				}
+			}
+
+			jQuery(function() {
+				var dd = new DropDown( jQuery('#dd') );
+				jQuery(document).click(function() {
+					// all dropdowns
+				
+					jQuery('.wrapper-dropdown-3').removeClass('active');
+				});
+			});
+		</script>
+		
+    </div>
+</form>

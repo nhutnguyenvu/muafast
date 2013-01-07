@@ -1,0 +1,38 @@
+<!--@subject Newsletter subscription confirmation @-->
+
+<style type="text/css">
+body,td { color:#2f2f2f; font:11px/1.35em Verdana, Arial, Helvetica, sans-serif; }
+</style>
+
+<div style="font:11px/1.35em Verdana, Arial, Helvetica, sans-serif;">
+    <table cellspacing="0" cellpadding="0" border="0" width="98%" style="margin-top:10px; font:11px/1.35em Verdana, Arial, Helvetica, sans-serif; margin-bottom:10px;">
+        <tr>
+            <td align="center" valign="top">
+                <!-- [ header starts here] -->
+                <table cellspacing="0" cellpadding="0" border="0" width="650">
+                    <tr>
+                        <td valign="top">
+                            <p><a href="{{store url=""}}" style="color:#1E7EC8;"><img src="{{var logo_url}}" alt="Muafast.com -" border="0"/></a></p></td>
+                    </tr>
+                </table>
+
+                <!-- [ middle starts here] -->
+                <table cellspacing="0" cellpadding="0" border="0" width="650">
+                    <tr>
+                        <td valign="top">
+                            <p><strong>K&iacute;nh g&#7903;i {{var customer.name}},</strong>,<br/>
+                          C&#7843;m &#417;n b&#7841;n &#273;&atilde; &#273;&#259;ng k&yacute; s&#7917; d&#7909;ng th&#7871; th&ocirc;ng in &#273;i&#7879;n t&#7917; c&#7911;a ch&uacute;ng t&ocirc;i.</p>
+                          <p style="border:1px solid #BEBCB7; padding:13px 18px; background:#F8F7F5; ">&#272;&#7875; b&#7855;t &#273;&#7847;u nh&#7853;n &#273;&#432;&#7907;c tin, tr&#432;&#7899;c ti&ecirc;n b&#7841;n ph&#7843;i x&aacute;c nh&#7853;n &#273;&#259;ng k&yacute; c&#7911;a b&#7841;n b&#7857;ng c&aacute;ch b&#7845;m v&agrave;o li&ecirc;n k&#7871;t sau:<br />
+                            <a href="{{var subscriber.getConfirmationLink()}}" style="color:#1E7EC8;">{{var subscriber.getConfirmationLink()}}</a>
+                          <p>
+
+                            <p>C&#7843;m &#417;n b&#7841;n.<strong></strong></p>
+
+
+                      </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>

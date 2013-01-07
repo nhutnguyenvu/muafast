@@ -1,0 +1,46 @@
+<?php if ($this->canShowBlock()): ?>
+    <div class="block block-layered-nav">
+        <!-- <div class="block-title">
+             <strong><span><?php echo $this->__('Shop By') ?></span></strong>
+         </div>-->
+        <div class="block-content">
+            <div id="season-menu-scroll" class="page-title category-title">
+                <?php if ($this->canShowOptions()): ?>
+                    <?php $i = 0; ?>
+                    <?php foreach ($this->getFilters() as $_filter): $i++; ?>
+                        <?php if (count($_filter->getItems()) > 0): ?>
+
+                            <?php $attributeModel = $_filter->getAttributeModel(); ?>
+                            <?php $class = 'category_list'; ?>
+                            <?php if ($attributeModel): ?>
+                                <?php
+                                if ($attributeModel->getAttributeCode() == 'color' || $attributeModel->getAttributeCode() == 'price'):
+                                    if ($attributeModel->getAttributeCode() == 'color')
+                                        $class = 'drop color';
+                                    elseif ($attributeModel->getAttributeCode() == 'price')
+                                        $class = 'drop price';
+                                    else
+                                        $class = 'category_list';
+                                endif;
+                                ?>
+                            <?php endif; ?>
+                                <?php if ($i == 1): ?>
+                                    <?php echo $this->getStateHtml() ?>
+                                <?php endif; ?>
+                            <dl class="<?php echo $class; ?>">
+                            <?php echo $_filter->getHtml() ?>
+                            </dl>
+
+            <?php endif; ?>
+        <?php endforeach; ?>
+
+                    <script type="text/javascript">
+                        decorateDataList('narrow-by-list');
+                    </script>
+    <?php endif; ?>
+            </div>
+        </div>
+    </div>
+<?php else: ?>
+    <div style="display:none" class="<?php echo $this->getBlockId() ?>"></div>
+<?php endif; ?>

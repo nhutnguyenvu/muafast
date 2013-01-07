@@ -1,0 +1,54 @@
+
+<?php $_category  = Mage::registry('current_category'); ?>
+<?php //echo $_category->getName (); ?>
+<?php $childCategory = $_category->getChildrenCategories(); ?>
+<?php if(count($childCategory) > 0):?>
+<div class="page-title category-title"  id="season-menu-scroll" >
+        <?php //echo $this->getChildHtml('product_list_toolbar') ?>
+    <ul class="lst-category-1">
+            <?php if(count($childCategory) > 0): ?>
+                <?php foreach ($childCategory as $_cate): ?>
+        <li><a title="<?php echo $_cate->getName() ?>" href="<?php echo $_cate->getUrl() ?>"><span><span><?php echo $_cate->getName() ?></span></span></a></li>
+                <?php endforeach; ?>
+    <!--<li class="last"><a title="" href="#"><img alt="" class="ui-icon icon-13" src="<?php //echo $this->getSkinUrl("images/dummy.gif") ?>"></a></li>-->
+            <?php endif; ?>
+        <!-- 
+        <li class="active bor"><a title="" href="#"><span><span>Dresses</span></span></a></li>
+        <li class="lst-choose bor"><a title="" href="#">Color</a>
+            <ul class="hidden">
+                <li><a title="" href="#">test</a></li>
+                <li><a title="" href="#">test 1</a></li>
+                <li><a title="" href="#">test 2</a></li>
+            </ul>
+        </li>
+        <li class="lst-choose bor"><a title="" href="#">Size</a>
+            <ul class="hidden">
+                <li><a title="" href="#">test</a></li>
+                <li><a title="" href="#">test 1</a></li>
+                <li><a title="" href="#">test 2</a></li>
+            </ul>
+        </li>
+
+        <li class="lst-choose bor"><a title="" href="#">Sort</a>
+            <ul class="hidden">
+                <li><a title="" href="#">test</a></li>
+                <li><a title="" href="#">test 1</a></li>
+                <li><a title="" href="#">test 2</a></li>
+            </ul>
+        </li>
+        -->
+    </ul>
+</div>
+<script type="text/javascript">
+//    jQuery.noConflict();
+//    jQuery(window).scroll(function(){
+//        var begin= jQuery(".category-products").offset().top;
+//		
+//        if(jQuery(window).scrollTop() > begin){
+//            jQuery("#season-menu-scroll").addClass("season-menu-scroll");
+//        }else{
+//            jQuery("#season-menu-scroll").removeClass("season-menu-scroll");
+//        }
+//    });
+</script>
+<?php endif; ?>

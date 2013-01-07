@@ -1,0 +1,504 @@
+<?php
+	$helper 			= Mage::app()->getHelper('vendor');
+	$imghelper			= Mage::app()->getHelper('catalog/image');
+	
+	$pageTitle			= 'Vendor Products';
+	$viewAll			= true;
+	
+	$vendor_id			= $this->getRequest()->getParam("id");
+	if(is_numeric($vendor_id) && $vendor_id*1>0)
+	{
+		$viewAll			= false;
+		$vendorProducts		= $helper->getVendorProducts($vendor_id);
+		$vendorData			= $helper->getVendorUserInfo($vendor_id);
+		
+		$pageTitle			= "Products added by ".$vendorData["company_name"]." (id: ".$vendorData["vendor_id"].")";
+	}
+	
+?>
+<div class="content-header">
+	<table cellspacing="0">
+	<tbody>
+		<tr>
+			<td style="width: 50%;">
+				<h3 class="icon-head"><?php echo $this->__($pageTitle) ?></h3>
+			</td>
+			<?php
+				if(!$viewAll)
+				{
+			?>
+			<td class="form-buttons">
+				<button style="" onclick="window.location.href='<?php echo $this->getUrl("vendor/adminhtml_products"); ?>'" class="scalable back" type="button"><span>Back</span></button>
+				<button style="" onclick="window.location.href='<?php echo $this->getUrl("vendor/adminhtml_view/index/id/$vendor_id/backto/accepted"); ?>'" class="scalable" type="button"><span>Edit this Vendor</span></button>
+			</td>
+			<?php
+				}
+			?>
+	</tr>
+	</tbody>
+	</table>
+</div>
+
+
+<?php
+	//http://www.localhost.com/rac/vendor/index.php/admin/catalog_product/edit/id/13/back/edit/tab/product_info_tabs_group_4/
+	
+	
+	if(!$viewAll)
+	{
+		
+?>
+
+
+
+<div class="columns">
+	<div id="page:left" class="side-col">
+		<h3>Product Types</h3>
+		<ul class="tabs" id="edit_product_tabs">
+			
+			<li>
+				<a class="tab-item-link active" title="Enabled Products" name="main" id="edit_product_live" href="#">
+					<span><span title="The information in this tab has been changed." class="changed"></span><span title="This tab contains invalid data. Please solve the problem before saving." class="error"></span>Enabled Products</span>
+				</a>
+			</li>
+			
+			<li>
+				<a class="tab-item-link inactive" title="Products Awaiting Approval" name="main" id="edit_product_enabled" href="#">
+					<span><span title="The information in this tab has been changed." class="changed"></span><span title="This tab contains invalid data. Please solve the problem before saving." class="error"></span>Products Awaiting Approval</span>
+				</a>
+			</li>
+			
+			<li>
+				<a class="tab-item-link inactive" title="Disabled Products" name="main" id="edit_product_disabled" href="#">
+					<span><span title="The information in this tab has been changed." class="changed"></span><span title="This tab contains invalid data. Please solve the problem before saving." class="error"></span>Disabled Products</span>
+				</a>
+			</li>
+			
+			
+			
+			
+			
+		</ul>
+		<script type="text/javascript">
+			site_home_tabsJsTabs = new varienTabs('edit_product_tabs', 'edit2_form', 'edit_product_live', []);
+		</script>
+	</div>
+	<div id="content" class="main-col">
+		<div class="main-col-inner">
+			<div id="messages"></div>
+			
+			
+			<div class="entry-edit">
+			
+			<form id="edit2_form" name="edit2_form" action="" method="post">
+			<?php echo $this->getBlockHtml('formkey')?>
+			</form>
+				
+				
+				<!-- Begin Live products tab content -->
+				<div id="edit_product_live_content" style="display:block;">
+				
+				<div class="content-header" style="visibility: visible;">
+					<h3 class="icon-head head-catalog-product-attribute">Enabled Products</h3>
+					<div class="content-buttons-placeholder" style="width: 0px; height: 15px;">
+						<p class="content-buttons form-buttons" style="">
+							<button style="" onclick="Deny('live_products_form')" class="scalable delete" type="button" id="id_3e372e12dfd452d64e084ac0e8969asd">
+								<span>Deny Selected</span>
+							</button>
+						</p>
+					</div>
+				</div>
+				
+				<form id="live_products_form" name="live_products_form" action="<?php echo $this->getUrl("*/*/post/")."id/".$this->getRequest()->getParam("id")."/backto/".$this->getRequest()->getParam("backto"); ?>" method="post">
+					<?php echo $this->getBlockHtml('formkey')?>
+					<input type="hidden" value="" name="doaction">
+					<!-- Begin products table -->
+					<div class="grid">
+						<div class="hor-scroll">
+							<table class="data" cellspacing="0">
+								<col width="20"></col>
+								<col width="20"></col>
+								<col width="100"></col>
+								<col></col>
+								<col width="120"></col>
+								<col width="80"></col>
+								<thead>
+									<tr class="headings">
+										<th><input type="checkbox" onclick="CheckAll(this,'live_products_form')"></th>
+										<th>Id</th>
+										<th>Image</th>
+										<th>Product Name</th>
+										<th class="a-center">Status</th>
+										<th class="last a-center">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+								<?php
+									$_i	= 0;
+									if(count($vendorProducts)>0)
+									{
+										foreach($vendorProducts as $_vendorProduct)
+										{
+											if($_vendorProduct->getStatus()==1)
+											{
+												$_i++;
+								?>
+										<tr class="<?php echo $_i%2==0 ? "even" : "" ?>" title="">
+											<td style="vertical-align:middle !important;"><input type="checkbox" name="products[]" value="<?php echo $_vendorProduct->getId(); ?>"></td>
+											<td style="vertical-align:middle !important;"><?php echo $_vendorProduct->getId(); ?></td>
+											<td style="vertical-align:middle !important;"><img src="<?php echo $imghelper->init($_vendorProduct, 'image')->resize(100); ?>"></td>
+											<td style="vertical-align:middle !important;"><?php echo $_vendorProduct->getName(); ?></td>
+											<td style="vertical-align:middle !important;" class="a-center">Enabled</td>
+											<td style="vertical-align:middle !important;" class="last a-center">
+												<a href="<?php echo $this->getBaseUrl()."admin/catalog_product/edit/id/".$_vendorProduct->getId(); ?>" target="_blank">Edit</a>
+											</td>
+										</tr>
+								<?php
+											}
+										}
+									}
+									if($_i==0)
+									{
+								?>
+										<tr class="even">
+											<td class="empty-text a-center last" colspan="12">No records found.</td>
+										</tr>
+								<?php
+									}
+								?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<!-- End products table -->
+					</form>
+				</div>
+				
+				<!-- End Live products tab content -->
+				
+				
+				<!-- Begin Enabled products tab content -->
+				<div id="edit_product_enabled_content" style="display:none;">
+				
+				<div class="content-header" style="visibility: visible;">
+					<h3 class="icon-head head-catalog-product-attribute">Products Awaiting Approval</h3>
+					<div class="content-buttons-placeholder" style="width: 0px; height: 15px;">
+						<p class="content-buttons form-buttons" style="">
+							<button style="" onclick="Approve('enabled_products_form')" class="scalable save" type="button" id="id_3e372e12dfd452d64e084ac0e8969asd">
+								<span>Approve Selected</span>
+							</button>
+						</p>
+					</div>
+				</div>
+				
+				<form id="enabled_products_form" name="enabled_products_form" action="<?php echo $this->getUrl("*/*/post/")."id/".$this->getRequest()->getParam("id")."/backto/".$this->getRequest()->getParam("backto"); ?>" method="post">
+					<?php echo $this->getBlockHtml('formkey')?>
+					<input type="hidden" value="" name="doaction">
+					<!-- Begin products table -->
+					<div class="grid">
+						<div class="hor-scroll">
+							<table class="data" cellspacing="0">
+								<col width="20"></col>
+								<col width="20"></col>
+								<col width="100"></col>
+								<col></col>
+								<col width="120"></col>
+								<col width="80"></col>
+								<thead>
+									<tr class="headings">
+										<th><input type="checkbox" onclick="CheckAll(this,'enabled_products_form')"></th>
+										<th>Id</th>
+										<th>Image</th>
+										<th>Product Name</th>
+										<th class="a-center">Status</th>
+										<th class="a-center last">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+								<?php
+									$_i	= 0;
+									if(count($vendorProducts)>0)
+									{
+										foreach($vendorProducts as $_vendorProduct)
+										{
+											if($_vendorProduct->getAttributeText("vendor_product_status")=="Enabled" && $_vendorProduct->getStatus()==2)
+											{
+												$_i++;
+								?>
+										<tr class="<?php echo $_i%2==0 ? "even" : "" ?>" title="">
+											<td style="vertical-align:middle !important;"><input type="checkbox" name="products[]" value="<?php echo $_vendorProduct->getId(); ?>"></td>
+											<td style="vertical-align:middle !important;"><?php echo $_vendorProduct->getId(); ?></td>
+											<td style="vertical-align:middle !important;"><img src="<?php echo $imghelper->init($_vendorProduct, 'image')->resize(100); ?>"></td>
+											<td style="vertical-align:middle !important;"><?php echo $_vendorProduct->getName(); ?></td>
+											<td style="vertical-align:middle !important;" class="a-center">Awaiting Admin approval</td>
+											<td style="vertical-align:middle !important;" class="last a-center">
+												<a href="<?php echo $this->getBaseUrl()."admin/catalog_product/edit/id/".$_vendorProduct->getId(); ?>" target="_blank">Edit</a>
+											</td>
+										</tr>
+								<?php
+											}
+										}
+									}
+									if($_i==0)
+									{
+								?>
+										<tr class="even">
+											<td class="empty-text a-center last" colspan="12">No records found.</td>
+										</tr>
+								<?php
+									}
+								?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<!-- End products table -->
+					</form>
+				</div>
+				
+				<!-- End enabled products tab content -->
+				
+				<!-- begin Disabled products tab content -->
+				<div id="edit_product_disabled_content" style="display:none;">
+					<div class="content-header" style="visibility: visible;">
+					<h3 class="icon-head head-catalog-product-attribute">Disabled Products</h3>
+					<div class="content-buttons-placeholder" style="width: 0px; height: 15px;">
+						<p class="content-buttons form-buttons" style="">
+							<button style="" onclick="Approve('disabled_products_form')" class="scalable save" type="button" id="id_3e372e12dfd452d64e084ac0e8969asd">
+								<span>Approve Selected</span>
+							</button>
+						</p>
+					</div>
+				</div>
+				
+				<form id="disabled_products_form" name="disabled_products_form" action="<?php echo $this->getUrl("*/*/post/")."id/".$this->getRequest()->getParam("id")."/backto/".$this->getRequest()->getParam("backto"); ?>" method="post">
+					<?php echo $this->getBlockHtml('formkey')?>
+					<input type="hidden" value="" name="doaction">
+					<!-- Begin products table -->
+					<div class="grid">
+						<div class="hor-scroll">
+							<table class="data" cellspacing="0">
+								<col width="20"></col>
+								<col width="20"></col>
+								<col width="100"></col>
+								<col></col>
+								<col width="120"></col>
+								<col width="80"></col>
+								<thead>
+									<tr class="headings">
+										<th><input type="checkbox" onclick="CheckAll(this,'disabled_products_form')"></th>
+										<th>Id</th>
+										<th>Image</th>
+										<th>Product Name</th>
+										<th class="a-center">Status</th>
+										<th class="last a-center">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+								<?php
+									$_i	= 0;
+									if(count($vendorProducts)>0)
+									{
+										foreach($vendorProducts as $_vendorProduct)
+										{
+											if($_vendorProduct->getAttributeText("vendor_product_status")!="Enabled" && $_vendorProduct->getStatus()==2)
+											{
+												$_i++;
+								?>
+										<tr class="<?php echo $_i%2==0 ? "even" : "" ?>" title="">
+											<td style="vertical-align:middle !important;"><input type="checkbox" name="products[]" value="<?php echo $_vendorProduct->getId(); ?>"></td>
+											<td style="vertical-align:middle !important;"><?php echo $_vendorProduct->getId(); ?></td>
+											<td style="vertical-align:middle !important;"><img src="<?php echo $imghelper->init($_vendorProduct, 'image')->resize(100); ?>"></td>
+											<td style="vertical-align:middle !important;"><?php echo $_vendorProduct->getName(); ?></td>
+											<td style="vertical-align:middle !important;" class="a-center">Disabled by vendor</td>
+											<td style="vertical-align:middle !important;" class="last a-center">
+												<a href="<?php echo $this->getBaseUrl()."admin/catalog_product/edit/id/".$_vendorProduct->getId(); ?>" target="_blank">Edit</a>
+											</td>
+										</tr>
+								<?php
+											}
+										}
+									}
+									if($_i==0)
+									{
+								?>
+										<tr class="even">
+											<td class="empty-text a-center last" colspan="12">No records found.</td>
+										</tr>
+								<?php
+									}
+								?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<!-- End products table -->
+					</form>
+				</div>
+				<!-- End disabled products tab content -->
+				
+			
+			</div>
+			
+		
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	function CheckAll(obj,formname)
+	{
+		
+		var elem	= document.forms[formname]["products[]"];
+		if(elem && typeof(elem)!="undefined")
+		{
+			if(typeof(elem.nodeName)=="undefined")
+			{
+				// node list
+				for(var i in elem)
+				{
+					if(typeof(elem[i].checked)!="undefined")
+					{
+						elem[i].checked	= obj.checked;
+					}
+				}
+			}
+			else
+			{
+				if(typeof(elem.checked)!="undefined")
+				{
+					elem.checked	= obj.checked;
+				}
+			}
+		}
+	}
+	
+	function Approve(formname)
+	{
+		var elem			= document.forms[formname];
+		
+		elem.doaction.value	= "approve";
+		elem.submit();
+	}
+	
+	function Deny(formname)
+	{
+		var elem			= document.forms[formname];
+		
+		elem.doaction.value	= "deny";
+		elem.submit();
+	}
+</script>
+
+
+<?php
+	}
+	else
+	{
+		$approvedVendors	= $this->getAcceptedVendors();
+?>
+
+<table cellspacing="0" class="actions">
+	<tr>
+		<td class="a-left filter">
+		<form action="<?php echo $this->getUrl("*/*/view"); ?>" method="post">
+		<?php echo $this->getBlockHtml('formkey')?>
+			<div class="f-left">
+				<?php echo $this->__('Products added by') ?>:
+				<input type="text" class="input-text validate-number" id="vendor_name" name="vendor_name" value="[Enter Vendor Name here]" size="23" onclick="this.value=(this.value=='[Enter Vendor Name here]' ? '' : this.value)" onblur="this.value=(this.value=='' ? '[Enter Vendor Name here]' : this.value)">
+			</div>
+		
+			<div class="f-left">
+				&nbsp;
+				<button style=""  class="scalable task" type="submit" id="id_b299606ac8223dd6c5c79f977f0bc63a">
+					<span>View</span>
+				</button>
+			</div>
+		</form>
+		</td>
+	</tr>
+</table>
+
+<div class="grid">
+	<div class="hor-scroll">
+		<table class="data" cellspacing="0">
+			<col width="20"></col>
+			<col width="250"></col>
+			<col></col>
+			<col></col>
+			<col></col>
+			<col></col>
+			<col></col>
+			<thead>
+				<tr class="headings">
+					<th>Id</th>
+					<th>Company Name</th>
+					<th>Username</th>
+					<th>Enabled Products</th>
+					<th>Products Awaiting Approval</th>
+					<th>Disabled Products</th>
+					<th>Total Products</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+					if(count($approvedVendors)>0)
+					{
+						foreach($approvedVendors as $_i => $_vendor)
+						{
+							$viewUrl	= $this->getUrl("vendor/adminhtml_products/index/id/".$_vendor["vendor_id"]."/backto/accepted");
+							
+							$_enabledProducts	= 0;
+							$_awaitingProducts	= 0;
+							$_disabledProducts	= 0;
+							$_vendorProducts	= array();
+							$_vendorProducts	= $helper->getVendorProducts($_vendor["vendor_id"]);
+							
+							foreach($_vendorProducts as $_product)
+							{
+								if($_product->getAttributeText("vendor_product_status")=="Enabled")
+								{
+									if($_product->getStatus()==1)
+									{
+										$_enabledProducts++;
+									}
+									else
+									{
+										$_awaitingProducts++;
+									}
+								}
+								else
+								{
+									$_disabledProducts++;
+								}
+							}
+				?>
+					<tr class="<?php echo $_i%2==0 ? "even" : "" ?> pointer" title="<?php echo $viewUrl; ?>" onclick="window.location='<?php echo $viewUrl; ?>'">
+						<td><?php echo $_vendor["vendor_id"]; ?></td>
+						<td><?php echo $_vendor["company_name"]; ?></td>
+						<td><?php echo $_vendor["username"]; ?></td>
+						<td><?php echo $_enabledProducts; ?></td>
+						<td><?php echo $_awaitingProducts; ?></td>
+						<td><?php echo $_disabledProducts; ?></td>
+						<td><?php echo count($_vendorProducts); ?></td>
+					</tr>
+
+				<?php
+						}
+					}
+					else
+					{
+				?>
+					<tr class="even">
+						<td class="empty-text a-center" colspan="12">No records found.</td>
+					</tr>
+				<?php
+					}
+				?>
+			</tbody>
+		</table>
+	</div>
+</div>
+<?php
+	}
+?>

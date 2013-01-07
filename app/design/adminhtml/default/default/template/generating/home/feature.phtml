@@ -1,0 +1,55 @@
+<?php
+    $productFeaturedList = Mage::helper("home")->getFeaturedProduct();
+    //$productFeaturedList = $this->getData("featured_product");
+    Mage::helper('amshopby')->init($productFeaturedList);
+?>
+<div class="box best-selling">
+    <h3><?php echo $this->__("Hàng Nóng ") ?><span><?php echo $this->__("Mua Nhanh") ?></span></h3>
+    <?php $i = 0; ?>
+    <?php if (count($productFeaturedList) > 0): ?>
+        <div id="home-top-slider" class="hot-product">
+            <ul class="jcarousel-pager-center">
+                <?php foreach ($productFeaturedList as $_product): ?>
+                    <?php if ($i % HOT_PRODUCT_SLIDER_COLUMN == 0): ?><li><dl><?php endif; ?>
+                            <dd class = "<?php echo ($i % HOT_PRODUCT_SLIDER_COLUMN == 3) ? "hot-item last" : "hot-item"; ?>">
+								<?php $now = date("Y-m-d");
+                                    $price = $_product->getPrice();
+                                    $finalPrice = $_product->getFinalPrice();
+                                    $newsFrom= substr($_product->getData("news_from_date"),0,10);
+                                    $newsTo=  substr($_product->getData("news_to_date"),0,10);
+                                    if ($now>=$newsFrom && $now<=$newsTo && $finalPrice >= $price){ echo "<div class='discount-list'><p>New</p></div>";};
+                                    if($finalPrice < $price ){
+                                        $discount = 100 - round(($_product->getSpecialPrice()/$_product->getPrice())*100); 
+                                        echo "<div class='discount-list'><p>- ".$discount."% </p></div>" ;
+                                  }?>
+							
+                                <a href="<?php echo $_product->getProductUrl() ?>">
+
+                                    <?php $image = $this->helper('catalog/image')->init($_product, 'small_image'); ?>
+                                    <img class="product-img"
+                                         src="<?php echo $this->helper('catalog/cropimage')->cropImage(FEATURED_PRODUCT_WIDTH, FEATURED_PRODUCT_HEIGHT, $image) ?>"
+                                         alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+                                </a>
+                                <p class="product-description">
+                                    <a href="<?php echo $_product->getProductUrl() ?>"><?php echo $_product->getName() ?></a>
+                                    <span class="hot-product-hover">
+                                    <?php if($_product->getSpecialPrice() == null):?>
+                                        <span><?php echo $this->__('Giá: ')."<strong>".Mage::helper('core')->currency($_product->getPrice())."</strong>";?></span>
+                                    <?php else: ?>
+                                        <span><?php echo $this->__('Giá: ')."<strong>".Mage::helper('core')->currency($_product->getSpecialPrice())."</strong>";?></span>
+                                    <?php endif; ?>
+                                    <span class="color" style=" float: right;">
+                                        <?php $color = Mage::helper('amshopby')->showLinks($_product,$this->getMode());
+                                        echo strip_tags($color,'<img>') ?></span>
+                                    </span>
+                                </p>
+                            </dd>
+                            <?php if ($i % HOT_PRODUCT_SLIDER_COLUMN == 3): ?></dl></li><?php endif; ?>
+                    <?php $i++; ?>
+                    <?php if ($i >= HOT_PRODUCT_SLIDER_ITEM_NUMBER) break; ?>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php endif; ?>
+</div>
+   

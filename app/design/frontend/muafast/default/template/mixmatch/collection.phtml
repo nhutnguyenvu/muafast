@@ -1,0 +1,68 @@
+<style type="text/css">
+#collection{ width: 100%;}
+#collection h3{ margin-bottom: 10px; border-bottom: 1px dotted #000; text-transform: uppercase; color: #D91A1A; font-size: 28px; padding: 0 0 10px 5px;}
+#collection h3 span{ color: #000;}
+#collection-left{ float: left; width: 55%;}
+#collection-left .details{ padding: 10px; background: #fafafa;}
+#collection-left .big-img{ text-align: center;}
+#collection-left .comment-face{margin-top: 5px; border: 1px solid; height: 150px; }
+#collection-right{ float: right; width: 44%;}
+#collection-right .detail-customer{ }
+#collection-right .detail-customer img{ width: 50px; height: 50px;}
+#collection-right .detail-customer .customer-link{ overflow: hidden;}
+#collection-right .detail-customer .customer-link li{ float: right; margin: 0 2px;}
+#collection-right .detail-customer .customer-link li a{ color: #000; font-weight: bold;}
+#collection-right .detail-customer .customer-link li a:hover{ color: blue;}
+</style>
+<?php
+$customerID = "";
+if($this->getRequest()->getParam('customerid')){
+    $customerID = $this->getRequest()->getParam('customerid');
+}elseif(Mage::getSingleton('customer/session')->isLoggedIn()){
+    $customerID = Mage::getSingleton('customer/session')->getCustomer()->getId();
+}else echo'<span>Bạn chưa đăng nhập!</span>';
+
+if($customerID != ""):
+$product_id = $this->getRequest()->getParam('pId');
+$full_product = Mage::getModel('catalog/product')->load($product_id);
+?>
+<div id="collection">
+    <h3>Trang phục <span><?php echo $full_product->getName() ?></span></h3>
+    <div id="collection-left">
+        <p class="details">
+            Thuộc tính text-transform được hỗ trợ trong đa số các trình duyệt.
+            Giá trị "inherit" không hỗ trợ trình duyệt IE7 trở xuống, IE8 đòi hỏi phải có !Doctype
+        </p>
+        <div class="big-img">
+            <img src="<?php echo $this->helper('catalog/image')->init($full_product, 'image')->resize(500,360); ?>" alt="" /></a> 
+        </div>
+        <div class="comment-face"></div>
+    </div>
+    <div id="collection-right">
+        <div class="detail-customer">
+            <img src="<?php echo $this->getSkinUrl('images/default-avatar.png')?>" alt="avatar" />
+            <?php $customer = Mage::getSingleton('customer/session')->getCustomer()->getData();?>
+            <?php $firstname = $customer['firstname'];
+                  $lastname = $customer['lastname'];?>
+            <a href="<?php echo $this->getUrl('customer/account/edit') ?>"><?php echo $firstname.' '.$lastname ?> </a>
+            <ul class="customer-link">
+                <li><a href="#"><?php echo $this->__('Xu hướng')?></a></li>
+                <li><a href="#"><?php echo $this->__('Bộ sưa tập')?></a> | </li>
+                <li><a href="#"><?php echo $this->__('Nhận tin')?></a> | </li>
+            </ul>
+        </div>
+        <div class="product-list">
+            <?php
+                $products = Mage::getModel('catalog/product')->load($product_id)
+                    ->getCollection()
+                    ->addAttributeToFilter('type_id','grouped')
+                ;
+                foreach ($products as $product) {
+                    $associatedProducts = $product->getTypeInstance(true)->getAssociatedProducts($product);
+                   count($associatedProducts); // Do something with the $associatedProducts collection
+                }
+            ?>
+        </div>
+    </div>
+</div>
+<?php endif; ?>

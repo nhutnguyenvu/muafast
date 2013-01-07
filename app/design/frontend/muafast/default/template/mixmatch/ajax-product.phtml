@@ -1,0 +1,160 @@
+<?php $_helper = $this->helper('catalog/output'); ?>
+<?php $product_id = $this->getRequest()->getParam('product_id') ?>
+<?php $full_product = Mage::getModel('catalog/product')->load($product_id); ?>
+<?php $vendor_data = FavoredMinds_Vendor_Block_Vendor_Renderer_Vendor::getVendorInfo($full_product->getData('manufacturer'));
+      $vendor = Mage::getModel("vendor/vendor")->load($vendor_data['vendor_id']);
+      $vendor_block = $this->getLayout()->getBlockSingleton("vendor/vendor_renderer_vendor");
+       $vendor_logo = $vendor_block->getLogoSrcFrontEnd($vendor);?>
+    <form action="<?php echo $this->helper('checkout/cart')->getAddUrl($full_product); ?>" method="post" id="product_form">
+<div class="product-view detail-product">
+    <div class="detail-left">
+    <img src="<?php echo $this->helper('catalog/image')->init($full_product, 'image')->resize(250,300); ?>" alt="" />
+    </div>
+    <div class="detail-right">
+        <div class="product-name"><h1><?php echo $full_product->getName() ?></h1></div>
+        <div class="product-sku"><?php echo $this->__("Mã sản phẩm:"); ?> <?php echo $full_product->getSku(); ?></div>
+        <div class="prices">
+        <?php $price_specuial = $full_product->getSpecialPrice(); ?>
+        <?php if($price_specuial == ""):?>
+            <span style="font-weight: bold;"><?php echo  $price = Mage::helper('core')->currency($full_product->getPrice(),true,false);?></span>
+        <?php else: ?>
+            <span style="font-weight: bold;"><?php echo  $price = Mage::helper('core')->currency($full_product->getSpecialPrice(),true,false);?></span><br />
+            <span style="text-decoration: line-through;"><?php echo  $price = Mage::helper('core')->currency($full_product->getPrice(),true,false);?></span>
+        <?php endif; ?>
+        </div>
+        <?php $buttonTitle = $this->__('Add to Cart'); ?>
+<?php $_productQtySelectNum = 10; ?>
+<?php if ($full_product->isSaleable()): ?>
+    <div class="add-to-cart">
+        <?php if (!$full_product->isGrouped()): ?>
+            <label for="qty"><?php echo $this->__('Qty:') ?></label>
+<!--            <input type="text" name="qty" id="qty" maxlength="12" value="<?php echo $this->getProductDefaultQty() * 1 ?>" title="<?php echo $this->__('Qty') ?>" class="input-text qty" />-->
+            <select name="qty" id="qty" title="<?php echo $this->__('Qty') ?>" class="input-text qty" >
+                <?php for ($i = 1; $i < $_productQtySelectNum; $i++) { ?>
+                    <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                <?php } ?>
+            </select>
+        <?php endif; ?>
+            
+            
+        <div class="buttons-set">
+            <button type="button" title="<?php echo $buttonTitle ?>" class="button btn-cart" onclick="productAddToForm.submit(this)">
+                <span><span><?php echo $buttonTitle ?></span></span>
+            </button>
+			<span id='ajax_loader' style='display:none'><img src='<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif')?>'/></span>
+        </div>
+        <?php //echo $this->getChildHtml('', true, true) ?>
+    </div>
+<?php endif; ?>
+       <div class="vender-images"><img class="shop-logo" src="<?php echo $vendor_logo ?>" width="100" height="70" /></div>
+        <table class="data-table" id="product-attribute-specs-table">
+            <col width="25%" />
+            <col />
+            <tbody>
+			<?php if($_additional = $this->getAdditionalData($full_product)): ?>
+			 <?php foreach ($_additional as $_data): ?>
+			<?php if($_data['value']=="No" || $_data['value']=="N/A"){continue;} ?>
+                <tr>
+                    <th class="label"><?php echo $this->htmlEscape($this->__($_data['label'])) ?></th>
+                    <td class="data "><?php echo $_helper->productAttribute($_product, $_data['value'], $_data['code']) ?></td>
+                </tr>
+            <?php endforeach; ?>
+			<?php endif; ?>
+                <tr>
+                    <th class="label"><?php echo $this->__('Thông tin giao hàng') ?></th>
+                    <td class="data"><?php echo $this->__('Trong vòng 24-48 tiếng kể từ khi nhận được thanh toán của khách hàng') ?></td>
+                </tr>
+                <tr>
+    		<?php $block = Mage::getBlockSingleton("Mage_Page_Block_Html_Header"); ?>
+                    <th class="label">
+                        <img class="logo-small"src="<?php echo $this->getSkinUrl('images/logo-black.png') ?>" alt="<?php echo $block->getLogoAlt() ?>" />
+    		</th>
+                    <td class="data"><?php echo $this->__('Muafast cam kết bán những sản phẩm đúng chất lượng - đúng thương hiệu') ?></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</form>
+ <script type="text/javascript">
+	jQuery.noConflict();
+	jQuery(document).ready(function(){
+		jQuery("#msg").fancybox({
+			'modal' : true,
+		});	
+	});
+    //<![CDATA[
+        var productAddToForm = new VarienForm('product_form');
+    	productAddToForm.submit = function(button, url) {
+		if (this.validator.validate()) {
+			var form = this.form;
+			var oldUrl = form.action;
+			if (url) {
+				form.action = url;
+			}
+			var e = null;
+			// Start of our new ajax code
+			if (!url) {
+				url = jQuery('#product_form').attr('action');
+			}
+			url = url.replace("checkout/cart","ajax/index"); // New Code
+			var data = jQuery('#product_form').serialize();
+			data += '&isAjax=1';
+			jQuery('#ajax_loader').show();
+			try {
+				jQuery.ajax( {
+					url : url,
+					dataType : 'json',
+					type : 'post',
+					data : data,
+					success : function(data) {
+						jQuery('#ajax_loader').hide();
+//                        alert(data.status + ": " + data.message);
+						if(data.status == 'ERROR'){
+							jQuery('.msg-text').html(data.message);
+							jQuery('#msg').trigger('click');
+						}else{
+							if(jQuery('.cart-inner')){
+								jQuery('.cart-inner').replaceWith(data.sidebar);
+							}
+							//alert(data.toplink);
+							if(jQuery('.header .links .cart-mini .num-cart')){
+							   jQuery('.header .links .cart-mini .num-cart').html(data.toplink);
+							}
+                            jQuery('.overlay-contact').fadeOut();
+                            jQuery('#lightbox-rp').fadeOut();
+                            jQuery('#lightbox-rp').html(''); 
+							//jQuery('.cart-inner .cart-content').stop(true, true).delay(0).slideDown(0);
+							jQuery('.cart-inner .cart-content').slideDown(0);
+							//setTimeout(function(){
+								//jQuery('.cart-inner .cart-content').stop(true, true).delay(0).slideUp(0);
+							//},1500);
+						}
+					}
+				});
+			} catch (e) {
+			}
+			// End of our new ajax code
+			this.form.action = oldUrl;
+			if (e) {
+				throw e;
+			}
+		}
+	}.bind(productAddToForm);
+    productAddToForm.submitLight = function(button, url){
+            if(this.validator) {
+                var nv = Validation.methods;
+                delete Validation.methods['required-entry'];
+                delete Validation.methods['validate-one-required'];
+                delete Validation.methods['validate-one-required-by-name'];
+                if (this.validator.validate()) {
+                    if (url) {
+                        this.form.action = url;
+                    }
+                    this.form.submit();
+                }
+                Object.extend(Validation.methods, nv);
+            }
+        }.bind(productAddToForm);
+    //]]>
+    </script>

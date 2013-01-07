@@ -1,0 +1,43 @@
+
+<?php $vendorList = $this->getVendorList(); ?>
+<?php $page_arr = $this->page_arr ?>
+<?php if(count($vendorList) > 0):?>
+		<?php $_columnCount = 3; $_collectionSize=$vendorList->count(); ?>
+		
+        <?php $i=0 ;foreach ($vendorList as $vendor): ?>
+          <?php if ($i++%$_columnCount==0): ?>
+		  
+			<ul class="products-grid">
+          <?php endif ?>
+        <li>
+            <?php $vendorId = $vendor->getVendorId();?>
+            <?php $saling = $vendor['is_saling'];?>
+            <?php $url_vendor = Mage::getBaseUrl().$vendor['path'] ?>
+            <?php $logo = $this->getLogoSrcFrontEnd($vendor) ?>
+            <?php $description = $vendor->getAboutcompany(); ?>
+            <?php $companyName = $vendor->getCompanyName(); ?>
+            <?php if(strlen($description) > MAXIMUM_HP_DES_SLIDE): ?>
+                        <?php $description = MyString::split(MAXIMUM_HP_DES_SLIDE, $description);?>
+            <?php endif; ?>
+            
+            <a class="vendor-image" href="<?php echo $url_vendor ?>">
+                <img  class="product-img" src="<?php echo $logo?>" width="298" height="298" alt="" >
+            </a>
+            <div class="product-description">
+                <a href="<?php echo $url_vendor ?>">
+                <img align="left" style="margin-right: 5px;" src="<?php echo $this->getSkinUrl('images/gianhang.png')?>" width="40" height="33" alt="" />
+                    <div class="text"><span class="title-shop"><?php echo $companyName ?></span><br />
+                    <?php echo strip_tags(implode(' ',array_slice(explode(' ',$description),0,5)).'...'); ?></div></a>
+                <?php if($saling != 0):?><div class="discount-s discount-list"><p>Sale</p></div><?php endif; ?>
+            </div>
+        </li>
+		<?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+		  </ul>
+		  
+        <?php endif ?>
+        <?php endforeach ?>
+	
+	<?php else:?>
+	<p class="note-msg"><?php echo $this->__('There are no vendor matching the selection.') ?></p>
+   <?php endif; ?>
+   

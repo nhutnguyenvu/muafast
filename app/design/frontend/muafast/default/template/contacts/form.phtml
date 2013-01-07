@@ -1,0 +1,156 @@
+﻿<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<div style="display:none;" class="overlay-contact"></div>
+<div class="contact-content" style="display:none;">
+	<a class="lightbox-close-2" href="javascript:void(0)" >
+        <img alt="" src="<?php echo $this->getSkinUrl("images/close_color.png"); ?>">
+	</a>
+	<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+	<div class="page-title">
+		<h1><?php echo Mage::helper('contacts')->__('Contact Us') ?></h1>
+	</div>
+	<div id="feedback" style="display:none;">Cảm ơn bạn đã gửi thông tin cho chúng tôi! Click <a href="<?php $this->getHomeUrl(); ?>">vào đây</a> để quay về trang chủ</div>
+	<form id="contactForm" name="contactForm">
+		<div class="fieldset">
+			<h2 class="legend"><?php echo Mage::helper('contacts')->__('Contact Information') ?></h2>
+			<ul class="form-list">
+				<li class="fields">
+					<div class="field">
+						<label for="name" class="required"><em>*</em><?php echo Mage::helper('contacts')->__('Name') ?></label>
+						<div class="input-box">
+							<input name="name" id="name" title="<?php echo Mage::helper('contacts')->__('Name') ?>" value="<?php echo $this->htmlEscape($this->helper('contacts')->getUserName()) ?>" class="input-text required-entry" type="text" />
+						</div>
+					</div>
+					<div class="field">
+						<label for="cemail" class="required"><em>*</em><?php echo Mage::helper('contacts')->__('Email') ?></label>
+						<div class="input-box">
+							<input name="cemail" id="cemail" title="<?php echo Mage::helper('contacts')->__('Email') ?>" value="<?php echo $this->htmlEscape($this->helper('contacts')->getUserEmail()) ?>" class="input-text required-entry validate-email" type="text" />
+						</div>
+					</div>
+				</li>
+				<li>
+					<label for="telephone"><?php echo Mage::helper('contacts')->__('Telephone') ?></label>
+					<div class="input-box">
+						<input name="telephone" id="telephone" title="<?php echo Mage::helper('contacts')->__('Telephone') ?>" value="" class="input-text" type="text" />
+					</div>
+				</li>
+				<li class="wide">
+					<label for="comment" class="required"><em>*</em><?php echo Mage::helper('contacts')->__('Comment') ?></label>
+					<div class="input-box">
+						<textarea name="comment" id="comment" title="<?php echo Mage::helper('contacts')->__('Comment') ?>" class="required-entry input-text" cols="5" rows="3"></textarea>
+					</div>
+				</li>
+				<li>
+					<div class="captcha" style="float:left">
+						<a href="javascript:void(0)" id="cregister">reset</a>
+						<img src="<?php echo $this->getUrl('sociallogin/index/captcha')?>?width=124&height=30&characters=5" id='captchaimgc' alt="captcha" />
+					</div><br/><br/>
+					<label for="message"><?php echo $this->__('Vui lòng nhập mã trên :')?></label>
+					<div class="input-box">
+						<input id="security_code_c" style="width: 229px;" class="input-text required-entry"  name="security_code_c" type="text" />
+						<div id="security_code_error_c" class="popup_error_msg_c"></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="buttons-set">
+			<p class="required"><?php echo Mage::helper('contacts')->__('* Required Fields') ?></p>
+			<input type="text" name="hideit" id="hideit" value="" style="display:none !important;" />
+			<button type="button" onclick="fsubm()" title="<?php echo Mage::helper('contacts')->__('Submit') ?>" class="button"><span><span><?php echo Mage::helper('contacts')->__('Submit') ?></span></span></button>
+			<img style="display:none;" src="<?php echo $this->getSkinUrl("images/loader.gif"); ?>" id="loading"/>
+		</div>
+	</form>
+	
+</div>
+<div class="content-link" style="">
+	<a href="javascript:void(0);"><img src="<?php echo $this->getSkinUrl("images/Feedback.png") ?>" alt=""/></a>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+    
+    function fsubm(){ 
+		var contactForm = new VarienForm('contactForm', true);
+		var security_code_c = document.getElementById("security_code_c").value;	
+		if(security_code_c=='')
+		{
+			jQuery('security_code_c').addClassName("validation-failed");
+			jQuery('security_code_error_c').innerHTML='<div style="" id="advice-required-entry-security-code" class="validation-advice"><?php echo $this->__('This field is required'); ?></div>';
+			
+		}else{
+			//jQuery('security_code_c').removeClassName("validation-failed");
+			jQuery('security_code_error_c').innerHTML='';   
+		}
+			
+		 if (contactForm.validator.validate()) {
+			  new Ajax.Updater(
+				{success:'contactForm'}, 
+				'<?php echo $this->getUrl('contacts/index/post') ?>', 
+				{
+					method:'post', 
+					action:"/contacts/index/post", 
+					asynchronous:true, 
+					evalScripts:false, 
+					onComplete:function(request, json){
+						Element.hide('contactForm');
+						Element.show('feedback');
+					}, 
+				 onLoading:function(request, json){Element.show('loading');}, 
+				 parameters:Form.serialize($('contactForm'))
+			 });	
+		 }
+   }
+//]]>
+</script>
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+	
+		jQuery('#cregister').click(function(){
+			var d = new Date();
+			jQuery("#captchaimgc").attr("src", "<?php echo $this->getUrl('sociallogin/index/captcha')?>?width=124&height=30&characters=5&"+d.getTime());
+		})
+	
+        jQuery('div.content-link a').click(function(){
+			jQuery('body,html').animate({
+				scrollTop: 0
+			}, 800);
+            jQuery('.overlay-contact').fadeIn();
+            jQuery('div.contact-content').fadeIn();
+        })
+        
+        jQuery('.lightbox-close-2').click(function(){
+            jQuery('div.contact-content').fadeOut();
+            jQuery('.overlay-contact').fadeOut();
+        })
+        
+        jQuery('.overlay-contact').click(function(){
+			jQuery(this).fadeOut();
+            jQuery('div.contact-content').fadeOut();
+        })
+    })
+</script>

@@ -1,0 +1,110 @@
+<div class="content-header">
+  <table cellspacing="0" class="grid-header">
+    <tr>
+      <td><h3><?=$this->__('Genetare Vendor Sales Statements')?></h3></td>
+    </tr>
+  </table>
+</div>
+<form enctype="multipart/form-data" method="post" action="<?php echo $this->getUrl('*/*/process', array('id' => $this->getRequest()->getParam('id')));?>" id="generate_form">
+  <div class="entry-edit">
+    <!--
+    <div class="entry-edit-head">
+      <h4 class="icon-head head-edit-form fieldset-legend">Payment Information</h4>
+      <div class="form-buttons"></div>
+    </div>
+    -->
+    <div id="vendorsales_tracking" class="fieldset ">
+      <table cellspacing="0" style="margin: 0px auto;">
+        <tr>
+          <td class="filter" style="text-align: center;">
+            <?php echo $this->__('Statement Name') ?>:&nbsp;
+            <input class="input-text" type="text" id="statement_period" name="statement_period" value="" />
+          </td>
+        </tr>
+        <tr>
+          <td class="a-left filter" style="padding-top: 10px; text-align: center;">
+            <div class="f-left">
+              <div>
+		<?php 
+			$format = Mage::app()->getLocale()->getDateStrFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
+    		        $format .= ' ' . Mage::app()->getLocale()->getTimeStrFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
+		?>
+                <img src="<?php echo $this->getSkinUrl('images/grid-cal.gif') ?>" title="<?php echo $this->__('Select Date') ?>" id="period_date_from_trig" alt="<?php echo $this->__('Select Date') ?>" class="v-middle" style="float:right; margin-right: 10px;"/>
+                <?php echo $this->__('From') ?>:&nbsp;
+                <input class="input-text no-changes required-entry" type="text" id="period_date_from" name="report_from" value="<?php echo $this->getFrom() ?>" style="width:10em" readonly/>
+                &nbsp;&nbsp;
+              </div>
+              <script type="text/javascript">
+                //<![CDATA[
+                Calendar.setup({
+                  inputField: "period_date_from",
+                  ifFormat: "<?php echo $format; ?>",
+                  showsTime: false,
+                  button: "period_date_from_trig",
+                  align: "Bl",
+                  singleClick : true
+                });
+                //]]>
+              </script>
+            </div>
+
+            <div class="f-left">
+              <div>
+                <img src="<?php echo $this->getSkinUrl('images/grid-cal.gif') ?>" class="v-middle" title="<?php echo $this->__('Select Date') ?>"id="period_date_to_trig" alt="<?php echo $this->__('Select Date') ?>" style="float:right; margin-right: 10px;"/>&nbsp;&nbsp;
+                <?php echo $this->__('To') ?>:&nbsp;
+                <input class="input-text no-changes required-entry" type="text" id="period_date_to" name="report_to"  value="<?php echo $this->getTo() ?>" style="width:10em" readonly/>
+                <script type="text/javascript">
+                  //<![CDATA[
+                  Calendar.setup({
+                    inputField: "period_date_to",
+                    ifFormat: "<?php echo $format; ?>",
+                    showsTime: false,
+                    button: "period_date_to_trig",
+                    align: "Bl",
+                    singleClick : true
+                  });
+                  //]]>
+                </script>
+              </div>
+            </div>
+            <div class="f-left">
+              <select multiple="multiple" size="7" class="required-element required-entry select multiselect" name="vendors[]" id="vendors">
+                <option value="-1">Select All Vendors</option>
+                <?php
+                $vendor = new FavoredMinds_Vendor_Model_Vendor();
+                $vendors = $vendor->getCollection()->toOptionIdArray();
+                foreach($vendors as $key => $value) {
+                  echo '<option value="' . $value['value'] . '">' . $value['label'] . '</option>';
+                }
+                ?>
+              </select>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-top: 10px; text-align: center;">
+            <input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+            <button style="" onclick="" class="scalable task" type="submit" id="id_b299606ac8223dd6c5c79f977f0bc63a"><span>Generate Statements</span></button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</form>
+
+<script type="text/javascript">
+  //< ![CDATA[
+  var generateForm = new VarienForm('generate_form');
+  function GenerateStatements() {
+    var filters = $$('#generate_form input', '#generate_form select');
+    var elements = [];
+    for(var i in filters){
+      if(filters[i].value && filters[i].value.length && !filters[i].disabled) elements.push(filters[i]);
+    }
+    var validator  = new Validation('generate_form');
+    if (validator.validate()) {
+      setLocation('<?php echo $this->getUrl('*/*/process');?>'+encode_base64(Form.serializeElements(elements))+'/');
+    }
+  }
+  //]]>
+</script>

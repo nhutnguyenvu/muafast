@@ -1,0 +1,17 @@
+  <?php $categories = $this->getCategoryProduct();?>
+	<?php foreach ($categories as $category):  ?>
+		<?php if($this->countproductbycategory($category)>0): ?>
+				<li>
+					<a class="mixnmatch_ajax" href="<?php echo $this->getUrl('mixmatch/index/ajax')."?cat=".$category->getId() ?>" >
+						<?php if($this->getThumbnailImageUrl($category)): ?>
+						<img  width="55px" height="55px" src="<?php echo $this->getThumbnailImageUrl($category) ?>"  alt="<?php	echo $category->getName(); ?>" title="<?php echo $category->getName(); ?>"/>
+						<?php else: ?>
+						<img  width="55px" height="55px" src="/skin/frontend/muafast/default/images/mixmatch/dummy.png"  alt="<?php	echo $category->getName(); ?>" title="<?php echo $category->getName(); ?>"/>
+						<?php endif; ?>
+						<span><?php	echo $category->getName(); ?></span>
+					</a>
+				</li>
+			
+		<?php endif; ?>
+	<?php endforeach; ?>
+	

@@ -1,0 +1,195 @@
+
+        <?php foreach ($this->getItems() as $_item): ?>
+		    <?php if ($_item->getValue() == ""): ?>
+                <dl class="cur_cat">
+                    <ul id="cate_list" class="lst-category-1">
+                        <li class="amshopby-cat amshopby-cat-level-1">
+                            <a href="<?php echo $this->urlEscape($_item->getUrl()) ?>" class="amshopby-attr " title="<?php echo Mage::helper('catalog')->__('Remove This Item')  ?>">
+                                <span><span><?php echo strip_tags($_item->getLabel()) ?></span></span>
+                            </a>
+                        </li>
+                    </ul>
+                </dl>
+			<?php endif; ?>	
+		<?php endforeach ?>			
+       
+<ul id="cate_list" <?php if ($this->getCollapsed() && !$this->getHasSelection() && !('catalogsearch' == Mage::app()->getRequest()->getModuleName())) echo 'style="display:none"' ?>  class="lst-category-1">
+    <?php if (in_array($this->getDisplayType(), array(0, 2))): // default or categories with subcategories?>
+        <?php foreach ($this->getItems() as $_item): ?>
+			<?php if ($_item->getValue() != ""): ?>
+				<li class="amshopby-cat amshopby-cat-level-<?php echo max(1, $_item->getLevel()) ?>">
+						<a class="amshopby-attr" href="<?php echo $this->urlEscape($_item->getUrl()) ?>" title="<?php echo $this->__('Xem sản phẩm của ') . $_item->getLabel() ?>" >
+							<span><span><?php echo $_item->getLabel() ?></span></span>
+						</a>
+				</li>
+			<?php endif; ?>
+        <?php endforeach ?>
+
+
+
+    <?php elseif ($this->getDisplayType() == 3): // static expandable 2 level tree?>
+        <?php foreach ($this->getItems() as $_item): ?>
+            <?php
+            $level = $_item->getLevel();
+            $additional = $_item->getIsFolded() ? 'style="display:none"' : '';
+
+            $class = 'amshopby-cat amshopby-cat-level-' . $level;
+            if (1 != $level) {
+                $class .= ' amshopby-cat-parentid-' . $_item->getId();
+            }
+
+            $showIcon = (1 == $level && $_item->getHasChildren());
+            $icon = ($_item->getIsChildSelected()) ? 'minus' : 'plus';
+            ?>
+            <?php if ($_item->getValue() == "") $cl = 'actived'; else $cl = ''; ?>
+            <li class="<?php echo $class ?>" <?php echo $additional ?>>
+                <?php if ($showIcon): ?><span id="amshopby-cat-id-<?php echo $_item->getId() ?>" class="amshopby-plusminus <?php echo $icon ?>"></span><?php endif ?>
+                <a class="amshopby-attr <?php echo $cl; ?>"  href="<?php echo $this->urlEscape($_item->getUrl()) ?>">
+                    <span><span><?php echo $_item->getLabel() ?></span></span>
+                </a>
+                <!--(<?php //echo $_item->getCount()  ?>)-->
+            </li>
+        <?php endforeach ?>
+    <?php elseif (1 == $this->getDisplayType()): // dropdown ?>
+        <li>
+            <select onchange="if (this.value) setLocation(this.value)" class="amshopby-select">
+                    <!-- uncomment to show Filter name in the dropdown <option value=""><?php echo $this->getName() ?></option>-->
+                <option value=""></option>
+                <?php foreach ($this->getItems() as $_item): ?>
+                    <option  
+                        value="<?php echo $this->urlEscape($_item->getUrl()) ?>" 
+                        <?php if ($_item->getIsSelected()): ?>selected="selected"<?php endif; ?>>
+                            <?php echo str_repeat('&nbsp;&nbsp;', max(0, $_item->getLevel() - 1)) ?>
+                        <?php echo $_item->getLabel() ?> (<?php echo $_item->getCount() ?>)</option>
+                <?php endforeach ?>
+            </select>
+        </li>
+    <?php endif ?>
+</ul>
+
+<?php if (count($this->getItems()) > 3): ?>
+    <div class="expand">
+        <div class="ex_col">
+            <span id="exp">
+                <img src="<?php echo $this->getSkinUrl('images/expand_cate.png') ?>" />
+            </span>
+            <span id="coll" style="display:none">
+                <img src="<?php echo $this->getSkinUrl('images/collapse_cate.png') ?>" />
+            </span>
+        </div>
+    </div>
+<?php endif; ?>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        /*jQuery('div.ex_col span#exp').click(function(){
+                        jQuery(this).css('display','none');
+                        jQuery('div.ex_col span#coll').css('display','block');
+                        jQuery('#season-menu-scroll').css('height','auto');
+                        jQuery('ul.lst-category-1').css('height','auto');
+                });
+                jQuery('div.ex_col span#coll').click(function(){
+                        jQuery(this).css('display','none');
+                        jQuery('div.ex_col span#exp').css('display','block');
+                        jQuery('#season-menu-scroll').css('height','43px');
+                        jQuery('ul.lst-category-1').css('height','32px');
+                });
+		
+                /*jQuery('dl.color .drop-icon').hover(
+                        function(){
+                                jQuery(this).attr("src","<?php echo $this->getSkinUrl('images/icon_drop_hover.png') ?>");
+                                jQuery('dl.color ol').css('display','block');
+                        },
+                        function(){
+                                jQuery(this).attr("src","<?php echo $this->getSkinUrl('images/icon_drop.png') ?>");
+                                //jQuery('dl.color ol').css('display','none');
+                        }
+                );
+                jQuery('dl.color dd.attr-attr ol').hover(function(){
+                                jQuery(this).css('display','block');
+                        },function(){
+                                jQuery(this).css('display','none');
+                        }
+                );
+		
+                jQuery('dl.price .drop-icon').hover(
+                        function(){
+                                jQuery(this).attr("src","<?php echo $this->getSkinUrl('images/icon_drop_hover.png') ?>");
+                                jQuery('dl.price ol').css('display','block');
+                        },
+                        function(){
+                                jQuery(this).attr("src","<?php echo $this->getSkinUrl('images/icon_drop.png') ?>");
+                                //jQuery('dl.price ol').css('display','none');
+                        }
+                );
+		
+                jQuery('dl.price dd.attr-attr ol').hover(function(){
+                                jQuery(this).css('display','block');
+                        },function(){
+                                jQuery(this).css('display','none');
+                        }
+                );*/
+    });
+</script>	
+
+<script type="text/javascript">
+    jQuery.noConflict();
+
+    //jQuery(window).scroll(function(){
+        
+        jQuery(window).scroll(function(){
+            var begin= jQuery(".category-products").offset().top;
+            if(jQuery(window).scrollTop() > begin){
+                jQuery("#season-menu-scroll").addClass("season-menu-scroll");
+            }else{
+                jQuery("#season-menu-scroll").removeClass("season-menu-scroll");
+            }
+        });
+        
+        
+        //        var begin= jQuery(".col-main").offset().top;
+        //        // alert(jQuery(window).scrollTop() + " " + (begin+472));
+        //        jQuery("#season-menu-scroll dl dd ol").hide();		
+        //
+        //		if(jQuery(window).scrollTop() > (begin+472)){
+        //			jQuery(".block-contet #season-menu-scroll").addClass("season-menu-scroll");
+        //		}else{
+        //			jQuery(".block-content #season-menu-scroll").removeClass("season-menu-scroll");
+        //		}
+        //        if(jQuery(window).scrollTop() > begin){
+        //            jQuery("#season-menu-scroll").addClass("season-menu-scroll");
+        //        }else{
+        //            jQuery("#season-menu-scroll").removeClass("season-menu-scroll");
+        //        }
+		
+        /* jQuery('div.ex_col span#exp').click(function(){
+                        jQuery(this).css('display','none');
+                        jQuery('div.ex_col span#coll').css('display','block');
+                        jQuery('#season-menu-scroll').css('height','auto');
+                        jQuery('ul.lst-category-1').css('height','auto');
+                });
+                jQuery('div.ex_col span#coll').click(function(){
+                        jQuery(this).css('display','none');
+                        jQuery('div.ex_col span#exp').css('display','block');
+                        jQuery('#season-menu-scroll').css('height','43px');
+                        jQuery('ul.lst-category-1').css('height','32px');
+                }); */
+		
+        /*jQuery('dl.color p.drop-icon').hover(
+                        function(){
+                                jQuery('dl.color ol').css('display','block');
+                        },
+                        function(){
+                                jQuery('dl.color ol').css('display','none');
+                        }
+                );
+                jQuery('dl.price p.drop-icon').hover(
+                        function(){
+                                jQuery('dl.price ol').css('display','block');
+                        },
+                        function(){
+                                jQuery('dl.price ol').css('display','none');
+                        }
+                );*/
+    //});
+</script>

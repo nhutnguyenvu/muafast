@@ -1,0 +1,121 @@
+<div id="beta-launch"></div>
+<div class="header-container">
+    <div class="header">
+        <?php if ($this->getIsHomePage()): ?>
+            <h1 class="logo"><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><img width="99" height="30" src="<?php echo $this->getSkinUrl("images/logo.png") ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a></h1>
+        <?php else: ?>  
+            <h1 class="logo"><a href="<?php echo $this->getUrl('') ?>" title="<?php echo $this->getLogoAlt() ?>" class="logo"><img width="99" height="30" src="<?php echo $this->getSkinUrl("images/logo.png") ?>" alt="<?php echo $this->getLogoAlt() ?>" /></a></h1>
+        <?php endif ?>
+        <div class="quick-access">
+            <ul class="links last">
+                <li class="last"><a href="javascript:void(0)" title="Hỗ trợ"><span class="mmicon help-button"></span><span>Hỗ trợ</span></a></li>
+                <li class="last"><a href="javascript:void(0)" title="Thể lệ" class="quatang-button"><span class="mmicon quatang-buttons"></span><span><?php echo $this->__('Quà tặng') ?></span></a></li>
+                <li class="last"><a href="javascript:void(0)" title="Thể lệ" class="quydinh-button"><span class="mmicon quydinh-buttons"></span><span><?php echo $this->__('Thể lệ') ?></span></a></li>
+                <li class="last"><a title="Kết quả" href="javascript:void(0)" class="result-button"><span class="mmicon result-buttons"></span><span><?php echo $this->__('Kết quả') ?></span></a></li>
+                
+                <?php $session_fbid = Mage::getSingleton('core/session')->getFacebookID(); ?>
+                <?php if ($this->helper('customer')->isLoggedIn()): ?>
+                    <?php $customer = Mage::getSingleton('customer/session')->getCustomer()->getData(); ?>
+                    <li  class="last">
+                        <?php $check_user = $this->helper('marketing')->checkUserUpload($session_fbid); ?>
+						<?php //echo $check_user.'---'.$session_fbid; ?>
+                        <?php if ($check_user == 0): ?>
+                            <a title="Đăng hình" href="<?php echo $this->getUrl('marketing/index/upload'); ?>"><span class="mmicon danghinh-button"></span><span><?php echo $this->__('Đăng hình') ?></span></a>
+                            <?php else: ?>
+                                <?php $marketing_id = Mage::getModel('marketing/marketing')->getCollection()->addFilter('face_id', $session_fbid); ?>
+                                <?php foreach ($marketing_id as $marketing_idItem): ?>
+                                    <a title="Ảnh của bạn" href="<?php echo $this->getUrl('marketing/index/detail') . '?imageId=' . $marketing_idItem['marketing_id'] ?>"> 
+                                        <span class="mmicon anhcuaban-button"></span><span><?php echo $this->__('Ảnh của bạn'); ?></span> 
+                                    </a>
+    							<?php endforeach; ?>
+                        <?php endif; ?>
+                    </li>
+
+                    <?php else: ?>
+                    <li class="last">
+                        <?php //Mage::getSingleton('core/session')->unsFacebookID(); ?>
+                        <div class="app_login">
+                            <a id='facebook_login' href="javascript:void(0)" title="Facebook Login" onclick='fblogin();'>
+                                <span class="mmicon thamgia-button"></span><span><?php echo $this->__('Tham gia dự thi'); ?></span>
+                            </a>
+                            <img id="progress_image_facebooklogin" style="display:none" src="<?php echo $this->getSkinUrl('images/sociallogin/ajax-loader.gif'); ?>" alt="loading please wait" /></a>
+                        </div>
+                    </li>
+<?php endif; ?>
+                
+                <li class="last"><a title="Sàn đấu" href="<?php echo $this->getUrl('marketing/index/toideptrongmatai')?>"><span class="mmicon sandau-button"></span><span><?php echo $this->__('Sàn đấu') ?></span></a></li>
+                <li class="last"><a title="Ảnh dự thi" href="<?php echo $this->getUrl('marketing/index/list')?>"><span class="mmicon anhduthi-button"></span><span><?php echo $this->__('Ảnh dự thi') ?></span> </a></li>
+                <li class="last"><a title="Tôi đẹp trong mắt ai" href="<?php echo $this->getUrl('marketing')?>"><span class="mmicon toidep-button"></span><span><?php echo $this->__('Tôi đẹp trong mắt ai') ?></span></a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="overlay" style="display: none; min-height: 100px !important;"></div>
+<div id="toidep-quydinh" style="display: none;">
+ <a href="javascript:void(0)" class="lightbox-close-2"><img src="<?php echo $this->getSkinUrl('images/close_color.png')?>" alt="" /></a>
+    <div style=" height: 480px; overflow: scroll; padding: 10px; width: 780px;">
+    <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('toidep_help')->toHtml() ?></div>
+</div>
+<div id="toidep-help" style="display: none;">
+    <a href="javascript:void(0)" class="lightbox-close-2"><img src="<?php echo $this->getSkinUrl('images/close_color.png')?>" alt="" /></a>
+    <div style=" height: 480px; text-align: center; overflow: scroll; padding: 10px; width: 780px;"><?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('huong-dan')->toHtml() ?></div>
+</div>
+<div id="toidep-result" style="display: none;">
+    <a href="javascript:void(0)" class="lightbox-close-2"><img src="<?php echo $this->getSkinUrl('images/close_color.png')?>" alt="" /></a>
+    <div style=" height: auto; width: 800px;">
+    <?php echo $this->getLayout()->createBlock('core/template')->setTemplate('marketing/result.phtml')->toHtml() ?></div>
+</div>
+<div id="toidep-gift" style="display: none;">
+<a href="javascript:void(0)" class="lightbox-close-2"><img src="<?php echo $this->getSkinUrl('images/close_color.png')?>" alt="" /></a>
+    <div style=" height: auto;"><img src="<?php echo $this->getSkinUrl('images/note-result.jpg')?>" alt="quatang" /></div>
+</div>
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        jQuery("body").addClass("marketing-toideptrongmatai");
+        
+        jQuery('.help-button').click(function(){
+            jQuery('.overlay').fadeIn('fast')
+            jQuery('#toidep-help').fadeIn('fast');    
+        })
+        
+        jQuery('.quatang-button').click(function(){
+            jQuery('.overlay').fadeIn('fast')
+            jQuery('#toidep-gift').fadeIn('fast');    
+        })
+        
+        jQuery('.quydinh-button').click(function(){
+            jQuery('.overlay').fadeIn('fast')
+            jQuery('#toidep-quydinh').fadeIn('fast');    
+        })
+        
+        jQuery('.result-button').click(function(){
+            jQuery('.overlay').fadeIn('fast')
+            jQuery('#toidep-result').fadeIn('fast');    
+        })
+       
+        jQuery('.overlay').click(function(){
+            jQuery('.overlay').fadeOut('fast')
+            jQuery('#toidep-help').fadeOut('fast');         
+            jQuery('#toidep-quydinh').fadeOut('fast');
+            jQuery('#toidep-result').fadeOut('fast');
+            jQuery('#toidep-gift').fadeOut('fast');  
+        })
+        
+        jQuery(".lightbox-close-2").click(function(){
+	        jQuery('.overlay').fadeOut('fast')
+            jQuery('#toidep-help').fadeOut('fast');
+            jQuery('#toidep-quydinh').fadeOut('fast');
+            jQuery('#toidep-result').fadeOut('fast');
+            jQuery('#toidep-gift').fadeOut('fast');      
+        })
+        
+        jQuery('#link-share').click(function(){
+            jQuery(this).select();
+        })
+		
+    });
+</script>
+
+
+
+

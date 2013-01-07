@@ -1,0 +1,266 @@
+<div id="test-offset"></div>
+
+<div id="notify-dialog" title="">
+	<span id="notify-dialog-content"></span>
+</div>
+
+<div class="loading_image amshopby-overlay"  style="display:none" ><img src="<?php echo $this->getSkinUrl('images/amshopby-overlay.gif') ?>"></div>
+<div class="mixmatch">
+    <!--column 1-->
+    <div class="mm-column mm-column-1">
+        <div class="mm-column-1-top"></div>
+        <div class="mm-left-menu">
+            <ul>
+                <li class="first">
+                    <a id="mm-left-menu-new">
+                        <span class="mm-lm-icon" id="mm-lm-icon-1"></span>
+                        <span class="mm-lm-title">Tạo mới</span>
+                    </a>
+                </li>
+                <li class="last">
+                    <a id="mm-left-menu-share">
+                        <span class="mm-lm-icon" id="mm-lm-icon-3"></span>
+                        <span class="mm-lm-title">Chia sẻ</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="mm-column-1-bottom"></div>
+    </div>
+
+    <!--column 2-->
+    <div class="mm-column mm-column-2">
+        <div class="mm-column-2-top">
+            <div id="mm-design-menu"></div>
+            <div id="mm-design-frame">
+                <div id="mm-default-text">KÉO CÁC HÌNH Ở ĐÂY ĐỂ TẠO RA TRANG PHỤC CỦA BẠN</div>
+            </div>
+        </div>
+        <div class="mm-column-2-bottom">
+            <div class="mm-bottom-menu">
+                <ul>
+                    <li class="first">
+                        <a href="#">
+                            <span class="mm-lm-icon" id="mm-lm-icon-1"></span>
+                            <span class="mm-lm-title">Xuống</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="mm-lm-icon" id="mm-lm-icon-2"></span>
+                            <span class="mm-lm-title">Lên</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#">
+                            <span class="mm-lm-icon" id="mm-lm-icon-3"></span>
+                            <span class="mm-lm-title">Xóa</span>
+                        </a>
+                    </li>
+                    <li class="last">
+                        <a href="#">
+                            <span class="mm-lm-icon" id="mm-lm-icon-4"></span>
+                            <span class="mm-lm-title">Xóa tất cả</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+	<div class="mm-column mm-column-2b">
+		<!-- 
+		<div class="mm-bottom-menu">
+			<ul>
+				<li class="first">
+					<a href="#">
+						<span class="mm-lm-icon" id="mm-lm-icon-1"></span>
+						<span class="mm-lm-title">Xuống</span>
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="mm-lm-icon" id="mm-lm-icon-2"></span>
+						<span class="mm-lm-title">Lên</span>
+					</a>
+				</li>
+				<li class="">
+					<a href="#">
+						<span class="mm-lm-icon" id="mm-lm-icon-3"></span>
+						<span class="mm-lm-title">Xóa</span>
+					</a>
+				</li>
+				<li class="last">
+					<a href="#">
+						<span class="mm-lm-icon" id="mm-lm-icon-4"></span>
+						<span class="mm-lm-title">Xóa tất cả</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+		-->
+	</div>
+    <!--column 3-->
+    <div class="mm-column mm-column-3">
+		<div class="default-tab" id="default-tab-1">
+			<div class="mm-cat-search">
+				<table>
+					<tr>
+						<td><span class="label">Tìm kiếm</span></td>
+						<td><input class="input-mm-search" type="text" name="string" id="string" /></td>
+						<td><button class="bt-search" onclick="search('<?php echo $this->getUrl('mixmatch/index/ajax') ?>');" ></button></td>
+					</tr>
+				</table>
+			</div>
+			<div class="mm-tree-lv1">
+				<h3> Danh mục sản phẩm </h3>
+				<div class="mm-jcaro-frame">
+					<ul class="mm-tree-table " id="category">
+						<?php echo $this->getChildHtml("category") ?>
+
+					</ul>
+				</div>
+				<h3> Gian hàng </h3>
+				<div class="mm-jcaro-frame">
+					<ul class="mm-tree-table " id="vendor">
+						<?php echo $this->getChildHtml("vendor") ?>
+
+					</ul>
+				</div>
+				<h3> <?php echo $this->__("Phong cách thời trang") ?></h3>
+				<div class="mm-jcaro-frame">
+					<ul class="mm-tree-table " id="tags">
+						<?php echo $this->getChildHtml("tags") ?>
+					</ul>
+				</div>
+				<h3> <?php echo $this->__("Phông nền") ?></h3>
+				<div class="mm-jcaro-frame">
+					<ul class="mm-tree-table " id="mm-background">
+						<li>
+							<a title="Không dùng ảnh nền">
+								<span class="mm-background-img"
+								style="background: url('/skin/frontend/muafast/default/images/mixmatch/dummy.png') no-repeat scroll center center transparent; display: block; margin: 0px; height: 56px;" >
+								</span>
+							</a>
+						</li>
+					<?php
+						$mixmatch_bg_dir = Mage::getBaseDir('media') . DS.'mixmatch'.DS.'background' ;
+						$arrIgnore = array('.', '..');
+						$files = read_all_files($mixmatch_bg_dir); 
+						foreach ($files['files'] as $key => $file) {
+
+							if (!in_array($file, $arrIgnore)) {
+								$fileArr = explode('\\', $file);
+								$fileNameExt = end($fileArr);
+								$filetype = explode('.', $fileNameExt);
+								$fileName = substr($fileNameExt, 0, -4);
+								@$filetype = $filetype[count($filetype) - 1];
+								?>
+								
+								<li>
+									<a>
+										<img class="mm-background-img" src="/media/mixmatch/background/<?php echo $fileName.".".$filetype; ?>"/>
+									</a>
+								</li>
+								
+								<?php
+							}
+						}
+					?>
+					</ul>
+				</div>
+			</div>
+		</div>
+        <div class="mm-right-menu-tabs">
+            <ul>
+                <li>
+                    <a href="#tabs-1" class="no-icon">Sản phẩm</a>
+                </li>
+            </ul>
+            <div id="tabs-1" taborder="1">
+				<div id="result_product_1" class="result_product"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="fb-root"></div>
+<script src='http://connect.facebook.net/en_US/all.js'></script>
+<p id='msg'></p>
+	
+<script>
+    // jQuery(document).ready(function(){
+	// });
+	
+	// FB.init({appId: "458559150861336", status: true, cookie: true});
+	
+</script>
+<!--
+<h2><?php echo $this->__("Phông nền") ?></h2>	
+<div style="width:600px">
+       <form id="imageform" method="post" enctype="multipart/form-data" action='<?php echo $this->getUrl('mixmatch/index/uploadimage') ?>'>
+       Upload your image <input type="file" name="image" id="photoimg" />
+       </form>
+       <div id ="msg" ></div>
+       <img id="backgroud_image" src="" />
+</div>
+<script type="text/javascript" >
+       jQuery(document).ready(function() { 
+               
+       jQuery('#photoimg').live('change', function()			{ 
+                       jQuery("#msg").html('<img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="Uploading...."/>');
+                       jQuery("#imageform").ajaxForm({
+                                               dataType : 'json',
+                                               success: function(data) {
+                                                jQuery("#msg").html("");
+                                                jQuery('#photoimg').val("");
+                                                       if(data.status=="ERROR"){
+                                                       jQuery("#msg").html(data.message);
+                                                       }else{
+                                                               jQuery("#backgroud_image").attr('src',data.src);
+                                                       }
+                                               
+                                               }
+                       }).submit();
+               
+               });
+   }); 
+               
+     
+</script>
+
+-->
+
+<?php
+function read_all_files($root = '.') {
+    $files = array('files' => array(), 'dirs' => array());
+    $directories = array();
+    $last_letter = $root[strlen($root) - 1];
+    $root = ($last_letter == '\\' || $last_letter == '/') ? $root : $root . DIRECTORY_SEPARATOR;
+
+    $directories[] = $root;
+
+    while (sizeof($directories)) {
+        $dir = array_pop($directories);
+        if ($handle = opendir($dir)) {
+            while (false !== ($file = readdir($handle))) {
+                if ($file == '.' || $file == '..') {
+                    continue;
+                }
+
+                $file = $dir . $file;
+
+                if (is_dir($file)) {
+                    $directory_path = $file . DIRECTORY_SEPARATOR;
+                    array_push($directories, $directory_path);
+                    $files['dirs'][] = $directory_path;
+                } elseif (is_file($file)) {
+                    $files['files'][] = $file;
+                }
+            }
+            closedir($handle);
+        }
+    }
+
+    return $files;
+}
+
+?>

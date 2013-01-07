@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+
+    <default>
+        <reference name="head">
+            <action method="addJs"><script>jquery/jquery.js</script></action>
+        </reference>
+        
+        
+        <block type="checkout/onepage" name="onepagecheckout.onepage" template="tts/onepagecheckout/onepage.phtml">
+            <block type="checkout/onepage_login" name="login" template="tts/onepagecheckout/onepage/login.phtml">
+                <block type="page/html_wrapper" name="checkout.onepage.login.before" as="login_before" translate="label">
+                    <label>Login/Registration Before</label>
+                    <action method="setMayBeInvisible"><value>1</value></action>
+                </block>
+            </block>
+            <block type="checkout/onepage" name="onepagecheckout.onepage.layout" as="layout" template="tts/onepagecheckout/onepage/layout.phtml">
+
+                <!--action method="setTemplate"><template>tts/onepagecheckout/onepage/layout-two-columns.phtml</template></action-->
+
+                <block type="checkout/onepage_review_info" name="order.review" as="orderReview" template="tts/onepagecheckout/onepage/review/info.phtml">
+                    <action method="addItemRender"><type>default</type><block>checkout/cart_item_renderer</block><template>tts/onepagecheckout/onepage/review/item.phtml</template></action>
+                    <action method="addItemRender"><type>grouped</type><block>checkout/cart_item_renderer_grouped</block><template>tts/onepagecheckout/onepage/review/item.phtml</template></action>
+                    <action method="addItemRender"><type>configurable</type><block>checkout/cart_item_renderer_configurable</block><template>tts/onepagecheckout/onepage/review/item.phtml</template></action>
+                    <block type="checkout/cart_totals" name="checkout.onepage.review.info.totals" as="totals" template="tts/onepagecheckout/onepage/review/totals.phtml"/>
+                    <block type="core/text_list" name="checkout.onepage.review.info.items.before" as="items_before" translate="label">
+                        <label>Items Before</label>
+                    </block>
+                    <block type="core/text_list" name="checkout.onepage.review.info.items.after" as="items_after" translate="label">
+                        <label>Items After</label>
+                    </block>
+                </block>
+                <block type="onepagecheckout/billing" name="checkout.onepage.billing" as="billing" template="tts/onepagecheckout/onepage/billing.phtml"/>
+                <block type="onepagecheckout/shipping" name="checkout.onepage.shipping" as="shipping" template="tts/onepagecheckout/onepage/shipping.phtml"/>
+                <block type="checkout/onepage_shipping_method" name="checkout.onepage.shipping_method" as="shipping_method" template="tts/onepagecheckout/onepage/shipping_method.phtml">
+                    <block type="onepagecheckout/shipping_method_available" name="checkout.onepage.shipping_method.available" as="available" template="tts/onepagecheckout/onepage/shipping_method/available.phtml"/>
+                </block>
+                <block type="checkout/onepage_payment" name="checkout.onepage.payment" as="payment" template="tts/onepagecheckout/onepage/payment.phtml">
+                    <block type="checkout/onepage_payment_methods" name="checkout.payment.methods" as="methods" template="tts/onepagecheckout/onepage/payment/methods.phtml">
+                        <action method="setMethodFormTemplate"><method>purchaseorder</method><template>payment/form/purchaseorder.phtml</template></action>
+                    </block>
+                </block>
+                <block type="checkout/onepage_review" name="checkout.onepage.review" as="review" template="tts/onepagecheckout/onepage/review.phtml">
+                    <action method="insert"><block>order.review</block></action>
+                    <block type="checkout/onepage_shipping_method_additional" name="checkout.onepage.shipping_method.additional" as="additional" template="tts/onepagecheckout/onepage/shipping_method/additional.phtml"/>
+                    <block type="checkout/agreements" name="checkout.onepage.agreements" as="agreements" template="tts/onepagecheckout/onepage/agreements.phtml"/>
+                    <block type="checkout/cart_coupon" name="checkout.cart.coupon" as="coupon" template="tts/onepagecheckout/onepage/coupon.phtml"/>
+                    <block type="core/template" name="checkout.onepage.review.button" as="button" template="tts/onepagecheckout/onepage/review/button.phtml"/>
+                </block>
+            </block>
+        </block>
+    </default>
+
+    <checkout_onepage_index translate="label">
+        <block type="onepagecheckout/toggle"></block>
+    </checkout_onepage_index>
+
+
+<!--
+One page checkout ajax update blocks
+-->
+
+    <onepagecheckout_onepage_ajax>
+        <block type="checkout/onepage_review_info" name="review" template="tts/onepagecheckout/onepage/review/info.phtml">
+            <action method="addItemRender"><type>default</type><block>checkout/cart_item_renderer</block><template>tts/onepagecheckout/onepage/review/item.phtml</template></action>
+            <action method="addItemRender"><type>grouped</type><block>checkout/cart_item_renderer_grouped</block><template>tts/onepagecheckout/onepage/review/item.phtml</template></action>
+            <action method="addItemRender"><type>configurable</type><block>checkout/cart_item_renderer_configurable</block><template>tts/onepagecheckout/onepage/review/item.phtml</template></action>
+            <block type="checkout/cart_totals" name="checkout.onepage.review.info.totals" as="totals" template="tts/onepagecheckout/onepage/review/totals.phtml"/>
+            <block type="core/text_list" name="checkout.onepage.review.info.items.before" as="items_before" translate="label">
+                <label>Items Before</label>
+            </block>
+            <block type="core/text_list" name="checkout.onepage.review.info.items.after" as="items_after" translate="label">
+                <label>Items After</label>
+            </block>
+        </block>
+
+        <block type="checkout/onepage_payment_methods" name="paymentmethod" template="tts/onepagecheckout/onepage/payment/methods.phtml">
+            <action method="setMethodFormTemplate"><method>purchaseorder</method><template>payment/form/purchaseorder.phtml</template></action>
+        </block>
+
+        <block type="onepagecheckout/shipping_method_available" name="shippingmethod" template="tts/onepagecheckout/onepage/shipping_method/available.phtml"/>
+
+        <block type="checkout/onepage_shipping_method_additional" name="additional" template="tts/onepagecheckout/onepage/shipping_method/additional.phtml">
+            <action method="setDontDisplayContainer"><param>1</param></action>
+        </block>
+
+        <block type="checkout/cart_coupon" name="coupon" template="tts/onepagecheckout/onepage/coupon.phtml"/>
+    </onepagecheckout_onepage_ajax>
+</layout>

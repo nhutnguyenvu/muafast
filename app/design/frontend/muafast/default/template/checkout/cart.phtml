@@ -1,0 +1,159 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Shopping cart template
+ *
+ * @see Mage_Checkout_Block_Cart
+ */
+?>
+<div class="page-title title-all-page">
+    <h2><?php echo $this->__("Giỏ hàng của bạn") ?></h2>
+</div>
+<div class="cart">
+    
+    <ul class="tab tab-type-1">
+        <li class="current"><a class="ui-tab tab-1" title="<?php echo $this->__("GIỎ HÀNG") ?>" href="javascript:;"><?php echo $this->__("GIỎ HÀNG") ?></a></li>
+        <li><a class="ui-tab tab-2" title="<?php echo $this->__("THÔNG TIN ĐẶT HÀNG") ?>" href="product-step2.html"><?php echo $this->__("THÔNG TIN ĐẶT HÀNG") ?> </a></li>
+        <li class="current"><a class="ui-tab tab-3" title="<?php echo $this->__("KẾT THÚC") ?>" href="product-step3.html"> <?php echo $this->__("KẾT THÚC") ?></a></li>
+    </ul>
+    <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+    <?php echo $this->getChildHtml('form_before') ?>
+    <form action="<?php echo $this->getUrl('checkout/cart/updatePost') ?>" method="post">
+          
+            <table id="shopping-cart-table" class="data-table cart-table" ccellspacing="0" cellpadding="0">
+          
+            <?php $mergedCells = ($this->helper('tax')->displayCartBothPrices() ? 2 : 1); ?>
+                <thead>
+                    <tr>
+                        <th class="a-left" rowspan="<?php echo $mergedCells; ?>"><?php echo $this->__("Product Name") ?></th>
+                        <?php if ($this->helper('wishlist')->isAllowInCart()) : ?>
+                            <th class="a-center" rowspan="<?php echo $mergedCells; ?>"><?php echo $this->__('Move to Wishlist') ?></th>
+                        <?php endif ?>
+                        <th class="a-left" colspan="<?php echo $mergedCells; ?>"><?php echo $this->__('Unit Price') ?></th>
+                        <th class="a-center" rowspan="<?php echo $mergedCells; ?>"><?php echo $this->__('Qty') ?></th>
+                        <th class="a-right" colspan="<?php echo $mergedCells; ?>"><?php echo $this->__('Subtotal') ?></th>
+                        
+                    </tr>
+                    <?php if ($this->helper('tax')->displayCartBothPrices()): ?>
+                    <tr>
+                        <th class="a-right"><?php echo $this->helper('tax')->getIncExcTaxLabel(false) ?></th>
+                        <th><?php echo $this->helper('tax')->getIncExcTaxLabel(true) ?></th>
+                        <th class="a-right"><?php echo $this->helper('tax')->getIncExcTaxLabel(false) ?></th>
+                        <th><?php echo $this->helper('tax')->getIncExcTaxLabel(true) ?></th>
+                    </tr>
+                    <?php endif; ?>
+                </thead>
+               
+                <tbody>
+                <?php foreach($this->getItems() as $_item): ?>
+                    <?php echo $this->getItemHtml($_item) ?>
+                <?php endforeach ?>
+                     <!--<span class="name-pro">tong tien truoc khi giam</span>-->
+                    <?php echo $this->getChildHtml('totals'); ?>
+                    <!--<span class="txt-price">800.000 vnd</span>-->
+                </tbody>
+                <tfoot>
+                    <tr class="first last">
+                        
+                        <?php if($this->getContinueShoppingUrl()): ?>
+                            <!--<button type="button" title="<?php //echo $this->__('Continue Shopping') ?>" class="button btn-continue" onclick="setLocation('<?php //echo $this->getContinueShoppingUrl() ?>')"><span><span><?php //echo $this->__('Continue Shopping') ?></span></span></button>-->
+                        <td class="a-left" colspan="2"> <a class="lnk-back float-l" title="<?php echo $this->__("Continue Shopping") ?>" href="<?php echo $this->getContinueShoppingUrl() ?>"><?php echo $this->__("Continue Shopping") ?></a></td>
+                        <?php endif; ?>
+
+
+                        <!--[if lt IE 8]>
+                        <input type="hidden" id="update_cart_action_container" />
+                        <script type="text/javascript">
+                        //<![CDATA[
+                            Event.observe(window, 'load', function()
+                            {
+                                // Internet Explorer (lt 8) does not support value attribute in button elements
+                                $emptyCartButton = $('empty_cart_button');
+                                $cartActionContainer = $('update_cart_action_container');
+                                if ($emptyCartButton && $cartActionContainer) {
+                                    Event.observe($emptyCartButton, 'click', function()
+                                    {
+                                        $emptyCartButton.setAttribute('name', 'update_cart_action_temp');
+                                        $cartActionContainer.setAttribute('name', 'update_cart_action');
+                                        $cartActionContainer.setValue('empty_cart');
+                                    });
+                                }
+
+                            });
+                        //]]>
+                        </script>
+                        <![endif]-->
+                        
+                    
+                    
+                        
+                        <td class="a-right" colspan="2">
+                            <?php if(!$this->hasError()): ?>
+                               
+                                <?php foreach ($this->getMethods('methods') as $method): ?>
+                                    <?php if ($methodHtml = $this->getMethodHtml($method)): ?>
+                                    <?php echo $methodHtml; ?>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                                
+                                <?php endif; ?>
+                        </td>
+                        
+                        
+                    </tr>
+              
+                   
+            
+        
+                </tfoot>
+            </table>
+            <!--<script type="text/javascript">decorateTable('shopping-cart-table')</script>-->
+        
+    </form>
+    <div class="cart-collaterals">
+        <div class="col2-set">
+            <div class="col-1">
+                <?php echo $this->getChildHtml('crosssell') ?>
+            </div>
+            <div class="col-2">
+                <?php /* Extensions placeholder */ ?>
+                <?php echo $this->getChildHtml('checkout.cart.extra') ?>
+                <?php echo $this->getChildHtml('coupon') ?>
+                <?php if (!$this->getIsVirtual()): echo $this->getChildHtml('shipping'); endif; ?>
+            </div>
+        </div>
+       
+        <!--
+        <div class="totals">
+            <?php //echo $this->getChildHtml('totals'); ?>
+        </div>    
+        -->   
+    </div>
+</div>
+
+

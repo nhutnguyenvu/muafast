@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>css/vendor_backend.css</stylesheet>
+            </action>
+        </reference>
+        <block name="root">
+            <block type="vendor/adminhtml_header" name="header" as="header" template="vendor/template_header.phtml">
+            </block>
+        </block>
+    </default>
+
+    <vendor_adminhtml_report_sales>
+        <reference name="content">
+            <block type="vendor/adminhtml_report_sales" name="vendor_report_sales" template="vendor/report/sales.phtml"/>
+            <action method="setTemplate">
+                <template>vendor/report/sales.phtml</template>
+            </action>
+        </reference>
+    </vendor_adminhtml_report_sales>
+
+    <vendor_adminhtml_vendors_index>
+        <reference name="content">
+            <block type="vendor/adminhtml_vendors" name="vendors" />
+        </reference>
+    </vendor_adminhtml_vendors_index>
+
+    <vendor_adminhtml_setup_index>
+        <reference name="content">
+            <block type="vendor/adminhtml_setup" name="vendor_setup" template="vendor/setup.phtml"/>
+            <action method="setTemplate">
+                <template>vendor/setup.phtml</template>
+            </action>
+        </reference>
+    </vendor_adminhtml_setup_index>
+
+    <vendor_adminhtml_sales_index>
+        <reference name="content">
+            <block type="vendor/adminhtml_sales" name="vendors_sales" />
+        </reference>
+    </vendor_adminhtml_sales_index>
+
+    <vendor_adminhtml_sales_edit>
+        <update handle="vendor_sales_edit"/>
+        <reference name="content">
+            <block type="adminhtml/template" name="vendor_sales_edit" template="vendor/order/view/form.phtml"></block>
+        </reference>
+    </vendor_adminhtml_sales_edit>
+
+    <vendor_adminhtml_statements_index>
+        <reference name="content">
+            <block type="vendor/adminhtml_statements" name="vendors_statements" />
+        </reference>
+    </vendor_adminhtml_statements_index>
+    <vendor_adminhtml_statements_edit>
+        <update handle="vendor_statements_edit"/>
+        <reference name="content">
+            <!--
+            <block type="vendor/adminhtml_statements" name="vendors_statements_detail" template="vendor/statements/edit.phtml" />
+            -->
+        </reference>
+    </vendor_adminhtml_statements_edit>
+
+    <vendor_adminhtml_statements_pay>
+        <update handle="vendor_statements_pay"/>
+        <reference name="content">
+            <block type="adminhtml/template" name="vendor_statements_pay" template="vendor/statements/pay.phtml"></block>
+        </reference>
+    </vendor_adminhtml_statements_pay>
+
+    <vendor_adminhtml_statements_generate>
+        <update handle="vendor_statements_generate"/>
+        <reference name="content">
+            <block type="adminhtml/template" name="vendor_statements_generate" template="vendor/statements/generate.phtml"></block>
+        </reference>
+    </vendor_adminhtml_statements_generate>
+
+    <adminhtml_sales_order_view>
+        <reference name="head">
+            <action method="addJs">
+                <script>favoredminds/admin_salesorderview.js</script>
+            </action>
+        </reference>
+    </adminhtml_sales_order_view>
+
+    <adminhtml_sales_order_invoice_new>
+        <reference name="head">
+            <action method="addJs">
+                <script>favoredminds/admin_salesorderinvoicenew.js</script>
+            </action>
+        </reference>
+    </adminhtml_sales_order_invoice_new>
+
+    <adminhtml_sales_order_invoice_view>
+        <reference name="head">
+            <action method="addJs">
+                <script>favoredminds/admin_salesorderinvoiceview.js</script>
+            </action>
+        </reference>
+    </adminhtml_sales_order_invoice_view>
+
+</layout>

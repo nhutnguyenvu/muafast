@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <community_adminhtml_community_index>
+        <reference name="content">
+            <block type="community/adminhtml_community" name="community" />
+        </reference>
+    </community_adminhtml_community_index>
+</layout>

@@ -1,0 +1,115 @@
+<div class="box best-selling">
+    <?php $vendorList = $this->getVendorsOnHomePage(); ?>
+    <h3><?php echo $this->__("Gian hàng") ?> <span><?php echo $this->__("Được Ưa Chuộng") ?></span></h3>
+    <?php $count = count($vendorList); ?>
+    <?php if ($count > 0): ?>
+
+        <?php $i = 1; ?>
+        <?php $j = 0; ?>
+        <?php foreach ($vendorList as $vendor): ?>
+            <?php $class = "" ?>
+            <?php if ($i % 2 == 0): ?>
+                <?php $class = "class='last'" ?>
+            <?php endif; ?>
+            <?php if ($j == 0 || $j == intval($count / 2)): ?>
+                <?php $firstClass = ""; ?>
+                <?php if ($j == 0): ?>
+                    <?php $firstClass = "first"; ?>
+                <?php endif; ?>
+
+                <div class="favourites-slider <?php echo $firstClass; ?>">
+                    <ul class="top-shop">
+                    <?php endif; ?>
+
+
+                    <?php if ($j % 2 == 0): ?>
+                        <li>
+                            <dl>
+                            <?php endif; ?>
+                            <dd <?php echo $class ?> >
+                                <?php //$url_vendor = $this->getUrl("catalogsearch/result")."?manufacturer=".$vendor['vendor_code']."&q=1"; ?>
+                                <?php $vendorId = $vendor['vendor_id']; ?>
+								<?php $saling = $vendor['is_saling'];?>
+                                <?php $url_vendor = Mage::getBaseUrl() . $vendor['path'] ?>
+                                <?php $logo = $this->getLogoSrcFrontEnd($vendor) ?>
+                                <?php //$description = $vendor->getAboutcompany(); ?>
+                                <?php $description = $vendor['aboutcompany']; ?>
+                                <?php $companyName = $vendor['company_name']; ?>
+                                <?php if (strlen($description) > MAXIMUM_HP_DES): ?>
+                                    <?php $description = MyString::split(MAXIMUM_HP_DES, $description); ?>
+                                <?php endif; ?>
+                                <a href="<?php echo $url_vendor ?>" >
+                                    <img class="product-img" src="<?php echo $logo ?>" width="458" height="458" alt="" />
+                                </a>
+                                <div class="product-description">
+									<?php if($saling != 0):?><div class="discount-s discount-top"><p>Sale</p></div><?php endif; ?>
+                                    <img align="left" style="margin-right: 5px;" src="<?php echo $this->getSkinUrl('images/gianhang.png')?>" width="40" height="33" alt="" />
+                                    <a href="<?php echo $url_vendor ?>">
+                                        <span><?php echo $companyName ?></span>
+                                        <?php if($description != null):?>
+                                            <span class="description-short"><?php echo strip_tags(implode(' ',array_slice(explode(' ',$description),0,10)).'...'); ?></span>
+                                            <img src="<?php echo $this->getSkinUrl("images/dummy.gif") ?>" class="ui-icon icon-06" alt="" />
+                                        <?php endif; ?> 
+                                    </a>
+                                </div>
+                            </dd>
+                            <?php if ($j % 2 == 1): ?>
+                            </dl>
+                        </li>
+                    <?php endif; ?>
+                    <?php if ($j == intval($count / 2) - 1 || $j == $count): ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
+            <?php $j++; ?>
+            <?php if ($j >= 8) break; ?>
+            <?php $i++; ?>
+        <?php endforeach; ?>
+
+    <?php endif; ?>
+    <!--
+    <ul class="lst-slide">
+        <li><a href="#" title=""><img src="<?php //echo $this->getSkinUrl("images/dummy.gif")           ?>" class="ui-icon icon-05" alt="" /></a></li>
+        <li><a href="#" title=""><img src="<?php //echo $this->getSkinUrl("images/dummy.gif")           ?>" class="ui-icon icon-05" alt="" /></a></li>
+        <li><a href="#" title=""><img src="<?php //echo $this->getSkinUrl("images/dummy.gif")           ?>" class="ui-icon icon-05 active" alt="" /></a></li>
+        <li><a href="#" title=""><img src="<?php //echo $this->getSkinUrl("images/dummy.gif")           ?>" class="ui-icon icon-05" alt="" /></a></li>
+        <li><a href="#" title=""><img src="<?php //echo $this->getSkinUrl("images/dummy.gif")           ?>" class="ui-icon icon-05" alt="" /></a></li>
+    </ul>
+    -->
+</div>
+
+<script type="text/javascript">
+    
+    function home_slider_carousel_initCallback(carousel)
+    {
+        // Disable autoscrolling if the user clicks the prev or next button.
+        carousel.buttonNext.bind('click', function() {
+            carousel.startAuto(0);
+        });
+
+        carousel.buttonPrev.bind('click', function() {
+            carousel.startAuto(0);
+        });
+
+        // Pause autoscrolling if the user moves with the cursor over the clip.
+        carousel.clip.hover(function() {
+            carousel.stopAuto();
+        }, function() {
+            carousel.startAuto();
+        });
+    };
+    
+    // Ride the carousel...
+    jQuery(document).ready(function() {
+        jQuery(".favourites-slider").jcarousel({
+            scroll: 1,
+            visible: 1,
+            auto: 7,
+            wrap: 'last',
+            buttonPrevHTML: '<a class="btn-previous" title="<?php echo $this->__("Previous") ?>" href="javascript:void(0)"><p class="prev_slider"></p></a>',
+            buttonNextHTML: '<a  title="<?php echo $this->__("Continue") ?>" class="btn-continue" href="javascript:void(0)"><p class="next_slider"></p></a>',
+            initCallback: home_slider_carousel_initCallback
+        });
+    });
+    
+</script>

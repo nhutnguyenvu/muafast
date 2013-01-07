@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <RapidCommerce_Ias>
+            <version>1.0.0</version>
+        </RapidCommerce_Ias>
+    </modules>
+    <frontend>
+		<routers>
+            <catalog>
+                <args>
+                    <modules>
+                         <RapidCommerce_Ias before="Mage_Catalog">RapidCommerce_Ias_Catalog</RapidCommerce_Ias>
+                    </modules>
+                </args>
+            </catalog>
+			<catalogsearch>
+                <args>
+                    <modules>
+                         <RapidCommerce_Ias before="Mage_CatalogSearch">RapidCommerce_Ias_CatalogSearch</RapidCommerce_Ias>
+                    </modules>
+                </args>
+            </catalogsearch>
+        </routers>
+        <layout>
+            <updates>
+                <rapidcommerce_ias>
+                    <file>rapidcommerce-ias.xml</file>
+                </rapidcommerce_ias>
+            </updates>
+        </layout>
+     </frontend>
+	<global>
+		
+	</global>
+</config>
+

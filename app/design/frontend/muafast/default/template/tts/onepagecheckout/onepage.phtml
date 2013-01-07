@@ -1,0 +1,180 @@
+<div class="page-title">
+    <h1><?php echo $this->__('Checkout') ?></h1>
+</div>
+
+<script type="text/javascript">countryRegions = <?php echo $this->helper('directory')->getRegionJson() ?></script>
+<div class="cart">                     	
+<?php if (!$this->isCustomerLoggedIn()): ?>
+<div id="login-link"><a href="javascript:;" onclick="popupLogin();return false;"><?php echo $this->__('Already registered? Please login here') ?></a></div>
+<?php endif; ?>
+<div class="cart">                     	
+    <ul class="tab tab-type-1">
+        <li><a class="ui-tab tab-1" title="<?php echo $this->__("GIỎ HÀNG") ?> href="javascript:;"><?php echo $this->__("GIỎ HÀNG") ?></a></li>
+        <li class="current"><a class="ui-tab tab-2" title="<?php echo $this->__("THÔNG TIN ĐẶT HÀNG") ?>" href="javascript:void(0)"><?php echo $this->__("THÔNG TIN ĐẶT HÀNG") ?></a></li>
+        <li class="current"><a class="ui-tab tab-3" title="<?php echo $this->__("KẾT THÚC") ?>" href="product-step3.html"> <?php echo $this->__("KẾT THÚC") ?></a></li>
+
+    </ul>
+    <h2 class="title-5"><?php echo $this->__("Vui lòng nhập thông tin phía dưới để đặt hàng") ?></h2>
+    <?php echo $this->getChildHtml('layout'); ?>
+
+    <script type="text/javascript">
+    //<![CDATA[
+        var checkout = new Checkout({
+            updateAllInfoUrl: '<?php echo $this->getUrl('checkout/onepage/ajaxUpdate', array('type' => 'all_methods')) ?>',
+            saveMethod: '<?php echo $this->getUrl('checkout/onepage/saveMethod') ?>',
+            failure: '<?php echo $this->getUrl('checkout/cart') ?>'}
+        );
+
+        if ($('billing-address-select')) $('billing-address-select').observe('change', bindUpdateBillingMethods);
+        if ($('billing:country_id')) $('billing:country_id').observe('change', bindUpdateBillingMethods);
+        if ($('billing:region_id')) $('billing:region_id').observe('change', bindUpdateBillingMethods);
+        if ($('billing:city')) $('billing:city').observe('change', bindUpdateBillingMethods);
+        if ($('billing:postcode')) $('billing:postcode').observe('change', bindUpdateBillingMethods);
+
+        // if ($('billing:use_for_shipping')) $('billing:use_for_shipping').observe('change', bindUpdateShippingMethods);
+        if ($('billing:use_for_shipping')) $('billing:use_for_shipping').observe('click', bindUpdateShippingMethods);
+
+        if ($('shipping-address-select')) $('shipping-address-select').observe('change', bindUpdateShippingMethods);
+        if ($('shipping:country_id')) $('shipping:country_id').observe('change', bindUpdateShippingMethods);
+        if ($('shipping:region_id')) $('shipping:region_id').observe('change', bindUpdateShippingMethods);
+        if ($('shipping:city')) $('shipping:city').observe('change', bindUpdateShippingMethods);
+        if ($('shipping:postcode')) $('shipping:postcode').observe('change', bindUpdateShippingMethods);
+        // if ($('shipping:same_as_billing')) $('shipping:same_as_billing').observe('change', bindUpdateShippingMethods);
+        if ($('shipping:same_as_billing')) $('shipping:same_as_billing').observe('click', bindUpdateShippingMethods);
+
+        var winLogin = null;
+        var loginHtml = <?php echo Mage::helper('core')->jsonEncode($this->getChildHtml('login')); ?>;
+
+        function popupLogin()
+        {
+            if (!winLogin)
+            {
+                winLogin = new OnePageCheckoutPopup({
+                    id: 'popup-login-form',
+                    html: loginHtml,
+                    title: '<?php echo $this->__('Customer Login') ?>',
+                    width: 335
+                });
+            }
+            else
+            {
+                winLogin.open();
+            }
+        }
+
+        function includingShipping(getShippingCode)
+        {
+            if (typeof shippingMe != 'undefined')
+            {
+                var newPrice = shippingMe[getShippingCode];
+                var quoteBaseGrandTotal = 0;
+                if (typeof lastPrice == 'undefined') {
+                    lastPrice = newPrice;
+                    quoteBaseGrandTotal += newPrice;
+                }
+                if (newPrice != lastPrice) {
+                    quoteBaseGrandTotal += (newPrice-lastPrice);
+                    lastPrice = newPrice;
+                }
+            }
+            checkQuoteBaseGrandTotal = quoteBaseGrandTotal;
+            updateTotalView();
+            return false;
+        }
+
+        function wpAfterUpdatePayment()
+        {
+            var needUpdated = <?php echo (int)Mage::helper('onepagecheckout')->getConfigParam('general/update_total_after_payment'); ?>;
+            if (needUpdated) updateTotalView();
+            return false;
+        }
+
+        function setDiscount(isRemove)
+        {
+            if (isRemove)
+            {
+                $('coupon_code').removeClassName('required-entry');
+                $('remove-coupone').value = "1";
+            }
+            else
+            {
+                $('coupon_code').addClassName('required-entry');
+                $('remove-coupone').value = "0";
+            }
+
+            var validator = new Validation('discount-coupon-form');
+            if (!validator.validate()) return;
+
+            var url = '<?php echo $this->getUrl('checkout/onepage/ajaxUpdate', array('type' => 'discount_coupon')) ?>';
+            checkout.updateInfo(url);
+        }
+
+        function bindUpdateBillingMethods()
+        {
+            var url = '<?php echo $this->getUrl('checkout/onepage/ajaxUpdate', array('type' => 'all_methods')) ?>';
+            checkout.updateInfo(url);
+        }
+
+        function bindUpdateShippingMethods()
+        {
+            var url = '<?php echo $this->getUrl('checkout/onepage/ajaxUpdate', array('type' => 'shipping_methods')) ?>';
+            checkout.updateInfo(url);
+        }
+
+        function updateTotalView()
+        {
+            var url = '<?php echo $this->getUrl('checkout/onepage/ajaxUpdate', array('type' => 'total_view')) ?>';
+            checkout.updateInfo(url);
+        }
+
+        function toggleShipping(isChecked)
+        {
+            if (isChecked)
+            {
+                $('shipping:same_as_billing').checked = true;
+                $('checkoutSteps').addClassName('shipping_as_billing');
+                Element.hide('opc-shipping');
+            }
+            else
+            {
+                $('shipping:same_as_billing').checked = false;
+                $('checkoutSteps').removeClassName('shipping_as_billing');
+                Element.show('opc-shipping');
+            }
+        }
+
+        function toggleRegister(isChecked)
+        {
+            if (isChecked)
+            {
+                checkout.method = 'register';
+                new Ajax.Request(
+                    checkout.saveMethodUrl,
+                    {method: 'post', onFailure: checkout.ajaxFailure.bind(checkout), parameters: {method:'register'}}
+                );
+                if ($('login:register')) $('login:register').checked = true;
+                Element.show('register-customer-password');
+            }
+            else
+            {
+                checkout.method = 'guest';
+                new Ajax.Request(
+                    checkout.saveMethodUrl,
+                    {method: 'post', onFailure: checkout.ajaxFailure.bind(checkout), parameters: {method:'guest'}}
+                );
+                if ($('login:register')) $('login:register').checked = false;
+                Element.hide('register-customer-password');
+            }
+        }
+
+        <?php if($this->getQuote()->getCheckoutMethod()==Mage_Checkout_Model_Type_Onepage::METHOD_REGISTER || !$this->getQuote()->isAllowedGuestCheckout()): ?>
+        toggleRegister(true);
+        <?php endif ?>
+        <?php if($this->getQuote()->getCheckoutMethod()==Mage_Checkout_Model_Type_Onepage::METHOD_GUEST && $this->getQuote()->isAllowedGuestCheckout()): ?>
+        toggleRegister(false);
+        <?php endif; ?>
+
+        payment.initWhatIsCvvListeners();
+    //]]>
+    </script>
+</div>

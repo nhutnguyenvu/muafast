@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <generating module="generating">
+            <title>Generating</title>
+            <sort_order>72</sort_order>
+            <children>
+                
+                <feature module="generating">
+                    <title>Create Feature Product</title>
+                    <sort_order>0</sort_order>
+                    <action>generatingadmin/adminhtml_generate/create</action>
+                </feature>
+               
+            </children>
+        </generating>
+    </menu>
+    <acl>
+        <resources>
+            <all>
+                <title>Allow Everything</title>
+            </all>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <generating translate="title">
+                                        <title>Generating</title>
+                                        <sort_order>45</sort_order>
+                                    </generating>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                    <generating>
+                        <title>Generating</title>
+                        <sort_order>10</sort_order>
+                        <children>
+                            <feature module="generating">
+                                <title>Create Feature Product</title>
+                                <sort_order>0</sort_order>
+                                <action>generatingadmin/adminhtml_generate/create</action>
+                            </feature>
+                        </children>
+                    </generating>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

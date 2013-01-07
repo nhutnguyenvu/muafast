@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+         <reference name="head">        
+           <action method="addJs"><script>sociallogin/lightbox.js</script></action>
+         <action method="addItem"><type>skin_css</type><name>css/sociallogin.css</name><params/></action>
+        </reference>
+        <reference name="content">
+            <block type="sociallogin/sociallogin" before="-" name="sociallogin" template="sociallogin/sociallogin.phtml" />
+            </reference>
+    </default>
+    <checkout_onepage_index translate="label">
+         <reference name="content">
+            <block type="sociallogin/sociallogin" before="customer_form_login" name="sociallogin" template="sociallogin/sociallogin.phtml" />
+            </reference>
+    </checkout_onepage_index>
+    
+</layout> 

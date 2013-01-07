@@ -1,0 +1,34 @@
+<?php
+    $product = $this->getProduct();
+    
+    $productId = $product->getId();
+    $isInStock = $product->isInStock();
+    $qtyStock = Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product)->getQty();
+    
+    $helper = Mage::app()->getHelper('vendor');
+    $is_login = $helper->vendorIsLogged();
+?>
+
+<?php if(!empty($product)): ?>
+            <div class="product_action_<?php echo $product->getId() ?>">
+                <?php $is_checked = false; ?>
+                <?php if($is_item == FavoredMinds_Vendor_Helper_Vendor::IS_IN_SALE): ?>
+                    <?php $is_checked = true; ?>
+                    <span>C <input class="check" type="radio" name="product_<?php echo $productId ?>" id="product_o<?php echo $product->getId() ?>" checked="checked" value="<?php echo $productId ?>o"/> </span>
+                <?php else:?>
+                    <span>C <input class="check" type="radio" name="product_<?php echo $productId ?>" id="product_o<?php echo $product->getId() ?>" value="<?php echo $productId ?>o"/> </span>
+                <?php endif;?>
+                <?php if($is_item == FavoredMinds_Vendor_Helper_Vendor::IS_OUT_SALE): ?>
+                    <?php $is_checked = true; ?>
+
+                    <span>H <input class="check" type="radio" name="product_<?php echo $productId ?>" id="product_f<?php echo $productId ?>" checked="checked" value="<?php echo $item->getId() ?>f"/> </span>
+                <?php else:?>
+                    <span>H <input class="check" type="radio" name="product_<?php echo $productId ?>" id="product_f<?php echo $productId ?>" value="<?php echo $productId ?>f"/> </span>
+                <?php endif;?>
+
+            </div>
+            <div class="action updated" id="updated_<?php echo $order->getId() ?>"style="display:none"> Đã cập nhật </div>
+
+<?php endif; ?>
+
+

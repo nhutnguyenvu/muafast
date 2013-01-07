@@ -1,0 +1,57 @@
+<?php
+/**
+ * @see Mage_Checkout_Block_Agreements
+ */
+?>
+
+<?php if (!$this->getAgreements() || !count($this->getAgreements())) return; ?>
+
+<script type="text/javascript">
+//<![CDATA[
+    var popupTerms = [];
+    var optTerms = [];
+
+    function showPopupTerms(id)
+    {
+        opt = optTerms[id];
+        if (!popupTerms[opt.id])
+        {
+            popupTerms[opt.id] = new OnePageCheckoutPopup({
+                id: 'popupTerms' + opt.id,
+                title: opt.title,
+                width: 500,
+                html: '' +
+                    '<div style="text-align:left;">' + opt.html + '</div>' +
+                    '<div style="margin:15px 0 0;text-align:right;">' +
+                        '<button class="button" onclick="$(\'agreement-' + opt.id + '\').checked = true; popupTerms[' + opt.id + '].close();"><span><span><?php echo addslashes($this->__('I accept')) ?></span></span></button>' +
+                    '</div>'
+            });
+        }
+        else
+        {
+            popupTerms[opt.id].open();
+        }
+    }
+//]]>
+</script>
+
+<form action="" id="checkout-agreements" onsubmit="return false;">
+<ol class="checkout-agreements">
+<?php foreach ($this->getAgreements() as $_a): ?>
+    <li style="margin:0;padding:0;">
+        <script type="text/javascript">
+        //<![CDATA[
+        optTerms[<?php echo $_a->getId()?>] = {
+            id: <?php echo $_a->getId()?>,
+            title: '<?php echo $this->htmlEscape($_a->getName()); ?>',
+            html: <?php if ($_a->getIsHtml()) echo Mage::helper('core')->jsonEncode($_a->getContent()); else echo Mage::helper('core')->jsonEncode(nl2br($this->htmlEscape($_a->getContent()))); ?>
+        };
+        //]]>
+        </script>
+        <p class="agree">
+            <input type="checkbox" id="agreement-<?php echo $_a->getId()?>" name="agreement[<?php echo $_a->getId()?>]" value="1" title="<?php echo $this->__('I accept'); ?> <?php echo $this->htmlEscape($_a->getCheckboxText()) ?>" class="checkbox" /><label for="agreement-<?php echo $_a->getId()?>"><?php echo $this->__('I accept'); ?> <a href="javascript:;" onclick="showPopupTerms(<?php echo $_a->getId()?>); return false;"><?php echo $this->htmlEscape($_a->getCheckboxText()) ?></a></label>
+        </p>
+    </li>
+<?php endforeach ?>
+</ol>
+</form>

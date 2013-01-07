@@ -1,0 +1,105 @@
+<?php $productFeaturedList = $this->getFeaturedProduct();
+Mage::helper('amshopby')->init($productFeaturedList);?>
+<div class="home-spot">
+    <div class="box best-selling">
+        <h3><?php echo $this->__("Hàng Nóng ") ?><span><?php echo $this->__("Mua Nhanh") ?></span></h3>
+        <?php $i = 0; ?>
+        <?php if (count($productFeaturedList) > 0): ?>
+            <div id="home-top-slider" class="hot-product">
+                <ul class="jcarousel-pager-center">
+                    <?php foreach ($productFeaturedList as $_product): ?>
+                        <?php if ($i % HOT_PRODUCT_SLIDER_COLUMN == 0): ?><li><dl><?php endif; ?>
+                                <dd class = "<?php echo ($i % HOT_PRODUCT_SLIDER_COLUMN == 3) ? "hot-item last" : "hot-item"; ?>">
+									<?php if($_product->getSpecialPrice() != 0){ ?>
+										 <?php $discount = 100 - round(($_product->getSpecialPrice()/$_product->getPrice())*100); ?>
+										 <?php echo "<div class='discount-list'><p>- ".$discount."% </p></div>" ; 
+									}?>
+                                    <a href="<?php echo $_product->getProductUrl() ?>">
+                                        
+                                        <?php $image = $this->helper('catalog/image')->init($_product, 'small_image'); ?>
+                                        <img class="product-img" 
+                                             src="<?php echo $this->helper('catalog/cropimage')->cropImage(FEATURED_PRODUCT_WIDTH, FEATURED_PRODUCT_HEIGHT, $image) ?>" 
+                                             alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+                                    </a>
+                                    <p class="product-description">
+                                        <a href="<?php echo $_product->getProductUrl() ?>"><?php echo $_product->getName() ?></a>
+                                        <span class="hot-product-hover">
+                                        <?php if($_product->getSpecialPrice() == null):?>
+                                            <span><?php echo $this->__('Giá: ')."<strong>".Mage::helper('core')->currency($_product->getPrice())."</strong>";?></span>
+                                        <?php else: ?>
+                                            <span><?php echo $this->__('Giá: ')."<strong>".Mage::helper('core')->currency($_product->getSpecialPrice())."</strong>";?></span>
+                                        <?php endif; ?>
+                                        <span class="color" style=" float: right;">
+                                            <?php $color = Mage::helper('amshopby')->showLinks($_product,$this->getMode()); 
+                                            echo strip_tags($color,'<img>') ?></span>
+                                        </span>
+                                    </p>
+                                </dd>
+                                <?php if ($i % HOT_PRODUCT_SLIDER_COLUMN == 3): ?></dl></li><?php endif; ?>
+                        <?php $i++; ?>
+                        <?php if ($i >= HOT_PRODUCT_SLIDER_ITEM_NUMBER) break; ?>
+                    <?php endforeach; ?> 
+                </ul>
+            </div>
+        <?php endif; ?>
+    </div>
+    <div class="box best-selling">
+        <div class="banner-slider" style="">
+            <div class="banner first" ><a href="http://facebook.com/muafast">
+                <img src="<?php echo $this->getSkinUrl('images/banner-fanpage.png') ?>" alt="banner-quangcao" width="300" height="150" /></a>
+            </div>
+            <div class="banner" ><a href="<?php echo $this->getUrl('marketing') ?>">
+                <img src="<?php echo $this->getSkinUrl('images/banner-toideptrongmatai.png') ?>" alt="banner-toideptrongmatai" width="320" height="150" /></a>
+            </div>
+            <div class="banner last" ><a href="<?php echo $this->getUrl('vendor/index/vendorlist/') ?>">
+                <img src="<?php echo $this->getSkinUrl('images/banner-vender.png') ?>" alt="banner-vender" width="300" height="150" /></a>
+            </div>
+        </div>
+        <div style="clear: both; width: 100%;"></div>
+    </div>
+    <?php echo $this->getChildHtml("favourite"); ?>
+    <div class="box best-selling" id="slide_vendor">
+        <?php echo $this->getChildHtml("slide"); ?>
+    </div>
+</div>
+<script type="text/javascript">
+
+    function home_slider_carousel_initCallback(carousel)
+    {
+        // Disable autoscrolling if the user clicks the prev or next button.
+        carousel.buttonNext.bind('click', function() {
+            carousel.startAuto(0);
+        });
+
+        carousel.buttonPrev.bind('click', function() {
+            carousel.startAuto(0);
+        });
+
+        // Pause autoscrolling if the user moves with the cursor over the clip.
+        carousel.clip.hover(function() {
+            carousel.stopAuto();
+        }, function() {
+            carousel.startAuto();
+        });
+    };
+     
+    // Ride the carousel...
+    jQuery(document).ready(function() {
+        jQuery("#home-top-slider").jcarousel({
+            pager: true,
+            scroll: 1,
+            visible: 1,
+            auto: 6,
+            wrap: 'last',
+            buttonPrevHTML: '<a class="btn-previous" title="<?php echo $this->__("Previous") ?>" href="javascript:void(0)"><p class="prev_slider"></p></a>',
+            buttonNextHTML: '<a class="btn-continue" title="<?php echo $this->__("Continue") ?>" href="javascript:void(0)"><p class="next_slider"></p></a>',
+            initCallback: home_slider_carousel_initCallback
+        });
+        
+        jQuery("ul.jcarousel-pager").each(function(){
+            var pagerWidth = jQuery(this).children("li:first").width() * jQuery(this).children().length;
+            jQuery(this).css("width", pagerWidth);
+            jQuery(this).addClass("jcarousel-pager-center");
+        }); 
+    });
+</script>

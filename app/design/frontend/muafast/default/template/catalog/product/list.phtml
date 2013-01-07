@@ -1,0 +1,245 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+
+<?php
+/**
+ * Product list template
+ *
+ * @see Mage_Catalog_Block_Product_List
+ */
+?>
+
+<?php
+
+//$this->getRequest()->setParam('p',1);
+$_productCollection=$this->getLoadedProductCollection();
+$_helper = $this->helper('catalog/output');
+//Mage::helper('amshopby')->init($_productCollection);
+/*$_category  = Mage::registry('current_category');
+
+$_imgHtml   = '<p class="category-image">';
+//$_imgUrl = $_category->getImageUrl();
+if ($_category && $_imgUrl=$_category->getImageUrl()) {
+    $_imgHtml .= '<img src="'.$_imgUrl.'" alt="'.$this->htmlEscape($_category->getName()).'" title="'.$this->htmlEscape($_category->getName()).'" />';
+    // $_imgHtml .= $_helper->categoryAttribute($_category, $_imgHtml, 'image');
+}
+$_imgHtml .= "</p>";
+*/
+?>
+<div class="amshopby-page-container">
+<!-- <hr class='line-hor'/> -->
+<?php // echo $this->getChildHtml("subtop") ?>
+
+<?php //echo $_imgHtml; ?>
+
+<?php if(!$_productCollection->count()): ?>
+<p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+<?php else: ?>
+<div class="category-products">
+    
+        <?php echo $this->getToolbarHtml() ?>
+        <?php // List mode ?>
+        <?php if($this->getMode()!='grid'): ?>
+            <?php $_iterator = 0; ?>
+    <ul class="products-list" id="products-list">
+                <?php foreach ($_productCollection as $_product): ?>
+        <li class="item<?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>">
+                        <?php // Product Image ?>
+			<?php $image = $this->helper('catalog/image')->init($_product, 'small_image');?>			
+            <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/cropimage')->cropImage(PPRODUCT_LIST_WIDTH,PPRODUCT_LIST_HEIGHT,$image ); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
+                        <?php // Product description ?>
+            <div class="product-shop">
+                <div class="f-fix">
+                                <?php $_productNameStripped = $this->stripTags($_product->getName(), null, true); ?>
+                    <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped; ?>"><?php echo $_helper->productAttribute($_product, $_product->getName() , 'name'); ?></a></h2>
+                                <?php if($_product->getRatingSummary()): ?>
+                                    <?php echo $this->getReviewsSummaryHtml($_product) ?>
+                                <?php endif; ?>
+                                <?php echo $this->getPriceHtml($_product, true) ?>
+                        <?php if($_product->isSaleable()): ?>
+								<p><button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button></p>
+                        <?php else: ?>
+							<p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                        <?php endif; ?>
+                    <div class="desc std">
+                                    <?php echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+                        <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped ?>" class="link-learn"><?php echo $this->__('Learn More') ?></a>
+                    </div>
+                    <ul class="add-to-links">
+                                    <?php if ($this->helper('wishlist')->isAllow()) : ?>
+                        <li><a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>" class="link-wishlist"><?php echo $this->__('Add to Wishlist') ?></a></li>
+                                    <?php endif; ?>
+                                    <?php if($_compareUrl=$this->getAddToCompareUrl($_product)): ?>
+                        <li><span class="separator">|</span> <a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Add to Compare') ?></a></li>
+                                    <?php endif; ?>
+                    </ul>
+                </div>
+            </div>
+        </li>
+                <?php endforeach; ?>
+    </ul>
+    
+    <script type="text/javascript">decorateList('products-list', 'none-recursive')</script>
+
+        <?php else: ?>
+
+            <?php // Grid Mode ?>
+            <!-- Like Facebook --> 
+               <div id="fb-root"></div>
+                <script src="http://connect.facebook.net/en_US/all.js"></script>
+                
+                <script type="text/javascript">
+                    jQuery(document).ready(function(){
+                        jQuery('.products-grid li.item').hover(function(){
+                            var x =jQuery(this).find('.overHidden');
+                            if(x.css("display") == "none"){
+                                 jQuery(this).find('.overHidden').show(); // toggle the display of the button
+                                 FB.XFBML.parse(this); //re-parse xfbml
+								 // like facebook
+                             }
+                        });
+                    });
+					/* window.fbAsyncInit = function() {
+						FB.init({
+							appId: '328011467238834',
+							status: true,
+							cookie: true,
+							xfbml: true,
+							oauth: true
+						});
+						FB.Event.subscribe('edge.create', function(response) {
+							alert('You liked the URL: ' + response);
+						});
+						FB.Event.subscribe('edge.remove', function(response) {
+							alert('You unliked the URL: ' + response);
+						}); */
+				//	};
+                </script>
+            <!-- End Like Facebook -->
+            <?php $_collectionSize = $_productCollection->count() ?>
+            <?php $_columnCount = $this->getColumnCount(); ?>
+            <?php $i=0;
+            foreach ($_productCollection as $_product): ?>
+            <?php if ($i++%$_columnCount==0): ?>
+    <ul class="products-grid">
+            <?php endif ?>
+        <li class="item first">
+            <?php $now = date("Y-m-d");
+                    $price = $_product->getPrice();
+                    $finalPrice = $_product->getFinalPrice();
+                    $newsFrom= substr($_product->getData("news_from_date"),0,10);
+                    $newsTo=  substr($_product->getData("news_to_date"),0,10);
+                    if ($now>=$newsFrom && $now<=$newsTo && $finalPrice >= $price){ echo "<div class='discount-list'><p>New</p></div>";};
+                    if($finalPrice < $price ){
+                        $discount = 100 - round(($_product->getSpecialPrice()/$_product->getPrice())*100); 
+                        echo "<div class='discount-list'><p>- ".$discount."% </p></div>" ;
+            }?>
+            
+			<?php $image = $this->helper('catalog/image')->init($_product, 'small_image');?>
+            <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/cropimage')->cropImage(PPRODUCT_LIST_WIDTH,PPRODUCT_LIST_HEIGHT,$image ); ?>"  alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
+            <div class="socialHideToolBar">
+                <?php 
+				 $vendor_data = FavoredMinds_Vendor_Block_Vendor_Renderer_Vendor::getVendorInfo($_product->getData('manufacturer'),array("company_name","path"));
+				 //$vendor = Mage::getModel("vendor/vendor")->load($vendor_data['vendor_id']);?>
+                <div class="social">
+                    <img class="ui-icon icon-19" src="<?php echo $this->getSkinUrl('images/dummy.gif')?>" alt="" />
+                    <a href="<?php echo Mage::getBaseUrl().$vendor_data['path']; ?>">
+				<?php echo $vendor_data['company_name'] ?></a></div>
+                <div class="quatang" ><img src="<?php echo $this->getSkinUrl('images/quatang.png');?>" alt="quatang"/></div>
+                <div class="overHidden" style="display: none;">
+                    <fb:like class="face-likes" href="<?php echo $_product->getProductUrl() ?>" style="position: relative!important; margin-right: -5px; float: right;" send="false" layout="button_count" width="100" show_faces="false" font="arial"></fb:like>
+                </div>
+            </div>
+            <!-- reward points-->	
+				   <?php $_productTmp = Mage::getModel('catalog/product')->load($_product->getId());?>
+                <?php if($point = Mage::helper('rewardpoints')->formatPoints($_productTmp->getData('reward_point_product'),$_productTmp)):?>
+                   <div class="point">
+                        <div class="muafastPoint"><?php echo $point ?> point</div>
+                        <span class="triangle"></span>
+                   </div>
+                <?php endif;?>	
+			<!-- end reward points -->	
+            <div class="content-product" style="overflow: hidden; position: relative;">
+                <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></h2>
+                            <?php if($_product->getRatingSummary()): ?>
+                                <?php //echo $this->getReviewsSummaryHtml($_product, 'short') ?>
+                            <?php endif; ?>
+               
+                 <?php //$color = Mage::helper('amshopby')->showLinks($_product,$this->getMode()); 
+                    //echo strip_tags($color,'<img>') ?>
+				
+                <?php echo $this->getPriceHtml($_product, true) ?>
+                <div class="add_button_cart">
+                <?php if($_product->isSaleable()): ?>
+    					<!--<a class="btn-buy" title="<?php echo $this->__('Add to Cart') ?>" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><?php echo $this->__("Mua Hàng") ?></a>-->
+    					<?php if ( !($_product->getTypeInstance(true)->hasRequiredOptions($_product) || $_product->isGrouped()) ) { ?>
+    						<a class="btn-buy" title="<?php echo $this->__('Add to Cart') ?>" onclick="setLocationAjax('<?php echo $this->getAddToCartUrl($_product) ?>')"><?php echo $this->__("Mua Hàng") ?></a>
+                            <span id='ajax_loader<?php echo $_product->getId()?>' style='display:none'><img src='<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif')?>'/></span>
+                            <?php } else { ?>
+    							<a class="btn-buy" title="<?php echo $this->__('Add to Cart') ?>" onclick="showOptions('<?php echo $_product->getId()?>')"><?php echo $this->__("Mua Hàng") ?></a>
+                            	<a href='<?php echo $this->getUrl('ajax/index/options',array('product_id'=>$_product->getId()));?>' class='fancybox' id='fancybox<?php echo $_product->getId()?>' style='display:none'></a>
+                        <?php }  ?>
+    						
+                <?php else: ?>
+                    <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                <?php endif; ?>
+                </div>
+            </div>
+        </li>
+            <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+    </ul>
+                <?php endif ?>
+        <?php endforeach ?>
+	<div id="scrolltotop" style="display: block;"></div>
+	<script type='text/javascript'>
+		jQuery(function(){
+			jQuery(window).scroll(function(){
+				if(jQuery(this).scrollTop()!=0){
+					jQuery('#scrolltotop').fadeIn();
+				}else{jQuery('#scrolltotop').fadeOut();}
+			});
+			jQuery("#scrolltotop").click(function (event) {jQuery("html, body").animate({scrollTop: "0px"}, 'slow');});
+		});
+	</script>
+	
+	
+	</div>
+    <?php endif; ?>
+
+
+<div style="display:none" class="amshopby-overlay"><img src="<?php echo $this->getSkinUrl('images/amshopby-overlay.gif')?>" /></div>
+</div>
+
+<a id="msg" href="#inline" style="display:none"></a>
+<div style="display:none" >
+<div id="inline" >
+	<p class="msg-text"></p>
+	<a href="javascript:;" onclick="jQuery.fancybox.close();">Close</a>
+</div>
+</div>
+<?php endif; ?>
+

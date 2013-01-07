@@ -1,0 +1,653 @@
+<?php
+/**
+ * @name         :  Apptha One Step Checkout
+ * @version      :  1.0
+ * @since        :  Magento 1.5
+ * @author       :  Prabhu Mano
+ * @copyright    :  Copyright (C) 2011 Powered by Apptha
+ * @license      :  http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @Creation Date:  July 26 2012
+ *
+ * */
+?>
+<?php
+//get current url
+$current_url = Mage::app()->getFrontController()->getRequest()->getPathInfo();
+//set session
+Mage::getSingleton('customer/session')->setLink($current_url);
+//check social login be enabled
+$fb_status = Mage::getStoreConfig('sociallogin/general/enable_fb');
+$twitter_status = Mage::getStoreConfig('sociallogin/general/enable_twitter');
+$google_status = Mage::getStoreConfig('sociallogin/general/enable_google');
+$yahoo_status = Mage::getStoreConfig('sociallogin/general/enable_yahoo');
+$enable_status = Mage::getStoreConfig('sociallogin/general/enable_sociallogin');
+$loggedIn = $this->helper("customer")->isLoggedIn();
+$facebookapp_id=Mage::getStoreConfig('sociallogin/general/fbapp_id');;
+
+if (!$loggedIn && $enable_status == 1) {
+    ?>  
+    <div id="containerDiv" style="display:none;">
+        <a id="closeLink" href="javascript:void(0);" class="social_popup_sprite"></a>
+        <h4><?php echo $this->__('Please Enter your twitter email'); ?></h4>
+        
+            <div class="socialpopup-input-box"><input type="text" id="tw_email" name="tw_email" value="" class="input_linked required-entry validate-email twitter_popup_input"/>
+                <button type="button" title="Submit" class="button twitter_popup_btn" onclick="return twitter_check();"><span><span><?php echo $this->__('Submit') ?></span></span></button>
+            </div>
+        <div id="twitter_error"></div>
+        
+    </div>
+    
+    <!-- popup -->
+    <div id="header_logo_Div" style="display:none;">
+        <script type="text/javascript">
+            jQuery(document).ready(function(){
+                jQuery('#create').click(function(){
+                    jQuery('#login_div').css('display','none');
+                    jQuery('#register_div').css('display','block');
+                })
+                
+                jQuery('#sregister').click(function(){
+                    var d = new Date();
+                    jQuery("#captchaimg").attr("src", "<?php echo $this->getUrl('sociallogin/index/captcha')?>?width=124&height=30&characters=5&"+d.getTime());
+                })
+            })
+        </script>
+        <a id="closeLink2" href="javascript:void(0);"></a>
+        <div id="social_popup_main">
+            <div id="socialpopup_main_div">
+                <div id="login_left">
+                    <div id="login_div" style="display:block">
+                        <div class="left_login">
+                            <form id="form_login" class="socialpopup_form" action="">
+                            <h4><?php echo $this->__('Sign in');?></h4>
+                            <label for="email" class="required"><?php echo $this->__('Email Address');?> <em>*</em></label>
+                            <div class="socialpopup-input-box">
+                                <input type="text" name="email" value="" id="email" class="" title="Email Address"/>
+                                <div id="email_error" class="popup_error_msg"></div>
+                            </div>
+                            <label for="pass" class="required"><?php echo $this->__('Password');?> <em>*</em></label>
+                            <div class="socialpopup-input-box">
+                                <input type="password" name="password" class="" id="password" title="Password"/>
+                                <div id="password_error" class="popup_error_msg"></div>
+                                <div id="progress_image_login" style="display: none">
+                                    <img src="<?php echo $this->getSkinUrl('images/sociallogin/ajax-loader.gif'); ?>" alt="loading please wait" />
+                                </div>
+                                <div class="social_login_btn">
+                                    <a href="javascript:void(0);" id="show_password" onclick="return show_password();" ><?php echo $this->__('Forgot Your Password'); ?>?</a>
+                                    <button type="button" class="button popup_click_btn" title="Login" name="send" onclick="return sendLogin();"  id="slogin" ><span><span><?php echo $this->__('Login') ?></span></span></button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="new_account_create"><?php echo $this->__('Dont have an account?'); ?> <a href="javascript:void(0);" id="show_register" onclick="return show_register();" ><?php echo $this->__('Create One!'); ?></a></div>
+                        </div>
+                        <div id="all_social_iconbtn">
+                    <span class="divider-or social_popup_sprite"></span>
+                    <h4><?php echo $this->__('Sign in with'); ?> </h4>
+                    <!-- Social login icons -->
+                    <?php
+                    if ($fb_status == 1) {
+                        ?>
+                    <ul>
+                        <!--Facebook button -->
+                        <li id='login' class="sl_clearfix"><a id='facebook_login' title="Facebook Login" onclick='fblogin();'>  <span class="f_icon_left icon_left_grid"></span>    <button type="button" class="fb_login inner_social_grid"  name="send"><?php echo $this->__('Facebook'); ?></button>   <span class="f_icon_right icon_right_grid"></span><img id="progress_image_facebooklogin" style="display:none" src="<?php echo $this->getSkinUrl('images/sociallogin/ajax-loader.gif'); ?>" alt="loading please wait" /></a>
+                                    
+                                </li>
+
+                        <?php
+                    }
+                    if ($twitter_status == 1) {
+                        ?>
+                        <!--Twitter button -->
+                        <li class="sl_clearfix">  <a id="popup_twitter_email" title="Twitter Login"> <span class="t_icon_left icon_left_grid"></span> <button type="submit" class="twitter_login inner_social_grid" name="send"> <?php echo $this->__('Twitter'); ?> </button> <span class="t_icon_right icon_right_grid"></span></a></li>
+                        <?php
+                    }
+                    if ($google_status == 1) {
+                        ?>
+                        <!--Google button -->
+                        <li class="sl_clearfix">  <a onclick="javascript:location.href='<?php echo Mage::helper('sociallogin')->getGoogleUrl(); ?>'" title="Google Login"> <span class="gplus_icon_left icon_left_grid"></span> <button type="submit" class="google_login inner_social_grid" name="send"> <?php echo $this->__('Gmail'); ?> </button> <span class="gplus_icon_right icon_right_grid"></span></a></li>
+                        <?php
+                    }
+                    if ($yahoo_status == 1) {
+                        ?>
+                        <!--Yahoo button -->
+                        <li class="sl_clearfix">   <a onclick="javascript:location.href='<?php echo Mage::helper('sociallogin')->getYahooUrl(); ?>'" title="Yahoo Login"> <span class="yahoo_icon_left icon_left_grid"></span> <button type="submit" class="yahoo_login inner_social_grid" name="send"><?php echo $this->__('Yahoo'); ?> </button> <span class="yahoo_icon_right icon_right_grid"></span></a> </li>
+                        <?php
+                    }
+                    ?>
+                        </ul>
+                </div>
+                    </div>  
+                    <div class="sl_clear"></div>
+                    <div id="register_div" style="display:none">
+                    
+                        <div id="register_error" style="display:none" class="com_error"></div>
+                        <div class="sl_clear"></div>
+                        <div class="left_login">
+                             <form id="form-validate"  class="socialpopup_form" action="">
+                            <h4><?php echo $this->__('New User? Sign Up'); ?></h4>
+                            <label for="first_name" class="required"><?php echo $this->__('First Name'); ?> <em>*</em></label>
+                            <div class="socialpopup-input-box">
+                                <input type="text" name="first_name" value="" id="first_name" class="" title="First Name"/>
+                                <div id="first_register_error" class="popup_error_msg"></div>
+                            </div>
+                            <label for="last_name" class="required"><?php echo $this->__('Last Name'); ?> <em>*</em></label>
+                            <div class="socialpopup-input-box">
+                                <input type="text" name="last_name" value="" id="last_name" class="" title="Last Name"/>
+                                <div id="last_register_error" class="popup_error_msg"></div>
+                            </div>
+                            <label for="email_register" class="required"><?php echo $this->__('Email Address'); ?> <em>*</em></label>
+                            <div class="socialpopup-input-box">
+                                <input type="text" name="email_register" value="" id="email_register" class="" title="Email Address"/>
+                                <div id="email_register_error" class="popup_error_msg"></div>
+                            </div>
+                            <label for="password_register" class="required"><?php echo $this->__('Password'); ?> <em>*</em></label>
+                            <div class="socialpopup-input-box">
+                                <input type="password" name="password_register" class="" id="password_register" title="Password"/>
+                                <div id="password_register_error" class="popup_error_msg"></div>
+                            </div>
+                            <label for="confirm_password" class="required"><?php echo $this->__('Confirm Password'); ?> <em>*</em></label>
+                            <div class="socialpopup-input-box">
+                                <input type="password" name="confirm_password" value="" id="confirm_password" class="" title="Confirm Password"/>
+                                <div id="confirm_register_error" class="popup_error_msg"></div>
+                                 <div id="progress_image_register" style="display: none">
+                                    <img src="<?php echo $this->getSkinUrl('images/sociallogin/ajax-loader.gif'); ?>" alt="loading please wait" />
+                                </div>
+                                <div id="captcha" style="margin-top: 4px;">
+                                    <img src="<?php echo $this->getUrl('sociallogin/index/captcha')?>?width=124&height=30&characters=5" id='captchaimg' alt="captcha" /><br />
+                                    <div style="clear: both; overflow: hidden;">
+                                        <label for="message" style="width: 160px;"><?php echo $this->__('Vui lòng nhập mã trên :')?></label>
+                                        <input id="security_code" style="width: 229px;" class="input-text required-entry"  name="security_code" type="text" />
+                                        <div id="security_code_error" class="popup_error_msg"></div>
+                                    </div>
+                                </div>
+                                <div class="social_login_btn">
+                                    <button type="button" title="Sign Up Now!" class="button" onclick="return sendRegister();" id="sregister"><span><span><?php echo $this->__('Sign Up Now!'); ?></span></span></button>
+                                </div>
+                            </div>
+                           
+                        </form>
+                        <div class="return_login"><?php echo $this->__('Already have an account?'); ?> <a href="javascript:void(0);" id="hide_register" onclick="return hide_register();" ><?php echo $this->__('Login');?>!</a></div>
+                        </div>
+                        <div id="all_social_iconbtn">
+                    <span class="divider-or social_popup_sprite"></span>
+                    <h4><?php echo $this->__('Sign up with'); ?> </h4>
+                    <!-- Social login icons -->
+                     <?php
+                    if ($fb_status == 1) {
+                        ?>
+                    <ul>
+                        <!--Facebook button -->
+                       <li id='login' class="sl_clearfix">
+						<a id='facebook-login' title="Facebook Login" onclick='fblogin();'>  <span class="f_icon_left icon_left_grid"></span>    <button type="button" class="fb_login inner_social_grid"  name="send"><?php echo $this->__('Facebook'); ?></button>   <span class="f_icon_right icon_right_grid"></span><img id="progress_image_facebooklogin" style="display:none" src="<?php echo $this->getSkinUrl('images/sociallogin/ajax-loader.gif'); ?>" alt="loading please wait" /></a>
+                       </li>
+
+                        <?php
+                    }
+                    if ($twitter_status == 1) {
+                        ?>
+                        <!--Twitter button -->
+                        <li class="sl_clearfix">  <a id="popup_twitter_email" title="Twitter Login"> <span class="t_icon_left icon_left_grid"></span> <button type="submit" class="twitter_login inner_social_grid" name="send"> <?php echo $this->__('Twitter'); ?> </button> <span class="t_icon_right icon_right_grid"></span></a></li>
+                        <?php
+                    }
+                    if ($google_status == 1) {
+                        ?>
+                        <!--Google button -->
+                        <li class="sl_clearfix">  <a onclick="javascript:location.href='<?php echo Mage::helper('sociallogin')->getGoogleUrl(); ?>'" title="Google Login"> <span class="gplus_icon_left icon_left_grid"></span> <button type="submit" class="google_login inner_social_grid" name="send"> <?php echo $this->__('Gmail'); ?> </button> <span class="gplus_icon_right icon_right_grid"></span></a></li>
+                        <?php
+                    }
+                    if ($yahoo_status == 1) {
+                        ?>
+                        <!--Yahoo button -->
+                        <li class="sl_clearfix">   <a onclick="javascript:location.href='<?php echo Mage::helper('sociallogin')->getYahooUrl(); ?>'" title="Yahoo Login"> <span class="yahoo_icon_left icon_left_grid"></span> <button type="submit" class="yahoo_login inner_social_grid" name="send"><?php echo $this->__('Yahoo'); ?> </button> <span class="yahoo_icon_right icon_right_grid"></span></a> </li>
+                        <?php
+                    }
+                    ?>
+                        </ul>
+                </div>
+              </div>
+                    <div class="sl_clear"></div>
+                    <div class="left_login" id="forget_password_div" style="display: none">
+                        <form id="forget_password_form" class="socialpopup_form" action="">
+                            <h4><?php echo $this->__('Forgot your Password'); ?>?</h4>
+                            <span class="small_txt"><?php echo $this->__('Enter your Email Address here to receive a link to change password.'); ?></span>
+                            <label for="forget_email" class="required"><?php echo $this->__('Enter Your Email'); ?> <em>*</em></label>
+                            <div class="socialpopup-input-box">
+                                <input type="text" value="" name="forget_password" class="" id="forget_password" />
+                                
+                                <div id="forget_password_error" class="popup_error_msg" ></div>
+                                 <div id="progress_image_forgot" style="display: none">
+                                    <img src="<?php echo $this->getSkinUrl('images/sociallogin/ajax-loader.gif'); ?>" alt="loading please wait" />
+                                </div>
+                                <div class="social_login_btn">
+                                    <button type="button" title="Submit" onclick="return forgot_password();" class="button"><span><span><?php echo $this->__('Submit'); ?></span></span></button>
+                                </div>
+                               
+                            </div>
+                        </form>
+                        
+                    </div>
+                    <div class="sl_clear"></div>
+                </div>
+                
+            </div>
+             <div class="sl_clear"></div>
+        </div>
+        <div class="sl_clear"></div>
+    </div>
+    <!-- popup -->
+    <div id="fb-root"></div>
+	<script src="http://connect.facebook.net/en_US/all.js"></script>
+    <script type="text/javascript">
+        <!--/
+         //facebook login
+         
+          function fblogin(){
+			FB.init({appId: '<?php echo $facebookapp_id; ?>', status: true, cookie: true, xfbml: true});
+			FB.login(function(response) {
+			FB.getLoginStatus(function(response) {
+			   
+			 if (response.status === 'connected') {
+				document.getElementById('progress_image_facebooklogin').style.display="block";
+                    login();
+			   } 
+			 });
+			}, {scope:'email'});
+			return false;
+		 }
+ 
+			window.fbAsyncInit = function() {
+                //FB.init({appId: '<?php echo $facebookapp_id; ?>', status: true, cookie: true, xfbml: true});
+                /* All the events registered */
+                FB.Event.subscribe('auth.login', function(response) {
+                    // do something with response
+                    login();
+                });
+            };
+            
+ 
+            function login(){
+                FB.api('/me', function(response) {
+                 window.location.href='<?php echo Mage::getBaseUrl() . 'sociallogin/index/fblogin?firstname='; ?>'+response.first_name+'&lastname='+response.last_name+'&email='+response.email+'&face_id='+response.id+''
+                });
+            }
+           //Light box popup
+        Event.observe(window, 'load', function () {
+            apptha_lightbox = new Lightbox('containerDiv');
+        });
+       
+      
+        Event.observe(window, 'load', function () {
+            apptha_header_logo_Div = new Lightbox('header_logo_Div'); 
+            Event.observe('bg_fade', 'click', function () {
+            apptha_header_logo_Div.close();
+            });
+        });
+        
+        Event.observe('closeLink', 'click', function () {
+            apptha_lightbox.close();
+        });
+        
+       
+        Event.observe('closeLink2', 'click', function () {
+            apptha_header_logo_Div.close();
+            
+            ClearAll();
+        });
+        
+        //twitter login email box
+        Event.observe('popup_twitter_email', 'click', function () {
+            apptha_header_logo_Div.close();
+            apptha_lightbox.open();
+            Event.observe('bg_fade', 'click', function () {
+                apptha_lightbox.close();
+            });
+        });
+        
+        window.document.onkeydown = function (e)
+        {
+            if (!e) e = event;
+            if (e.keyCode == 27) {
+                 apptha_lightbox.close();
+                
+                apptha_header_logo_Div.close();
+                ClearAll();
+            }
+        }
+   
+        Event.observe('popup_twitter_email', 'click', function () {
+            apptha_header_logo_Div.close();
+            apptha_lightbox.open();
+            Event.observe('bg_fade', 'click', function () {
+                apptha_header_logo_Div.close();
+            });
+        });
+        
+        //multi login load icons
+        Event.observe('headerboxLink1', 'click', function () {
+            apptha_header_logo_Div.open();
+            
+            Event.observe('bg_fade', 'click', function () {
+                apptha_lightbox.close();
+            });
+        });
+        
+        function fbsignup(){
+			FB.init({appId: '<?php echo $facebookapp_id; ?>', status: true, cookie: true, xfbml: true});
+			FB.login(function(response) {
+			   FB.getLoginStatus(function(response) {
+				  if (response.status === 'connected') {
+				   document.getElementById('progress_image_facebooksignup').style.display="block";
+					login();
+				  } 
+				 });
+				}, {scope:'email'});
+			return false;
+		}
+        function sendLogin()
+        {
+            var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+            var email_value = document.getElementById("email").value;
+            var password_value=document.getElementById('password').value;
+            if(email_value=='')
+            {
+                $('email').addClassName("validation-failed");
+                $('email_error').innerHTML='<div style="" id="advice-required-entry-email" class="validation-advice"><?php echo $this->__('This field is required'); ?></div>';
+                 
+            } else if(reg.test(email_value) == false) {
+                $('email').addClassName("validation-failed");
+                $('email_error').innerHTML='<div style="" id="advice-required-entry-email" class="validation-advice"><?php echo $this->__('Invalid Email Address'); ?></div>';
+                return false;
+            }
+            
+            if(password_value=='')
+            {
+                $('password').addClassName("validation-failed");
+                $('password_error').innerHTML='<div style="" id="advice-required-entry-password" class="validation-advice"><?php echo $this->__('This field is required'); ?></div>';
+                return false;
+            }if(email_value=='' ||password_value=='')
+            {
+                $('email').addClassName("validation-failed");
+                 $('password').addClassName("validation-failed");
+                $('password_error').innerHTML='<div style="" id="advice-required-entry-email" class="validation-advice"><?php echo $this->__('Invalid Email Address or Password'); ?></div>';
+                 return false;
+            }  else{
+                document.getElementById('progress_image_login').style.display="block";
+                $('email').removeClassName("validation-failed");
+                $('password').removeClassName("validation-failed");
+                document.getElementById('email_error').innerHTML=""; 
+                document.getElementById('password_error').innerHTML="";
+                var ajaxurl = "<?php echo Mage::getBaseUrl() . 'sociallogin/index/customerloginpost/' ?>";
+                new Ajax.Request(ajaxurl, {
+                    method: 'post',
+                    parameters: {email_value: email_value, password_value: password_value},
+                    onSuccess: function(transport) {
+                        document.getElementById('progress_image_login').style.display="none";
+                        var pattern_url = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+                        var url_value=pattern_url.test(transport.responseText);
+                        if(url_value ==true)
+                        {
+							//window.location.href=transport.responseText;
+							location.reload();
+                        }else{
+                            document.getElementById('password_error').innerHTML=transport.responseText;
+							//location.reload();
+                        }
+                    }
+                });
+            }
+        }
+        function sendRegister()
+        { 
+            var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+            var email_value = document.getElementById("email_register").value;
+            var password_value=document.getElementById('password_register').value;
+            var first_name = document.getElementById("first_name").value;
+            var last_name = document.getElementById("last_name").value;
+            var confirm_password = document.getElementById("confirm_password").value;
+            var security_code = document.getElementById("security_code").value;
+           
+            var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+            
+            if(security_code=='')
+            {
+                $('security_code').addClassName("validation-failed");
+                $('security_code_error').innerHTML='<div style="" id="advice-required-entry-security-code" class="validation-advice"><?php echo $this->__('This field is required'); ?></div>';
+                
+            }else{
+                $('security_code').removeClassName("validation-failed");
+                $('security_code_error').innerHTML='';   
+            }
+            
+            if(first_name==''){
+               
+                $('first_name').addClassName("validation-failed");
+                $('first_register_error').innerHTML='<div style="" id="advice-required-entry-first-name" class="validation-advice"><?php echo $this->__('This field is required'); ?></div>';
+                 return false;
+            }else{
+                $('first_name').removeClassName("validation-failed");
+                $('first_register_error').innerHTML='';
+            }
+            if(last_name==''){
+                
+                 $('last_name').addClassName("validation-failed");
+                $('last_register_error').innerHTML='<div style="" id="advice-required-entry-last-name" class="validation-advice"><?php echo $this->__('This field is required'); ?></div>';
+                 return false;
+                
+            }else{
+                $('last_name').removeClassName("validation-failed");
+                $('last_register_error').innerHTML='';
+            }
+            if(email_value=='')
+            {
+                $('email_register').addClassName("validation-failed");
+                $('email_register_error').innerHTML='<div style="" id="advice-required-entry-email-register" class="validation-advice"><?php echo $this->__('This field is required'); ?></div>';
+                 return false;
+                
+            } else if(reg.test(email_value) == false) {
+                $('email_register').addClassName("validation-failed");
+                $('email_register_error').innerHTML='<div style="" id="advice-required-entry-email-register" class="validation-advice"><?php echo $this->__('Invalid Email Address'); ?></div>';
+                 return false;
+            }else{
+                $('email_register').removeClassName("validation-failed");
+                $('email_register_error').innerHTML='';
+            }
+            if(password_value=='')
+            {
+              $('password_register').addClassName("validation-failed");
+                $('password_register_error').innerHTML='<div style="" id="advice-required-entry-password-register" class="validation-advice"><?php echo $this->__('This field is required'); ?></div>';
+                
+            }
+            if(password_value.length<6)
+            {
+                $('password_register').addClassName("validation-failed");
+                $('password_register_error').innerHTML='<div style="" id="advice-required-entry-password-register" class="validation-advice"><?php echo $this->__('Password cannot be less than 6'); ?></div>';
+                 return false;
+            }else{
+                $('password_register').removeClassName("validation-failed");
+                $('password_register_error').innerHTML='';
+            }
+            if(confirm_password=='')
+            {
+               $('confirm_password').addClassName("validation-failed");
+               $('confirm_register_error').innerHTML='<div style="" id="advice-required-entry-confirm-password" class="validation-advice"><?php echo $this->__('This field is required'); ?></div>';
+                return false;
+            }else{
+                $('confirm_password').removeClassName("validation-failed");
+                $('confirm_register_error').innerHTML='';
+            }
+            
+            if(confirm_password!=password_value)
+            {
+                $('confirm_password').addClassName("validation-failed");
+               $('confirm_register_error').innerHTML='<div style="" id="advice-required-entry-confirm-password" class="validation-advice"><?php echo $this->__('Password doesnt match'); ?></div>';
+               return false;
+            }
+            else{
+                document.getElementById('confirm_register_error').innerHTML="";
+                document.getElementById('password_register_error').innerHTML="";
+                document.getElementById('confirm_register_error').innerHTML="";
+                document.getElementById('last_register_error').innerHTML="";
+                document.getElementById('first_register_error').innerHTML="";
+                document.getElementById('password_register_error').innerHTML="";
+                document.getElementById('email_register_error').innerHTML="";
+                document.getElementById('security_code_error').innerHTML="";
+                 
+                 document.getElementById('progress_image_register').style.display="block";
+                var ajaxurl = "<?php echo Mage::getBaseUrl() . 'sociallogin/index/createPost/' ?>";
+                new Ajax.Request(ajaxurl, {
+                    method: 'post',
+                    parameters: {email: email_value, password: password_value,firstname:first_name,lastname:last_name,confirmation:confirm_password,security_code: security_code},
+                    onSuccess: function(register_success) {
+                        document.getElementById('progress_image_register').style.display="none";
+                        var pattern_url = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+                        var url_value=pattern_url.test(register_success.responseText);
+                        if(url_value ==false)
+                        {
+                            document.getElementById('register_error').style.display="block";
+                            document.getElementById('register_error').innerHTML=register_success.responseText;  
+                            return false;
+                        }else{  
+                            window.location.href=register_success.responseText;
+                        }
+                    }
+                });
+            }
+        }
+        
+        function forgot_password()
+        {
+            
+            var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+            var email_value = document.getElementById("forget_password").value;
+            var password_value=document.getElementById('password').value;
+            if(email_value=='')
+            {
+                $('forget_password').addClassName("validation-failed");
+                $('forget_password_error').innerHTML='<div style="" id="advice-required-entry-forgot-password" class="validation-advice">This is a required field.</div>';
+            } else if(reg.test(email_value) == false) {
+                $('forget_password').addClassName("validation-failed");
+                $('forget_password_error').innerHTML='<div style="" id="advice-required-entry-forgot-password" class="validation-advice">Invalid Email Address.</div>';
+                return false;
+            }else{
+                
+                document.getElementById('forget_password_error').innerHTML="";
+                document.getElementById('progress_image_forgot').style.display="block";
+                var ajaxurl = "<?php echo Mage::getBaseUrl() . 'sociallogin/index/forgotPasswordPost/' ?>";
+                new Ajax.Request(ajaxurl, {
+                    method: 'post',
+                    parameters: {email_value: email_value},
+                    onSuccess: function(forgot_password) {
+                        document.getElementById('progress_image_forgot').style.display="none";
+                        if(forgot_password.responseText=='sent')
+                        {
+                            document.getElementById('forget_password_error').innerHTML="<?php echo $this->__('If there is an account associated with '); ?> "+email_value+"<?php echo $this->__(' you will receive an email with a link to reset your password'); ?>";
+                        }else{
+                            document.getElementById('forget_password_error').innerHTML=forgot_password.responseText;
+                            return false;
+                        }
+                    }
+                });
+            }
+        }
+        function show_register()
+        {
+            document.getElementById('register_div').style.display="block";
+            document.getElementById('login_div').style.display="none";
+            document.getElementById('forget_password_div').style.display="none";
+            
+            return false;
+        }
+        function hide_register()
+        {
+            document.getElementById('register_div').style.display="none";
+            document.getElementById('login_div').style.display="block";
+//            document.getElementById('confirm_register_error').innerHTML="";
+//            document.getElementById('password_register_error').innerHTML="";
+//            document.getElementById('confirm_register_error').innerHTML="";
+//            document.getElementById('last_register_error').innerHTML="";
+//            document.getElementById('first_register_error').innerHTML="";
+//            document.getElementById('password_register_error').innerHTML="";
+//            document.getElementById('email_register_error').innerHTML="";
+            
+            return false;
+        }
+        function show_password(){
+            document.getElementById('show_password').setAttribute('onclick','hide_password();')
+           // document.getElementById('forget_password_error').innerHTML="";
+            document.getElementById('login_div').style.display="block";
+            document.getElementById('register_div').style.display="none";
+            document.getElementById('forget_password_div').style.display="block";
+            return false;
+        }
+        function hide_password()
+        { document.getElementById('show_password').setAttribute('onclick','show_password();')
+           // document.getElementById('forget_password_error').innerHTML="";
+            document.getElementById('login_div').style.display="block";
+            document.getElementById('register_div').style.display="none";
+            document.getElementById('forget_password_div').style.display="none";
+        }
+        function twitter_check()
+        {
+             var email_value = document.getElementById("tw_email").value;
+              var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+              if(email_value=='')
+            {
+                document.getElementById('twitter_error').innerHTML="<?php echo $this->__('This field is required'); ?>";
+            } else if(reg.test(email_value) == false) {
+                document.getElementById('twitter_error').innerHTML="<?php echo $this->__('Invalid Email Address'); ?>";
+                return false;
+            }else{
+                document.getElementById('twitter_error').innerHTML="";
+             var ajaxurl = "<?php echo Mage::getBaseUrl() . 'sociallogin/index/twitterpost/' ?>";
+                new Ajax.Request(ajaxurl, {
+                    method: 'post',
+                    parameters: {email_value: email_value},
+                    onSuccess: function(twitter_success_give) {
+                        var pattern_url = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+                        var url_value=pattern_url.test(twitter_success_give.responseText);
+                        if(url_value ==false)
+                        {
+                            
+                                    document.getElementById('twitter_error').innerHTML=twitter_success_give.responseText;
+                                return false;
+                        }else
+                            {
+                            
+                               window.location.href=twitter_success_give.responseText;
+                            }
+                        
+                    }
+        });
+        }
+        }
+       
+        function ClearAll() {
+			document.getElementById('email_error').innerHTML=""; 
+            document.getElementById('password_error').innerHTML="";
+            document.getElementById('forget_password_error').innerHTML="";
+            document.getElementById('confirm_register_error').innerHTML="";
+            document.getElementById('password_register_error').innerHTML="";
+            document.getElementById('confirm_register_error').innerHTML="";
+            document.getElementById('last_register_error').innerHTML="";
+            document.getElementById('first_register_error').innerHTML="";
+            document.getElementById('password_register_error').innerHTML="";
+            document.getElementById('email_register_error').innerHTML="";
+            document.getElementById('register_div').style.display="none";
+            document.getElementById('login_div').style.display="block";
+            document.getElementById('forget_password_div').style.display="none";
+    var objInput = document.getElementsByTagName("input");
+
+    for (var iCount = 0; iCount < objInput.length; iCount++) {
+
+        if (objInput[iCount].type == "text" || objInput[iCount].type == "password")
+
+            objInput[iCount].value = "";
+
+    }
+
+}
+-->
+        
+    </script>
+        
+<?php } ?>

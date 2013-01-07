@@ -1,0 +1,393 @@
+<?php
+	$vendorSales	= $this->getVendorSales();
+	
+	$helper 		= Mage::app()->getHelper('vendor');
+	$vendorIsLogged	= $helper->vendorIsLogged();
+?>
+
+<div class="content-header" style="visibility: visible;">
+	<h3 class="icon-head head-catalog-product-attribute">Vendor Sales Report</h3>
+</div>
+<table cellspacing="0" class="actions">
+	<tr>
+		<td class="a-left filter">
+			<div class="f-left">
+				<div>
+					<?php echo $this->__('From') ?>:&nbsp;
+					<input class="input-text no-changes required-entry" type="text" id="period_date_from" name="report_from" value="<?php echo $this->getFrom() ?>" style="width:6em" readonly/>
+					<img src="<?php echo $this->getSkinUrl('images/grid-cal.gif') ?>" title="<?php echo $this->__('Select Date') ?>" id="period_date_from_trig" alt="<?php echo $this->__('Select Date') ?>" class="v-middle"/>
+					&nbsp;&nbsp;
+				</div>
+				<div id="period_date_from_advaice"></div>
+			</div>
+
+			<div class="f-left">
+				<div>
+					<?php echo $this->__('To') ?>:&nbsp;
+					<input class="input-text no-changes required-entry" type="text" id="period_date_to" name="report_to"  value="<?php echo $this->getTo() ?>" style="width:6em" readonly/> 
+					<img src="<?php echo $this->getSkinUrl('images/grid-cal.gif') ?>" class="v-middle" title="<?php echo $this->__('Select Date') ?>"id="period_date_to_trig" alt="<?php echo $this->__('Select Date') ?>"/>&nbsp;&nbsp;
+				</div>
+				<div id="period_date_to_advaice"></div>
+			</div>
+		<?php
+			if(!$vendorIsLogged)
+			{
+		?>
+			<div class="f-left">
+				<?php echo $this->__('Vendor Id') ?>:
+				<input type="text" class="input-text validate-number" id="vendor_id" value="<?php echo $this->getRequest()->getParam("id"); ?>" size=3>
+			</div>
+		<?php
+			}
+		?>
+			<div class="f-left">
+				&nbsp;
+				<button style="" onclick="ApplyFilter()" class="scalable task" type="button" id="id_b299606ac8223dd6c5c79f977f0bc63a">
+					<span>Refresh</span>
+				</button>
+			</div>
+				
+		</td>
+	</tr>
+</table>
+
+
+
+<div class="grid">
+	<div class="hor-scroll">
+		<table class="data" cellspacing="0">
+			<col width="160"></col>
+			<col width="100"></col>
+			<col width="20"></col>
+			<col></col>
+			<col width="80"></col>
+			<col width="80"></col>
+			<col width="80"></col>
+			<col width="80"></col>
+			<col width="80"></col>
+			<thead>
+				<tr class="headings">
+					<th>Vendor</th>
+					<th class="a-center">Date</th>
+					<th>Order id</th>
+					<th>Product Name</th>
+					<th class="a-center">Qty</th>
+					<th class="a-right">Amount</th>
+					<th class="a-right">Shipping Cost</th>
+					<th class="a-right">Total</th>
+					<th class="last a-center">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+			<?php
+				$_i	= 0;
+				if(count($vendorSales)>0)
+				{
+					foreach($vendorSales as $_i => $vendorSale)
+					{
+						
+						$commission			= $vendorSale["vendor_info"]["commission"]*1;
+						$orderTotalAmount	= 0;
+						$orderTotalShipping	= 0;
+						$grandTotalAmount	= 0;
+						$grandTotalShipping	= 0;
+						
+						
+						$totalRowSpan	= 1;
+						
+						$first_order	= null;
+						
+						foreach($vendorSale["orders"] as $order_id => $order)
+						{
+							$totalRowSpan	+= count($order["products"]);
+							
+							if($first_order==null)
+							{
+								$first_order	= $order;
+							}
+							
+							// not doing this anymore in php, from now on we are doing this from js because we want to hide specific rows.
+							//$totalRowSpan	+= (count($order["products"])>1 ? 1 : 0);
+							
+						}
+						
+						
+						$orderSpan		= count($first_order["products"])>1 ? count($first_order["products"])+1 : 2;
+						$orderDate		= strtotime($first_order["order_info"]["updated_at"]);
+						
+			?>
+					<tr class="<?php echo $_i%2==0 ? "even" : "" ?>" title="">
+						<td id="vendor_<?php echo $vendorSale["vendor_info"]["vendor_id"]; ?>" style="vertical-align:middle !important;" rowspan="<?php echo $totalRowSpan; ?>" class="a-center"><?php echo $vendorSale["vendor_info"]["company_name"]; ?></td>
+						<td style="vertical-align:middle !important;" rowspan="<?php echo ($orderSpan); ?>" class="a-center"><?php echo date("d M Y",$orderDate); ?></td>
+						<td style="vertical-align:middle !important;" rowspan="<?php echo ($orderSpan); ?>" class="a-center"><?php echo $first_order["order_info"]["id"]; ?></td>
+					</tr>
+					<?php
+						
+						// showing the first order of the current vendor
+						
+						$orderTotalAmount	= 0;
+						$orderTotalShipping	= 0;
+						
+						
+						foreach($first_order["products"] as $_j => $order_product)
+						{
+							$amount				= ((($order_product["price"]*1)/100)*(100-$commission)) * ($order_product["qty_ordered"]*1);
+							$shipping_cost		= $order_product["shipping_cost"]*1;
+							
+							$orderTotalAmount	+= $amount;
+							$orderTotalShipping	+= $shipping_cost;
+							
+							$grandTotalAmount	+= $amount;
+							$grandTotalShipping	+= $shipping_cost;
+							
+					?>
+						<tr class="<?php echo $_i%2==0 ? "even" : "" ?>" title="">
+							<td style="vertical-align:middle !important;"><?php echo $order_product["name"]; ?></td>
+							<td style="vertical-align:middle !important;" class="a-center"><?php echo round($order_product["qty_ordered"]); ?></td>
+							<td style="vertical-align:middle !important;" class="a-right">$<?php echo sprintf("%01.2f", $amount); ?></td>
+							<td style="vertical-align:middle !important;" class="a-right">$<?php echo sprintf("%01.2f", $shipping_cost); ?></td>
+							<td style="vertical-align:middle !important;" class="a-right">$<?php echo sprintf("%01.2f", ($amount+$shipping_cost)); ?></td>
+							
+							<?php
+								if($_j == 0)
+								{
+							?>
+								<td style="vertical-align:middle !important;" class="last a-center" rowspan="<?php echo ($orderSpan-1) > 0 ? ($orderSpan-1) : 1; ?>">
+									<?php
+										if(count($first_order["products"])>1)
+										{
+									?>
+											<a href="javascript:ViewTotals(<?php echo $vendorSale["vendor_info"]["vendor_id"]; ?>,<?php echo $first_order["order_info"]["id"]; ?>)" >View Totals</a>
+									<?php
+										}
+										if($vendorIsLogged && false)
+										{
+									?>
+											<a href="<?php echo $this->getUrl("vendorsales/adminhtml_tracking/index/id/".$first_order["order_info"]["id"]); ?>">Tracking</a>
+									<?php
+										}
+									?>
+								</td>
+							<?php
+								}
+							?>
+						</tr>
+					<?php
+						}
+						
+						// showing total amount for current order if order has more than 1 product
+						if(count($first_order["products"])>1)
+						{
+					?>
+							<tr id="order_total_<?php echo $vendorSale["vendor_info"]["vendor_id"]."_".$first_order["order_info"]["id"]; ?>" class="<?php echo $_i%2==0 ? "even" : "" ?>" title="" style="display:none;">
+								<td colspan="4" class="a-right"><b>Total:</b></td>
+								<td class="a-right"><b>$<?php echo sprintf("%01.2f", $orderTotalAmount); ?></b></td>
+								<td class="a-right"><b>$<?php echo sprintf("%01.2f", $orderTotalShipping); ?></b></td>
+								<td class="a-right"><b>$<?php echo sprintf("%01.2f", $orderTotalAmount+$orderTotalShipping); ?></b></td>
+								<td class="last">&nbsp;</td>
+							</tr>
+					<?php
+						}
+						
+					?>
+					<?php
+						// all the other orders
+						
+						$order_i	= 0;
+						foreach($vendorSale["orders"] as $order_id => $order)
+						{
+							$orderTotalAmount	= 0;
+							$orderTotalShipping	= 0;
+							
+							if($order_id != $first_order["order_info"]["id"])
+							{
+								$order_i++;
+								
+								$bgColor	= $order_i%2==0 ? "#fff" : "#F0F0FF";
+								
+								$orderSpan	= count($order["products"])>=1 ? count($order["products"]) : 1;
+								foreach($order["products"] as $_j => $order_product)
+								{
+									$amount				= ((($order_product["price"]*1)/100)*(100-$commission)) * ($order_product["qty_ordered"]*1);
+									$shipping_cost		= $order_product["shipping_cost"]*1;
+									
+									$orderTotalAmount	+= $amount;
+									$orderTotalShipping	+= $shipping_cost;
+									
+									$grandTotalAmount	+= $amount;
+									$grandTotalShipping	+= $shipping_cost;
+					?>
+					
+							<tr class="<?php echo $_i%2==0 ? "even" : "" ?>" title="" <?php echo "style=\"background-color:$bgColor;\""; ?>>
+								<?php
+									if($_j==0)
+									{
+										$orderDate		= strtotime($order["order_info"]["updated_at"]);
+								?>
+									<td style="vertical-align:middle !important;" rowspan="<?php echo ($orderSpan); ?>" class="a-center"><?php echo date("d M Y",$orderDate); ?></td>
+									<td style="vertical-align:middle !important;" rowspan="<?php echo ($orderSpan); ?>" class="a-center"><?php echo $order["order_info"]["id"]; ?></td>
+								<?php
+									}
+								?>
+								<td style="vertical-align:middle !important;"><?php echo $order_product["name"]; ?></td>
+								<td style="vertical-align:middle !important;" class="a-center"><?php echo round($order_product["qty_ordered"]); ?></td>
+								<td style="vertical-align:middle !important;" class="a-right">$<?php echo sprintf("%01.2f", $amount); ?></td>
+								<td style="vertical-align:middle !important;" class="a-right">$<?php echo sprintf("%01.2f", $shipping_cost); ?></td>
+								<td style="vertical-align:middle !important;" class="a-right">$<?php echo sprintf("%01.2f", ($amount+$shipping_cost)); ?></td>
+								<?php
+									if($_j==0)
+									{
+								?>
+									<td style="vertical-align:middle !important;" class="last a-center" rowspan="<?php echo ($orderSpan-1) > 0 ? ($orderSpan) : 1; ?>">
+										<?php
+											if(count($order["products"])>1)
+											{
+										?>
+												<a href="javascript:ViewTotals(<?php echo $vendorSale["vendor_info"]["vendor_id"]; ?>,<?php echo $order["order_info"]["id"]; ?>)" >View Totals</a>
+										<?php
+											}
+											if($vendorIsLogged && false)
+											{
+										?>
+												<a href="<?php echo $this->getUrl("vendorsales/adminhtml_tracking/index/id/".$order["order_info"]["id"]); ?>">Tracking</a>
+										<?php
+											}
+										?>
+									</td>
+								<?php
+									}
+								?>
+							</tr>
+					
+			<?php
+								}
+								
+								
+								if(count($order["products"])>1)
+								{
+							?>
+									<tr id="order_total_<?php echo $vendorSale["vendor_info"]["vendor_id"]."_".$order["order_info"]["id"]; ?>" class="<?php echo $_i%2==0 ? "even" : "" ?>" title="" <?php echo "style=\"background-color:$bgColor;display:none;\""; ?>>
+										<td colspan="4" class="a-right"><b>Total:</b></td>
+										<td class="a-right"><b>$<?php echo sprintf("%01.2f", $orderTotalAmount); ?></b></td>
+										<td class="a-right"><b>$<?php echo sprintf("%01.2f", $orderTotalShipping); ?></b></td>
+										<td class="a-right"><b>$<?php echo sprintf("%01.2f", $orderTotalAmount+$orderTotalShipping); ?></b></td>
+										<td class="last">&nbsp;</td>
+									</tr>
+							<?php
+								}
+								
+								
+							}
+						}
+						
+						// showing grand total for the current vendor
+						
+						?>
+							<tr class="<?php echo $_i%2==0 ? "even" : "" ?>" title="" <?php echo "style=\"background-color:".(isset($bgColor) ? $bgColor : "#FFF").";font-size:14px;\""; ?>>
+								<td colspan="5" class="a-right"><b>Grand Total:</b></td>
+								<td class="a-right"><b>$<?php echo sprintf("%01.2f", $grandTotalAmount); ?></b></td>
+								<td class="a-right"><b>$<?php echo sprintf("%01.2f", $grandTotalShipping); ?></b></td>
+								<td class="a-right"><b>$<?php echo sprintf("%01.2f", $grandTotalAmount+$grandTotalShipping); ?></b></td>
+								<td class="last">&nbsp;</td>
+							</tr>
+						<?php
+						
+					}
+				}
+				if($_i==0)
+				{
+			?>
+					<tr class="even">
+						<td class="empty-text a-center last" colspan="12">No records found.</td>
+					</tr>
+			<?php
+				}
+			?>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+
+
+
+
+<script type="text/javascript">
+	var base_url	= "<?php echo $this->getBaseUrl(); ?>";
+	
+	function ViewTotals(vendor_id,order_id)
+	{
+		var vendor_row	= document.getElementById("vendor_"+vendor_id);
+		var order_row	= document.getElementById("order_total_"+vendor_id+"_"+order_id);
+		
+		if(vendor_row && typeof(vendor_row)!="undefined" && order_row && typeof(order_row)!="undefined")
+		{
+			if(order_row.style.display=="none")
+			{
+				vendor_row.rowSpan		= vendor_row.rowSpan*1+1;
+				order_row.style.display	= "";
+			}
+			else
+			{
+				vendor_row.rowSpan		= vendor_row.rowSpan*1-1;
+				order_row.style.display	= "none";
+			}
+		}
+	}
+	
+	function ApplyFilter()
+	{
+		var dateFrom	= "";
+		var dateTo		= "";
+		var vendorId	= "";
+		var elem		= "";
+		
+		elem			= document.getElementById("period_date_from");
+		if(elem && typeof(elem)!="undefined")
+		{
+			dateFrom	= elem.value;
+		}
+		
+		elem			= document.getElementById("period_date_to");
+		if(elem && typeof(elem)!="undefined")
+		{
+			dateTo		= elem.value;
+		}
+		
+		elem			= document.getElementById("vendor_id");
+		if(elem && typeof(elem)!="undefined")
+		{
+			vendorId	= (!isNaN(elem.value) ? elem.value : vendorId);
+		}
+		
+		//alert("dateFrom: "+dateFrom+"\ndateTo: "+dateTo+"\nvendorId: "+vendorId);
+		
+		var url			= base_url + "vendor/adminhtml_report/sales/" +
+							(vendorId!="" ? "id/" + vendorId + "/" : "") + 
+							(dateFrom!="" ? "from/" + dateFrom + "/" : "") + 
+							(dateTo!="" ? "to/" + dateTo + "/" : "") ;
+		
+		window.location.href	= url;
+		
+	}
+	
+</script>
+<script type="text/javascript">
+	<!--
+	Calendar.setup({
+		inputField : 'period_date_from',
+		ifFormat : '%e-%m-%Y',
+		button : 'period_date_from_trig',
+		align : 'Bl',
+		singleClick : true
+	});
+	Calendar.setup({
+		inputField : 'period_date_to',
+		ifFormat : '%e-%m-%Y',
+		button : 'period_date_to_trig',
+		align : 'Bl',
+		singleClick : true
+	});
+	//-->
+</script>

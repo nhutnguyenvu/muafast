@@ -1,0 +1,43 @@
+<?xml version="1.0"?>   
+<layout version="0.1.0">
+<default>
+    <reference name="root">
+        <reference name ="header">
+            <remove name="breadcrumbs"/>
+        </reference>
+    </reference>
+</default>
+
+<!--
+  <custom_index_index>   
+    <reference name="root">   
+      <action method="setTemplate"><template>page/2columns-left.phtml</template></action>   
+    </reference>
+    <reference name="left">   
+      <block type="custom/left" name="custom_left" template="custom/left.phtml"/>   
+    </reference>   
+    <reference name="content">   
+      <block type="custom/index" name="custom_index" template="custom/index.phtml"/>   
+    </reference>   
+  </custom_index_index>
+-->
+	<catalogsearch_advanced_resultajax>   
+	
+            <block type="catalogsearch/advanced_result" name="catalogsearch_advanced_result" template="catalogsearch/advanced/result.phtml">
+                <block type="catalog/product_list" name="search_result_list" template="catalog/product/list_scoll.phtml">
+                </block>
+                <action method="setListOrders"/>
+                <action method="setListModes"/>
+                <action method="setListCollection"/>
+            </block>
+      
+	</catalogsearch_advanced_resultajax>
+    <custom_index_specialproduct>
+        <reference name="content">
+            <block type="custom/index" name="customer_special_product" as="customer_special_product" template="custom/specialproduct.phtml">
+				<block type="amshopby/catalog_layer_view_top" name="amshopby.navtop" as="navtop" template="amshopby/view_top.phtml"/>
+            </block>
+        </reference>
+    </custom_index_specialproduct>
+</layout>   
+	
