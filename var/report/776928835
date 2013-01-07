@@ -1,0 +1,9 @@
+a:5:{i:0;s:243:"Error in file: "D:\project\muafast\source\v1\trunk\app\code\local\FavoredMinds\Vendor\sql\vendor_setup\mysql4-upgrade-0.1.9-0.2.0.php" - SQLSTATE[42S02]: Base table or view not found: 1146 Table 'muafastlive.sale_flat_order_item' doesn't exist";i:1;s:1042:"#0 D:\project\muafast\source\v1\trunk\app\code\core\Mage\Core\Model\Resource\Setup.php(645): Mage::exception('Mage_Core', 'Error in file: ...')
+#1 D:\project\muafast\source\v1\trunk\app\code\core\Mage\Core\Model\Resource\Setup.php(437): Mage_Core_Model_Resource_Setup->_modifyResourceDb('upgrade', '0.1.9', '0.2.0')
+#2 D:\project\muafast\source\v1\trunk\app\code\core\Mage\Core\Model\Resource\Setup.php(320): Mage_Core_Model_Resource_Setup->_upgradeResourceDb('0.1.9', '0.2.0')
+#3 D:\project\muafast\source\v1\trunk\app\code\core\Mage\Core\Model\Resource\Setup.php(235): Mage_Core_Model_Resource_Setup->applyUpdates()
+#4 D:\project\muafast\source\v1\trunk\app\code\core\Mage\Core\Model\App.php(417): Mage_Core_Model_Resource_Setup::applyAllUpdates()
+#5 D:\project\muafast\source\v1\trunk\app\code\core\Mage\Core\Model\App.php(343): Mage_Core_Model_App->_initModules()
+#6 D:\project\muafast\source\v1\trunk\app\Mage.php(683): Mage_Core_Model_App->run(Array)
+#7 D:\project\muafast\source\v1\trunk\index.php(72): Mage::run('', 'store')
+#8 {main}";s:3:"url";s:79:"/index.php/vendor/adminhtml_vendors/index/key/ac55ecdb8344df3172f6f1a32640d5d9/";s:11:"script_name";s:10:"/index.php";s:4:"skin";s:7:"default";}

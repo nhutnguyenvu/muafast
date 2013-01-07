@@ -106,9 +106,4 @@ skin/frontend/default/iphone/
 skin/frontend/default/modern/
 skin/frontend/enterprise
 skin/install/
-var/cache
-var/backgups
-var/export
-var/log
-var/session
-var/tmp
+var/

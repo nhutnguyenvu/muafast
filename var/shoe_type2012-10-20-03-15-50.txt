@@ -1,0 +1,12 @@
+shoe_type
+Dép Crocs
+Dép xỏ ngón
+Giày bata
+Giày bata thể thao
+Giày búp bê
+Giày cao gót
+Giày lười
+Giày mọi
+Giày tây
+Sandal
+

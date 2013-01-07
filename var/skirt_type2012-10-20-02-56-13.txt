@@ -1,0 +1,6 @@
+skirt_type
+Jeep jean
+Váy maxi
+Váy ngắn
+Váy xếp li
+

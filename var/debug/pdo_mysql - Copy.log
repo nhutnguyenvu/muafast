@@ -1,0 +1,2277 @@
+## 2012-12-12 03:49:57
+## 5652 ## CONNECT
+TIME: 0.0016
+
+## 2012-12-12 03:49:57
+## 5652 ## QUERY
+SQL: SET NAMES utf8
+AFF: 0
+TIME: 0.0159
+
+## 2012-12-12 03:49:57
+## 5652 ## QUERY
+SQL: SHOW TABLE STATUS LIKE 'core_resource'
+AFF: 1
+TIME: 0.0017
+
+## 2012-12-12 03:49:57
+## 5652 ## QUERY
+SQL: SELECT `core_resource`.* FROM `core_resource`
+AFF: 70
+TIME: 0.0018
+
+## 2012-12-12 03:49:57
+## 5652 ## QUERY
+SQL: SELECT `index_process`.`indexer_code` FROM `index_process`
+AFF: 9
+TIME: 0.0006
+
+## 2012-12-12 03:49:57
+## 5652 ## QUERY
+SQL: SELECT `core_website`.`website_id`, `core_website`.`code`, `core_website`.`name` FROM `core_website`
+AFF: 2
+TIME: 0.0026
+
+## 2012-12-12 03:49:57
+## 5652 ## QUERY
+SQL: SELECT `core_store`.`store_id`, `core_store`.`code`, `core_store`.`name`, `core_store`.`website_id` FROM `core_store` ORDER BY `sort_order` ASC
+AFF: 4
+TIME: 0.0008
+
+## 2012-12-12 03:49:57
+## 5652 ## QUERY
+SQL: SELECT `core_config_data`.`scope`, `core_config_data`.`scope_id`, `core_config_data`.`path`, `core_config_data`.`value` FROM `core_config_data`
+AFF: 810
+TIME: 0.0023
+
+## 2012-12-12 03:49:57
+## 5652 ## QUERY
+SQL: SELECT `main_table`.* FROM `core_store` AS `main_table` ORDER BY CASE WHEN main_table.store_id = 0 THEN 0 ELSE 1 END ASC, main_table.sort_order ASC, main_table.name ASC
+AFF: 4
+TIME: 0.0006
+
+## 2012-12-12 03:49:57
+## 5652 ## QUERY
+SQL: SELECT `main_table`.* FROM `core_website` AS `main_table` ORDER BY main_table.sort_order ASC, main_table.name ASC
+AFF: 2
+TIME: 0.0003
+
+## 2012-12-12 03:49:57
+## 5652 ## QUERY
+SQL: SELECT `main_table`.* FROM `core_store_group` AS `main_table` ORDER BY main_table.name ASC
+AFF: 2
+TIME: 0.0004
+
+## 2012-12-12 03:49:57
+## 5652 ## QUERY
+SQL: SELECT `core_url_rewrite`.* FROM `core_url_rewrite` WHERE (request_path IN (:path0, :path1)) AND (store_id IN(0, 1))
+BIND: array (
+  ':path0' => '/',
+  ':path1' => '',
+)
+AFF: 0
+TIME: 0.0008
+
+## 2012-12-12 03:49:57
+## 5652 ## QUERY
+SQL: SHOW TABLE STATUS LIKE 'core_session'
+AFF: 1
+TIME: 0.0015
+
+## 2012-12-12 03:49:57
+## 5652 ## QUERY
+SQL: SELECT `core_session`.`session_data` FROM `core_session` WHERE (session_id = :session_id) AND (session_expires > :session_expires)
+BIND: array (
+  ':session_id' => 'aee0ca1dc10edca71297a603bee7fb0e',
+  ':session_expires' => 1355284197,
+)
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:57
+## 5652 ## QUERY
+SQL: SELECT `main_table`.* FROM `design_change` AS `main_table` WHERE (store_id = :store_id) AND (date_from <= :required_date or date_from IS NULL) AND (date_to >= :required_date or date_to IS NULL)
+BIND: array (
+  ':store_id' => 1,
+  ':required_date' => '2012-12-12 03:49:57',
+)
+AFF: 0
+TIME: 0.0009
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `core_translate`.`string`, `core_translate`.`translate` FROM `core_translate` WHERE (store_id IN (0 , :store_id)) AND (locale = :locale) ORDER BY `store_id` ASC
+BIND: array (
+  ':locale' => 'vi_VN',
+  ':store_id' => '1',
+)
+AFF: 0
+TIME: 0.0007
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `cms_page`.* FROM `cms_page`
+ INNER JOIN `cms_page_store` ON cms_page.page_id = cms_page_store.page_id WHERE (`cms_page`.`identifier`='home') AND (is_active = 1) AND (cms_page_store.store_id IN (0, 1)) ORDER BY `cms_page_store`.`store_id` DESC LIMIT 1
+AFF: 1
+TIME: 0.0020
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `cms_page_store`.`store_id` FROM `cms_page_store` WHERE (page_id = 5)
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `layout_update`.`xml` FROM `core_layout_update` AS `layout_update`
+ INNER JOIN `core_layout_link` AS `link` ON link.layout_update_id=layout_update.layout_update_id WHERE (link.store_id IN (0, :store_id)) AND (link.area = :area) AND (link.package = :package) AND (link.theme = :theme) AND (layout_update.handle = :layout_update_handle) ORDER BY `layout_update`.`sort_order` ASC
+BIND: array (
+  ':store_id' => '1',
+  ':area' => 'frontend',
+  ':package' => 'muafast',
+  ':theme' => 'default',
+  ':layout_update_handle' => 'default',
+)
+AFF: 0
+TIME: 0.0010
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `layout_update`.`xml` FROM `core_layout_update` AS `layout_update`
+ INNER JOIN `core_layout_link` AS `link` ON link.layout_update_id=layout_update.layout_update_id WHERE (link.store_id IN (0, :store_id)) AND (link.area = :area) AND (link.package = :package) AND (link.theme = :theme) AND (layout_update.handle = :layout_update_handle) ORDER BY `layout_update`.`sort_order` ASC
+BIND: array (
+  ':store_id' => '1',
+  ':area' => 'frontend',
+  ':package' => 'muafast',
+  ':theme' => 'default',
+  ':layout_update_handle' => 'cms_page',
+)
+AFF: 0
+TIME: 0.0006
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `layout_update`.`xml` FROM `core_layout_update` AS `layout_update`
+ INNER JOIN `core_layout_link` AS `link` ON link.layout_update_id=layout_update.layout_update_id WHERE (link.store_id IN (0, :store_id)) AND (link.area = :area) AND (link.package = :package) AND (link.theme = :theme) AND (layout_update.handle = :layout_update_handle) ORDER BY `layout_update`.`sort_order` ASC
+BIND: array (
+  ':store_id' => '1',
+  ':area' => 'frontend',
+  ':package' => 'muafast',
+  ':theme' => 'default',
+  ':layout_update_handle' => 'STORE_default',
+)
+AFF: 0
+TIME: 0.0006
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `layout_update`.`xml` FROM `core_layout_update` AS `layout_update`
+ INNER JOIN `core_layout_link` AS `link` ON link.layout_update_id=layout_update.layout_update_id WHERE (link.store_id IN (0, :store_id)) AND (link.area = :area) AND (link.package = :package) AND (link.theme = :theme) AND (layout_update.handle = :layout_update_handle) ORDER BY `layout_update`.`sort_order` ASC
+BIND: array (
+  ':store_id' => '1',
+  ':area' => 'frontend',
+  ':package' => 'muafast',
+  ':theme' => 'default',
+  ':layout_update_handle' => 'THEME_frontend_muafast_default',
+)
+AFF: 0
+TIME: 0.0006
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `layout_update`.`xml` FROM `core_layout_update` AS `layout_update`
+ INNER JOIN `core_layout_link` AS `link` ON link.layout_update_id=layout_update.layout_update_id WHERE (link.store_id IN (0, :store_id)) AND (link.area = :area) AND (link.package = :package) AND (link.theme = :theme) AND (layout_update.handle = :layout_update_handle) ORDER BY `layout_update`.`sort_order` ASC
+BIND: array (
+  ':store_id' => '1',
+  ':area' => 'frontend',
+  ':package' => 'muafast',
+  ':theme' => 'default',
+  ':layout_update_handle' => 'cms_index_index',
+)
+AFF: 0
+TIME: 0.0006
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `layout_update`.`xml` FROM `core_layout_update` AS `layout_update`
+ INNER JOIN `core_layout_link` AS `link` ON link.layout_update_id=layout_update.layout_update_id WHERE (link.store_id IN (0, :store_id)) AND (link.area = :area) AND (link.package = :package) AND (link.theme = :theme) AND (layout_update.handle = :layout_update_handle) ORDER BY `layout_update`.`sort_order` ASC
+BIND: array (
+  ':store_id' => '1',
+  ':area' => 'frontend',
+  ':package' => 'muafast',
+  ':theme' => 'default',
+  ':layout_update_handle' => 'page_one_column',
+)
+AFF: 0
+TIME: 0.0005
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `layout_update`.`xml` FROM `core_layout_update` AS `layout_update`
+ INNER JOIN `core_layout_link` AS `link` ON link.layout_update_id=layout_update.layout_update_id WHERE (link.store_id IN (0, :store_id)) AND (link.area = :area) AND (link.package = :package) AND (link.theme = :theme) AND (layout_update.handle = :layout_update_handle) ORDER BY `layout_update`.`sort_order` ASC
+BIND: array (
+  ':store_id' => '1',
+  ':area' => 'frontend',
+  ':package' => 'muafast',
+  ':theme' => 'default',
+  ':layout_update_handle' => 'customer_logged_out',
+)
+AFF: 0
+TIME: 0.0005
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `eav_entity_type`.* FROM `eav_entity_type` WHERE (`eav_entity_type`.`entity_type_code`='customer')
+AFF: 1
+TIME: 0.0010
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `main_table`.* FROM `sales_billing_agreement` AS `main_table` WHERE (customer_id = '') AND (status = 'active') ORDER BY agreement_id DESC
+AFF: 0
+TIME: 0.0006
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `main_table`.* FROM `sales_flat_quote_address` AS `main_table` WHERE (quote_id IS NULL)
+AFF: 0
+TIME: 0.0008
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `main_table`.* FROM `sales_flat_quote_payment` AS `main_table` WHERE (quote_id = '')
+AFF: 0
+TIME: 0.0008
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `customer_group`.* FROM `customer_group` WHERE (`customer_group`.`customer_group_id`=1)
+AFF: 1
+TIME: 0.0010
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `customer_group`.* FROM `customer_group` WHERE (`customer_group`.`customer_group_id`=0)
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `eav_entity_type`.* FROM `eav_entity_type` WHERE (`eav_entity_type`.`entity_type_code`='customer_address')
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `main_table`.`attribute_id`, `main_table`.`entity_type_id`, `main_table`.`attribute_code`, `main_table`.`attribute_model`, `main_table`.`backend_model`, `main_table`.`backend_type`, `main_table`.`backend_table`, `main_table`.`frontend_model`, `main_table`.`frontend_input`, `main_table`.`frontend_label`, `main_table`.`frontend_class`, `main_table`.`source_model`, `main_table`.`is_required`, `main_table`.`is_user_defined`, `main_table`.`default_value`, `main_table`.`is_unique`, `main_table`.`note`, `additional_table`.`is_visible`, `additional_table`.`input_filter`, `additional_table`.`multiline_count`, `additional_table`.`validate_rules`, `additional_table`.`is_system`, `additional_table`.`sort_order`, `additional_table`.`data_model`, `scope_table`.`website_id` AS `scope_website_id`, `scope_table`.`is_visible` AS `scope_is_visible`, `scope_table`.`is_required` AS `scope_is_required`, `scope_table`.`default_value` AS `scope_default_value`, `scope_table`.`multiline_count` AS `scope_multiline_count` FROM `eav_attribute` AS `main_table`
+ INNER JOIN `customer_eav_attribute` AS `additional_table` ON additional_table.attribute_id = main_table.attribute_id
+ LEFT JOIN `customer_eav_attribute_website` AS `scope_table` ON scope_table.attribute_id = main_table.attribute_id AND scope_table.website_id = :scope_website_id WHERE (main_table.entity_type_id = :mt_entity_type_id)
+BIND: array (
+  ':mt_entity_type_id' => 2,
+  ':scope_website_id' => 1,
+)
+AFF: 19
+TIME: 0.0011
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `e`.* FROM `customer_address_entity` AS `e` WHERE (`e`.`entity_type_id` = '2') AND (`e`.`parent_id` = '-1')
+AFF: 0
+TIME: 0.0007
+
+## 2012-12-12 03:49:58
+## 5652 ## TRANSACTION BEGIN
+TIME: 0.0002
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: INSERT INTO `sales_flat_quote` (`store_id`, `created_at`, `updated_at`, `items_count`, `items_qty`, `store_to_base_rate`, `store_to_quote_rate`, `base_to_global_rate`, `base_to_quote_rate`, `global_currency_code`, `base_currency_code`, `store_currency_code`, `quote_currency_code`, `grand_total`, `base_grand_total`, `customer_id`, `customer_tax_class_id`, `remote_ip`, `applied_rule_ids`, `subtotal`, `base_subtotal`, `subtotal_with_discount`, `base_subtotal_with_discount`, `is_changed`, `trigger_recollect`) VALUES (?, '2012-12-12 03:49:58', '2012-12-12 03:49:58', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+BIND: array (
+  0 => 1,
+  1 => 0,
+  2 => 0,
+  3 => 1,
+  4 => 1,
+  5 => 1,
+  6 => 1,
+  7 => 'VND',
+  8 => 'VND',
+  9 => 'VND',
+  10 => 'VND',
+  11 => 0,
+  12 => 0,
+  13 => NULL,
+  14 => 3,
+  15 => '127.0.0.1',
+  16 => NULL,
+  17 => 0,
+  18 => 0,
+  19 => 0,
+  20 => 0,
+  21 => 1,
+  22 => 0,
+)
+AFF: 1
+TIME: 0.0008
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: INSERT INTO `sales_flat_quote_address` (`quote_id`, `created_at`, `updated_at`, `customer_id`, `address_type`, `same_as_billing`, `free_shipping`, `weight`, `subtotal`, `base_subtotal`, `tax_amount`, `base_tax_amount`, `shipping_amount`, `base_shipping_amount`, `shipping_tax_amount`, `base_shipping_tax_amount`, `discount_amount`, `base_discount_amount`, `grand_total`, `base_grand_total`, `applied_taxes`, `subtotal_incl_tax`, `shipping_incl_tax`, `base_shipping_incl_tax`) VALUES (?, '2012-12-12 03:49:58', '2012-12-12 03:49:58', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+BIND: array (
+  0 => 93961,
+  1 => NULL,
+  2 => 'shipping',
+  3 => 1,
+  4 => 0,
+  5 => 0,
+  6 => 0,
+  7 => 0,
+  8 => 0,
+  9 => 0,
+  10 => 0,
+  11 => 0,
+  12 => 0,
+  13 => 0,
+  14 => 0,
+  15 => 0,
+  16 => 0,
+  17 => 0,
+  18 => 'a:0:{}',
+  19 => 0,
+  20 => 0,
+  21 => 0,
+)
+AFF: 1
+TIME: 0.0007
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: INSERT INTO `sales_flat_quote_address` (`quote_id`, `created_at`, `updated_at`, `customer_id`, `address_type`, `free_shipping`, `weight`, `subtotal`, `base_subtotal`, `tax_amount`, `base_tax_amount`, `shipping_amount`, `base_shipping_amount`, `shipping_tax_amount`, `base_shipping_tax_amount`, `discount_amount`, `base_discount_amount`, `grand_total`, `base_grand_total`, `applied_taxes`, `subtotal_incl_tax`, `shipping_incl_tax`, `base_shipping_incl_tax`) VALUES (?, '2012-12-12 03:49:58', '2012-12-12 03:49:58', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+BIND: array (
+  0 => 93961,
+  1 => NULL,
+  2 => 'billing',
+  3 => 0,
+  4 => 0,
+  5 => 0,
+  6 => 0,
+  7 => 0,
+  8 => 0,
+  9 => 0,
+  10 => 0,
+  11 => 0,
+  12 => 0,
+  13 => 0,
+  14 => 0,
+  15 => 0,
+  16 => 0,
+  17 => 'a:0:{}',
+  18 => 0,
+  19 => 0,
+  20 => 0,
+)
+AFF: 1
+TIME: 0.0008
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: INSERT INTO `sales_flat_quote_payment` (`quote_id`, `created_at`, `updated_at`, `additional_information`) VALUES (?, '2012-12-12 03:49:58', '2012-12-12 03:49:58', ?)
+BIND: array (
+  0 => 93961,
+  1 => NULL,
+)
+AFF: 1
+TIME: 0.0007
+
+## 2012-12-12 03:49:58
+## 5652 ## TRANSACTION COMMIT
+TIME: 0.0018
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `eav_entity_type`.* FROM `eav_entity_type` WHERE (`eav_entity_type`.`entity_type_code`='catalog_category')
+AFF: 1
+TIME: 0.0007
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `catalog_category_entity`.`entity_id` FROM `catalog_category_entity` WHERE (entity_id = :entity_id)
+BIND: array (
+  ':entity_id' => '3',
+)
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `catalog_category_entity`.* FROM `catalog_category_entity` WHERE (`catalog_category_entity`.`entity_id` = '3')
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `catalog_category_entity`.* FROM `catalog_category_entity` WHERE (`catalog_category_entity`.`path` LIKE '1/3/%') AND (`catalog_category_entity`.`level` <= 2) ORDER BY `catalog_category_entity`.`position` ASC
+AFF: 6
+TIME: 0.0005
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `main_table`.`attribute_id`, `main_table`.`entity_type_id`, `main_table`.`attribute_code`, `main_table`.`attribute_model`, `main_table`.`backend_model`, `main_table`.`backend_type`, `main_table`.`backend_table`, `main_table`.`frontend_input`, `main_table`.`source_model` FROM `eav_attribute` AS `main_table`
+ INNER JOIN `catalog_eav_attribute` AS `additional_table` ON additional_table.attribute_id = main_table.attribute_id WHERE (main_table.entity_type_id=9) AND (attribute_code IN('name', 'url_key', 'is_active'))
+AFF: 3
+TIME: 0.0007
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `a`.`attribute_id`, `t`.* FROM `eav_attribute` AS `a`
+ INNER JOIN `eav_entity_type` AS `t` ON a.entity_type_id = t.entity_type_id WHERE (entity_type_code = :entity_type_code) AND (attribute_code = :attribute_code)
+BIND: array (
+  ':entity_type_code' => 'catalog_category',
+  ':attribute_code' => 'is_active',
+)
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `d`.`entity_id` FROM `catalog_category_entity_int` AS `d`
+ LEFT JOIN `catalog_category_entity_int` AS `c` ON c.attribute_id = :attribute_id AND c.store_id = :store_id AND c.entity_id = d.entity_id WHERE (d.attribute_id = :attribute_id) AND (d.store_id = :zero_store_id) AND (d.entity_id IN (SELECT `e`.`entity_id` FROM `catalog_category_entity` AS `e` WHERE (`e`.`entity_type_id` = '9') AND (`e`.`entity_id` IN('35', '36', '37', '38', '39', '40')))) AND (IF(c.value_id > 0, c.value, d.value) = :cond)
+BIND: array (
+  ':attribute_id' => '119',
+  ':store_id' => '1',
+  ':zero_store_id' => 0,
+  ':cond' => 0,
+)
+AFF: 2
+TIME: 0.0009
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `e`.`entity_id` FROM `catalog_category_entity` AS `e` WHERE (`e`.`entity_type_id` = '9') AND (`e`.`entity_id` IN('35', '36', '37', '38', '39', '40'))
+AFF: 6
+TIME: 0.0004
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `eav_attribute`.* FROM `eav_attribute` WHERE (`eav_attribute`.`attribute_code`='include_in_menu') AND (entity_type_id = :entity_type_id)
+BIND: array (
+  ':entity_type_id' => '9',
+)
+AFF: 1
+TIME: 0.0009
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `eav_entity_type`.`additional_attribute_table` FROM `eav_entity_type` WHERE (entity_type_id = :entity_type_id)
+BIND: array (
+  ':entity_type_id' => '9',
+)
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `catalog_eav_attribute`.* FROM `catalog_eav_attribute` WHERE (attribute_id = :attribute_id)
+BIND: array (
+  ':attribute_id' => '934',
+)
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `e`.*, IF(at_is_active.value_id > 0, at_is_active.value, at_is_active_default.value) AS `is_active`, IF(at_include_in_menu.value_id > 0, at_include_in_menu.value, at_include_in_menu_default.value) AS `include_in_menu`, `core_url_rewrite`.`request_path` FROM `catalog_category_entity` AS `e`
+ INNER JOIN `catalog_category_entity_int` AS `at_is_active_default` ON (`at_is_active_default`.`entity_id` = `e`.`entity_id`) AND (`at_is_active_default`.`attribute_id` = '119') AND `at_is_active_default`.`store_id` = 0
+ LEFT JOIN `catalog_category_entity_int` AS `at_is_active` ON (`at_is_active`.`entity_id` = `e`.`entity_id`) AND (`at_is_active`.`attribute_id` = '119') AND (`at_is_active`.`store_id` = 1)
+ INNER JOIN `catalog_category_entity_int` AS `at_include_in_menu_default` ON (`at_include_in_menu_default`.`entity_id` = `e`.`entity_id`) AND (`at_include_in_menu_default`.`attribute_id` = '934') AND `at_include_in_menu_default`.`store_id` = 0
+ LEFT JOIN `catalog_category_entity_int` AS `at_include_in_menu` ON (`at_include_in_menu`.`entity_id` = `e`.`entity_id`) AND (`at_include_in_menu`.`attribute_id` = '934') AND (`at_include_in_menu`.`store_id` = 1)
+ LEFT JOIN `core_url_rewrite` ON (core_url_rewrite.category_id=e.entity_id) AND (core_url_rewrite.is_system=1 AND core_url_rewrite.product_id IS NULL AND core_url_rewrite.store_id='1' AND id_path LIKE 'category/%') WHERE (`e`.`entity_type_id` = '9') AND (`e`.`entity_id` IN('35', '36', '37', '38', '39', '40')) AND (`e`.`entity_id` NOT IN('38', '39')) AND (IF(at_is_active.value_id > 0, at_is_active.value, at_is_active_default.value) = '1') AND (IF(at_include_in_menu.value_id > 0, at_include_in_menu.value, at_include_in_menu_default.value) = '1')
+AFF: 4
+TIME: 0.0081
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `t_d`.`entity_id`, `t_d`.`attribute_id`, `t_d`.`value` AS `default_value`, `t_s`.`value` AS `store_value`, IF(t_s.value_id IS NULL, t_d.value, t_s.value) AS `value` FROM `catalog_category_entity_varchar` AS `t_d`
+ LEFT JOIN `catalog_category_entity_varchar` AS `t_s` ON t_s.attribute_id = t_d.attribute_id AND t_s.entity_id = t_d.entity_id AND t_s.store_id = 1 WHERE (t_d.entity_type_id = 9) AND (t_d.entity_id IN (35, 36, 37, 40)) AND (t_d.attribute_id IN ('111', '479')) AND (t_d.store_id = 0)
+AFF: 8
+TIME: 0.0012
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `catalog_category_entity`.* FROM `catalog_category_entity` WHERE (entity_id ='3')
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `main_table`.*, `additional_table`.*, `entity_attribute`.*, IFNULL(al.value, main_table.frontend_label) AS `store_label` FROM `eav_attribute` AS `main_table`
+ INNER JOIN `catalog_eav_attribute` AS `additional_table` ON additional_table.attribute_id = main_table.attribute_id
+ INNER JOIN `eav_entity_attribute` AS `entity_attribute` ON entity_attribute.attribute_id = main_table.attribute_id
+ LEFT JOIN `eav_attribute_label` AS `al` ON al.attribute_id = main_table.attribute_id AND al.store_id = 1 WHERE (main_table.entity_type_id=9) AND (entity_attribute.attribute_set_id = '12') ORDER BY sort_order ASC
+AFF: 30
+TIME: 0.0010
+
+## 2012-12-12 03:49:58
+## 5652 ## QUERY
+SQL: SELECT `attr_table`.* FROM `catalog_category_entity_int` AS `attr_table`
+ INNER JOIN `eav_entity_attribute` AS `set_table` ON attr_table.attribute_id = set_table.attribute_id AND set_table.attribute_set_id = '12' WHERE (attr_table.entity_id = '3') AND (attr_table.store_id IN (0, 1)) UNION ALL SELECT `attr_table`.* FROM `catalog_category_entity_varchar` AS `attr_table`
+ INNER JOIN `eav_entity_attribute` AS `set_table` ON attr_table.attribute_id = set_table.attribute_id AND set_table.attribute_set_id = '12' WHERE (attr_table.entity_id = '3') AND (attr_table.store_id IN (0, 1)) UNION ALL SELECT `attr_table`.* FROM `catalog_category_entity_text` AS `attr_table`
+ INNER JOIN `eav_entity_attribute` AS `set_table` ON attr_table.attribute_id = set_table.attribute_id AND set_table.attribute_set_id = '12' WHERE (attr_table.entity_id = '3') AND (attr_table.store_id IN (0, 1)) UNION ALL SELECT `attr_table`.* FROM `catalog_category_entity_datetime` AS `attr_table`
+ INNER JOIN `eav_entity_attribute` AS `set_table` ON attr_table.attribute_id = set_table.attribute_id AND set_table.attribute_set_id = '12' WHERE (attr_table.entity_id = '3') AND (attr_table.store_id IN (0, 1)) UNION ALL SELECT `attr_table`.* FROM `catalog_category_entity_decimal` AS `attr_table`
+ INNER JOIN `eav_entity_attribute` AS `set_table` ON attr_table.attribute_id = set_table.attribute_id AND set_table.attribute_set_id = '12' WHERE (attr_table.entity_id = '3') AND (attr_table.store_id IN (0, 1)) ORDER BY `store_id` ASC
+AFF: 22
+TIME: 0.0035
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `eav_entity_type`.* FROM `eav_entity_type` WHERE (`eav_entity_type`.`entity_type_code`='catalog_product')
+AFF: 1
+TIME: 0.0007
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `main_table`.`attribute_id`, `main_table`.`entity_type_id`, `main_table`.`attribute_code`, `main_table`.`attribute_model`, `main_table`.`backend_model`, `main_table`.`backend_type`, `main_table`.`backend_table`, `main_table`.`frontend_input`, `main_table`.`source_model`, `additional_table`.`is_global`, `additional_table`.`is_html_allowed_on_front`, `additional_table`.`is_wysiwyg_enabled` FROM `eav_attribute` AS `main_table`
+ INNER JOIN `catalog_eav_attribute` AS `additional_table` ON additional_table.attribute_id = main_table.attribute_id WHERE (main_table.entity_type_id = 10) AND (attribute_code IN('name', 'id', 'image', 'small_image'))
+AFF: 3
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `eav_attribute`.* FROM `eav_attribute` WHERE (`eav_attribute`.`attribute_code`='id') AND (entity_type_id = :entity_type_id)
+BIND: array (
+  ':entity_type_id' => '10',
+)
+AFF: 0
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `eav_attribute`.* FROM `eav_attribute` WHERE (`eav_attribute`.`attribute_code`='featured') AND (entity_type_id = :entity_type_id)
+BIND: array (
+  ':entity_type_id' => '10',
+)
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `eav_entity_type`.`additional_attribute_table` FROM `eav_entity_type` WHERE (entity_type_id = :entity_type_id)
+BIND: array (
+  ':entity_type_id' => '10',
+)
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `catalog_eav_attribute`.* FROM `catalog_eav_attribute` WHERE (attribute_id = :attribute_id)
+BIND: array (
+  ':attribute_id' => '962',
+)
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `eav_attribute`.* FROM `eav_attribute` WHERE (`eav_attribute`.`attribute_code`='price') AND (entity_type_id = :entity_type_id)
+BIND: array (
+  ':entity_type_id' => '10',
+)
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `eav_entity_type`.`additional_attribute_table` FROM `eav_entity_type` WHERE (entity_type_id = :entity_type_id)
+BIND: array (
+  ':entity_type_id' => '10',
+)
+AFF: 1
+TIME: 0.0003
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `catalog_eav_attribute`.* FROM `catalog_eav_attribute` WHERE (attribute_id = :attribute_id)
+BIND: array (
+  ':attribute_id' => '99',
+)
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `eav_attribute`.* FROM `eav_attribute` WHERE (`eav_attribute`.`attribute_code`='special_price') AND (entity_type_id = :entity_type_id)
+BIND: array (
+  ':entity_type_id' => '10',
+)
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `eav_entity_type`.`additional_attribute_table` FROM `eav_entity_type` WHERE (entity_type_id = :entity_type_id)
+BIND: array (
+  ':entity_type_id' => '10',
+)
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `catalog_eav_attribute`.* FROM `catalog_eav_attribute` WHERE (attribute_id = :attribute_id)
+BIND: array (
+  ':attribute_id' => '567',
+)
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `eav_attribute`.* FROM `eav_attribute` WHERE (`eav_attribute`.`attribute_code`='color') AND (entity_type_id = :entity_type_id)
+BIND: array (
+  ':entity_type_id' => '10',
+)
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `eav_entity_type`.`additional_attribute_table` FROM `eav_entity_type` WHERE (entity_type_id = :entity_type_id)
+BIND: array (
+  ':entity_type_id' => '10',
+)
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `catalog_eav_attribute`.* FROM `catalog_eav_attribute` WHERE (attribute_id = :attribute_id)
+BIND: array (
+  ':attribute_id' => '272',
+)
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `eav_attribute`.* FROM `eav_attribute` WHERE (`eav_attribute`.`attribute_code`='status') AND (entity_type_id = :entity_type_id)
+BIND: array (
+  ':entity_type_id' => '10',
+)
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `eav_entity_type`.`additional_attribute_table` FROM `eav_entity_type` WHERE (entity_type_id = :entity_type_id)
+BIND: array (
+  ':entity_type_id' => '10',
+)
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `catalog_eav_attribute`.* FROM `catalog_eav_attribute` WHERE (attribute_id = :attribute_id)
+BIND: array (
+  ':attribute_id' => '273',
+)
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `eav_attribute`.* FROM `eav_attribute` WHERE (`eav_attribute`.`attribute_code`='visibility') AND (entity_type_id = :entity_type_id)
+BIND: array (
+  ':entity_type_id' => '10',
+)
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `eav_entity_type`.`additional_attribute_table` FROM `eav_entity_type` WHERE (entity_type_id = :entity_type_id)
+BIND: array (
+  ':entity_type_id' => '10',
+)
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `catalog_eav_attribute`.* FROM `catalog_eav_attribute` WHERE (attribute_id = :attribute_id)
+BIND: array (
+  ':attribute_id' => '526',
+)
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `e`.*, `at_featured`.`value` AS `featured`, IF(at_status.value_id > 0, at_status.value, at_status_default.value) AS `status`, IF(at_visibility.value_id > 0, at_visibility.value, at_visibility_default.value) AS `visibility` FROM `catalog_product_entity` AS `e`
+ INNER JOIN `catalog_product_entity_int` AS `at_featured` ON (`at_featured`.`entity_id` = `e`.`entity_id`) AND (`at_featured`.`attribute_id` = '962') AND (`at_featured`.`store_id` = 0)
+ INNER JOIN `catalog_product_entity_int` AS `at_status_default` ON (`at_status_default`.`entity_id` = `e`.`entity_id`) AND (`at_status_default`.`attribute_id` = '273') AND `at_status_default`.`store_id` = 0
+ LEFT JOIN `catalog_product_entity_int` AS `at_status` ON (`at_status`.`entity_id` = `e`.`entity_id`) AND (`at_status`.`attribute_id` = '273') AND (`at_status`.`store_id` = 1)
+ INNER JOIN `catalog_product_entity_int` AS `at_visibility_default` ON (`at_visibility_default`.`entity_id` = `e`.`entity_id`) AND (`at_visibility_default`.`attribute_id` = '526') AND `at_visibility_default`.`store_id` = 0
+ LEFT JOIN `catalog_product_entity_int` AS `at_visibility` ON (`at_visibility`.`entity_id` = `e`.`entity_id`) AND (`at_visibility`.`attribute_id` = '526') AND (`at_visibility`.`store_id` = 1) WHERE ((at_featured.value = '1')) AND (((IF(at_status.value_id > 0, at_status.value, at_status_default.value) = 'eq') OR (IF(at_status.value_id > 0, at_status.value, at_status_default.value) = '1'))) AND (((IF(at_visibility.value_id > 0, at_visibility.value, at_visibility_default.value) = 'eq') OR (IF(at_visibility.value_id > 0, at_visibility.value, at_visibility_default.value) = '4')))
+AFF: 16
+TIME: 0.0074
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `t_d`.`entity_id`, `t_d`.`attribute_id`, `t_d`.`value` AS `default_value`, `t_s`.`value` AS `store_value`, IF(t_s.value_id IS NULL, t_d.value, t_s.value) AS `value` FROM `catalog_product_entity_varchar` AS `t_d`
+ LEFT JOIN `catalog_product_entity_varchar` AS `t_s` ON t_s.attribute_id = t_d.attribute_id AND t_s.entity_id = t_d.entity_id AND t_s.store_id = 1 WHERE (t_d.entity_type_id = 10) AND (t_d.entity_id IN (3861, 3860, 3859, 3911, 3842, 3840, 3750, 3918, 3916, 3914, 3294, 3295, 3289, 3283, 3330, 3913)) AND (t_d.attribute_id IN ('96', '106', '109')) AND (t_d.store_id = 0) UNION ALL SELECT `t_d`.`entity_id`, `t_d`.`attribute_id`, `t_d`.`value` AS `default_value`, `t_s`.`value` AS `store_value`, IF(t_s.value_id IS NULL, t_d.value, t_s.value) AS `value` FROM `catalog_product_entity_decimal` AS `t_d`
+ LEFT JOIN `catalog_product_entity_decimal` AS `t_s` ON t_s.attribute_id = t_d.attribute_id AND t_s.entity_id = t_d.entity_id AND t_s.store_id = 1 WHERE (t_d.entity_type_id = 10) AND (t_d.entity_id IN (3861, 3860, 3859, 3911, 3842, 3840, 3750, 3918, 3916, 3914, 3294, 3295, 3289, 3283, 3330, 3913)) AND (t_d.attribute_id IN ('99', '567')) AND (t_d.store_id = 0) UNION ALL SELECT `t_d`.`entity_id`, `t_d`.`attribute_id`, `t_d`.`value` AS `default_value`, `t_s`.`value` AS `store_value`, IF(t_s.value_id IS NULL, t_d.value, t_s.value) AS `value` FROM `catalog_product_entity_int` AS `t_d`
+ LEFT JOIN `catalog_product_entity_int` AS `t_s` ON t_s.attribute_id = t_d.attribute_id AND t_s.entity_id = t_d.entity_id AND t_s.store_id = 1 WHERE (t_d.entity_type_id = 10) AND (t_d.entity_id IN (3861, 3860, 3859, 3911, 3842, 3840, 3750, 3918, 3916, 3914, 3294, 3295, 3289, 3283, 3330, 3913)) AND (t_d.attribute_id IN ('272')) AND (t_d.store_id = 0)
+AFF: 91
+TIME: 0.0052
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `cataloginventory_stock_status`.`product_id`, `cataloginventory_stock_status`.`stock_status` FROM `cataloginventory_stock_status` WHERE (product_id IN('3861', '3860', '3859', '3911', '3842', '3840', '3750', '3918', '3916', '3914', '3294', '3295', '3289', '3283', '3330', '3913')) AND (stock_id=1) AND (website_id=1)
+AFF: 16
+TIME: 0.0007
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `main_table`.*, `a`.`frontend_label`, `a`.`attribute_code`, `ca`.`position` FROM `am_shopby_filter` AS `main_table`
+ INNER JOIN `eav_attribute` AS `a` ON main_table.attribute_id = a.attribute_id
+ INNER JOIN `catalog_eav_attribute` AS `ca` ON main_table.attribute_id = ca.attribute_id WHERE (show_on_view = '1')
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `main_table`.*, `o`.`sort_order`, `ov`.`value` FROM `am_shopby_value` AS `main_table`
+ INNER JOIN `eav_attribute_option` AS `o` ON main_table.option_id = o.option_id
+ LEFT JOIN `eav_attribute_option_value` AS `ov` ON main_table.option_id = ov.option_id AND ov.store_id=1 WHERE (img_medium > '')
+AFF: 71
+TIME: 0.0016
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '22') LIMIT 1
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '22') LIMIT 1
+AFF: 1
+TIME: 0.0007
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '23') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '23') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '24') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '24') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '25') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '25') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '26') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '26') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '57') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '57') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '58') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '58') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '59') LIMIT 1
+AFF: 1
+TIME: 0.0007
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '59') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '60') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '60') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '61') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '61') LIMIT 1
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '192') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '192') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '193') LIMIT 1
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '193') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '205') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '205') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '214') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '214') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '215') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '215') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '237') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '237') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '238') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '238') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '240') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '240') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '241') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '241') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '242') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '242') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '243') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '243') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '244') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '244') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '245') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '245') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '246') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '246') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '247') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '247') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '248') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '248') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '249') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '249') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '250') LIMIT 1
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '250') LIMIT 1
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '251') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '251') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '252') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '252') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '253') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '253') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '254') LIMIT 1
+AFF: 1
+TIME: 0.0008
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '254') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '255') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '255') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '256') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '256') LIMIT 1
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '257') LIMIT 1
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '257') LIMIT 1
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '258') LIMIT 1
+AFF: 1
+TIME: 0.0008
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '258') LIMIT 1
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '294') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '294') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '300') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '300') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '301') LIMIT 1
+AFF: 1
+TIME: 0.0008
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '301') LIMIT 1
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '303') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '303') LIMIT 1
+AFF: 1
+TIME: 0.0007
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '304') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '304') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '305') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '305') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '306') LIMIT 1
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '306') LIMIT 1
+AFF: 1
+TIME: 0.0008
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '321') LIMIT 1
+AFF: 1
+TIME: 0.0013
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '321') LIMIT 1
+AFF: 1
+TIME: 0.0007
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '327') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '327') LIMIT 1
+AFF: 1
+TIME: 0.0008
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '328') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '328') LIMIT 1
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '329') LIMIT 1
+AFF: 1
+TIME: 0.0007
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '329') LIMIT 1
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '330') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '330') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '331') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '331') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '332') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '332') LIMIT 1
+AFF: 1
+TIME: 0.0007
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '333') LIMIT 1
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '333') LIMIT 1
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '334') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '334') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '335') LIMIT 1
+AFF: 1
+TIME: 0.0007
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '335') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '336') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '336') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '337') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '337') LIMIT 1
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '338') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '338') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '339') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '339') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '340') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '340') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '341') LIMIT 1
+AFF: 1
+TIME: 0.0007
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '341') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '342') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '342') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '343') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '343') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '344') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '344') LIMIT 1
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '345') LIMIT 1
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '345') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '346') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '346') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '347') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '347') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '349') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '349') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '350') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '350') LIMIT 1
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '351') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '351') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '352') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '352') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '353') LIMIT 1
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '353') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '354') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `f`.`filter_id` FROM `am_shopby_filter` AS `f`
+ INNER JOIN `eav_attribute_option` AS `o` ON o.attribute_id = f.attribute_id WHERE (o.option_id = '354') LIMIT 1
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `core_url_rewrite`.* FROM `core_url_rewrite` WHERE (`core_url_rewrite`.`id_path`='product/3861') AND (store_id IN(0, '1')) ORDER BY `store_id` DESC LIMIT 1
+AFF: 1
+TIME: 0.0013
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `core_url_rewrite`.* FROM `core_url_rewrite` WHERE (`core_url_rewrite`.`id_path`='product/3860') AND (store_id IN(0, '1')) ORDER BY `store_id` DESC LIMIT 1
+AFF: 1
+TIME: 0.0011
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `core_url_rewrite`.* FROM `core_url_rewrite` WHERE (`core_url_rewrite`.`id_path`='product/3859') AND (store_id IN(0, '1')) ORDER BY `store_id` DESC LIMIT 1
+AFF: 1
+TIME: 0.0010
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `core_url_rewrite`.* FROM `core_url_rewrite` WHERE (`core_url_rewrite`.`id_path`='product/3911') AND (store_id IN(0, '1')) ORDER BY `store_id` DESC LIMIT 1
+AFF: 1
+TIME: 0.0009
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `core_url_rewrite`.* FROM `core_url_rewrite` WHERE (`core_url_rewrite`.`id_path`='product/3842') AND (store_id IN(0, '1')) ORDER BY `store_id` DESC LIMIT 1
+AFF: 1
+TIME: 0.0011
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `core_url_rewrite`.* FROM `core_url_rewrite` WHERE (`core_url_rewrite`.`id_path`='product/3840') AND (store_id IN(0, '1')) ORDER BY `store_id` DESC LIMIT 1
+AFF: 1
+TIME: 0.0011
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `core_url_rewrite`.* FROM `core_url_rewrite` WHERE (`core_url_rewrite`.`id_path`='product/3750') AND (store_id IN(0, '1')) ORDER BY `store_id` DESC LIMIT 1
+AFF: 1
+TIME: 0.0010
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `core_url_rewrite`.* FROM `core_url_rewrite` WHERE (`core_url_rewrite`.`id_path`='product/3918') AND (store_id IN(0, '1')) ORDER BY `store_id` DESC LIMIT 1
+AFF: 1
+TIME: 0.0012
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `main_table`.* FROM `catalog_product_super_attribute` AS `main_table` WHERE (product_id = '3918') ORDER BY position  ASC
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `main_table`.`entity_type_id`, `main_table`.`attribute_code`, `main_table`.`attribute_model`, `main_table`.`backend_model`, `main_table`.`backend_type`, `main_table`.`backend_table`, `main_table`.`frontend_model`, `main_table`.`frontend_input`, `main_table`.`frontend_label`, `main_table`.`frontend_class`, `main_table`.`source_model`, `main_table`.`is_required`, `main_table`.`is_user_defined`, `main_table`.`default_value`, `main_table`.`is_unique`, `main_table`.`note`, `additional_table`.*, `entity_attribute`.*, IFNULL(al.value, main_table.frontend_label) AS `store_label` FROM `eav_attribute` AS `main_table`
+ INNER JOIN `catalog_eav_attribute` AS `additional_table` ON additional_table.attribute_id = main_table.attribute_id
+ INNER JOIN `eav_entity_attribute` AS `entity_attribute` ON entity_attribute.attribute_id = main_table.attribute_id
+ LEFT JOIN `eav_attribute_label` AS `al` ON al.attribute_id = main_table.attribute_id AND al.store_id = 1 WHERE (main_table.entity_type_id = 10) AND (entity_attribute.attribute_set_id = '58') ORDER BY sort_order ASC
+AFF: 68
+TIME: 0.0017
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `entity`.`attribute_id`, `entity`.`attribute_set_id`, `entity`.`attribute_group_id`, `entity`.`sort_order`, `attribute_group`.`sort_order` AS `group_sort_order` FROM `eav_entity_attribute` AS `entity`
+ LEFT JOIN `eav_attribute_group` AS `attribute_group` ON entity.attribute_group_id = attribute_group.attribute_group_id WHERE (entity.attribute_id IN ('962', '273', '526', '932', '933', '503', '96', '98', '960', '103', '493', '506', '571', '935', '562', '980', '99', '101', '100', '104', '109', '572', '936', '989', '270', '105', '271', '573', '272', '274', '862', '106', '531', '965', '102', '903', '703', '836', '973', '704', '941', '978', '931', '481', '705', '942', '979', '943', '940', '567', '568', '569', '97', '110', '570', '837', '838', '859', '860', '861', '863', '879', '880', '881', '904', '905', '906', '952')) AND (entity.attribute_set_id = :attribute_set_id)
+BIND: array (
+  ':attribute_set_id' => '58',
+)
+AFF: 68
+TIME: 0.0022
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `main_table`.`entity_type_id`, `main_table`.`attribute_code`, `main_table`.`attribute_model`, `main_table`.`backend_model`, `main_table`.`backend_type`, `main_table`.`backend_table`, `main_table`.`frontend_model`, `main_table`.`frontend_input`, `main_table`.`frontend_label`, `main_table`.`frontend_class`, `main_table`.`source_model`, `main_table`.`is_required`, `main_table`.`is_user_defined`, `main_table`.`default_value`, `main_table`.`is_unique`, `main_table`.`note`, `additional_table`.* FROM `eav_attribute` AS `main_table`
+ INNER JOIN `catalog_eav_attribute` AS `additional_table` ON additional_table.attribute_id = main_table.attribute_id WHERE (main_table.entity_type_id = 10)
+AFF: 103
+TIME: 0.0017
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `e`.*, `link_table`.`parent_id`, `at_clothing_size`.`value` AS `clothing_size` FROM `catalog_product_entity` AS `e`
+ INNER JOIN `catalog_product_super_link` AS `link_table` ON link_table.product_id = e.entity_id
+ INNER JOIN `catalog_product_entity_int` AS `at_clothing_size` ON (`at_clothing_size`.`entity_id` = `e`.`entity_id`) AND (`at_clothing_size`.`attribute_id` = '965') AND (`at_clothing_size`.`store_id` = 0) WHERE (link_table.parent_id = 3918) AND (((`e`.`required_options` != '1') OR (`e`.`required_options` IS NULL))) AND (at_clothing_size.value IS NOT NULL)
+AFF: 5
+TIME: 0.0012
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `t_d`.`entity_id`, `t_d`.`attribute_id`, `t_d`.`value` AS `default_value`, `t_s`.`value` AS `store_value`, IF(t_s.value_id IS NULL, t_d.value, t_s.value) AS `value` FROM `catalog_product_entity_int` AS `t_d`
+ LEFT JOIN `catalog_product_entity_int` AS `t_s` ON t_s.attribute_id = t_d.attribute_id AND t_s.entity_id = t_d.entity_id AND t_s.store_id = 1 WHERE (t_d.entity_type_id = 10) AND (t_d.entity_id IN (3680, 3681, 3682, 3683, 3684)) AND (t_d.attribute_id IN ('962', '273', '526', '935', '989', '272', '274', '862', '102', '903', '973', '110', '859', '860', '861', '863', '904', '952', '975', '510', '875', '877', '977', '501', '969', '970', '513', '995', '508', '525', '966', '107', '968', '976')) AND (t_d.store_id = 0) UNION ALL SELECT `t_d`.`entity_id`, `t_d`.`attribute_id`, `t_d`.`value` AS `default_value`, `t_s`.`value` AS `store_value`, IF(t_s.value_id IS NULL, t_d.value, t_s.value) AS `value` FROM `catalog_product_entity_decimal` AS `t_d`
+ LEFT JOIN `catalog_product_entity_decimal` AS `t_s` ON t_s.attribute_id = t_d.attribute_id AND t_s.entity_id = t_d.entity_id AND t_s.store_id = 1 WHERE (t_d.entity_type_id = 10) AND (t_d.entity_id IN (3680, 3681, 3682, 3683, 3684)) AND (t_d.attribute_id IN ('503', '960', '99', '101', '100', '270', '943', '567')) AND (t_d.store_id = 0) UNION ALL SELECT `t_d`.`entity_id`, `t_d`.`attribute_id`, `t_d`.`value` AS `default_value`, `t_s`.`value` AS `store_value`, IF(t_s.value_id IS NULL, t_d.value, t_s.value) AS `value` FROM `catalog_product_entity_varchar` AS `t_d`
+ LEFT JOIN `catalog_product_entity_varchar` AS `t_s` ON t_s.attribute_id = t_d.attribute_id AND t_s.entity_id = t_d.entity_id AND t_s.store_id = 1 WHERE (t_d.entity_type_id = 10) AND (t_d.entity_id IN (3680, 3681, 3682, 3683, 3684)) AND (t_d.attribute_id IN ('96', '103', '493', '571', '562', '109', '105', '271', '106', '703', '836', '941', '931', '481', '942', '940', '570', '879', '880', '881', '905', '906', '878', '983', '984', '873', '987', '876', '982')) AND (t_d.store_id = 0) UNION ALL SELECT `t_d`.`entity_id`, `t_d`.`attribute_id`, `t_d`.`value` AS `default_value`, `t_s`.`value` AS `store_value`, IF(t_s.value_id IS NULL, t_d.value, t_s.value) AS `value` FROM `catalog_product_entity_text` AS `t_d`
+ LEFT JOIN `catalog_product_entity_text` AS `t_s` ON t_s.attribute_id = t_d.attribute_id AND t_s.entity_id = t_d.entity_id AND t_s.store_id = 1 WHERE (t_d.entity_type_id = 10) AND (t_d.entity_id IN (3680, 3681, 3682, 3683, 3684)) AND (t_d.attribute_id IN ('506', '980', '104', '936', '531', '978', '979', '97', '496', '507', '494', '509', '499', '974', '492', '986', '498', '495', '497', '476')) AND (t_d.store_id = 0) UNION ALL SELECT `t_d`.`entity_id`, `t_d`.`attribute_id`, `t_d`.`value` AS `default_value`, `t_s`.`value` AS `store_value`, IF(t_s.value_id IS NULL, t_d.value, t_s.value) AS `value` FROM `catalog_product_entity_datetime` AS `t_d`
+ LEFT JOIN `catalog_product_entity_datetime` AS `t_s` ON t_s.attribute_id = t_d.attribute_id AND t_s.entity_id = t_d.entity_id AND t_s.store_id = 1 WHERE (t_d.entity_type_id = 10) AND (t_d.entity_id IN (3680, 3681, 3682, 3683, 3684)) AND (t_d.attribute_id IN ('572', '573', '704', '705', '568', '569')) AND (t_d.store_id = 0)
+AFF: 120
+TIME: 0.0057
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `main_table`.*, `cp_table`.`type_id`, `status_table`.`stock_status` FROM `cataloginventory_stock_item` AS `main_table`
+ INNER JOIN `catalog_product_entity` AS `cp_table` ON main_table.product_id = cp_table.entity_id
+ LEFT JOIN `cataloginventory_stock_status` AS `status_table` ON main_table.product_id=status_table.product_id AND main_table.stock_id=status_table.stock_id AND status_table.website_id='1' WHERE (main_table.stock_id = '1') AND (main_table.product_id IN('3680', '3681', '3682', '3683', '3684'))
+AFF: 5
+TIME: 0.0010
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `def`.*, IF(store.use_default IS NULL, def.use_default, store.use_default) AS `use_default`, IF(store.value IS NULL, def.value, store.value) AS `label` FROM `catalog_product_super_attribute_label` AS `def`
+ LEFT JOIN `catalog_product_super_attribute_label` AS `store` ON store.product_super_attribute_id = def.product_super_attribute_id AND store.store_id = 1 WHERE (def.product_super_attribute_id IN (84)) AND (def.store_id = 0)
+AFF: 1
+TIME: 0.0007
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `price`.* FROM `catalog_product_super_attribute_pricing` AS `price` WHERE (price.product_super_attribute_id IN (84)) AND (price.website_id = 0)
+AFF: 0
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `main_table`.*, `tdv`.`value` AS `default_value`, `tsv`.`value` AS `store_default_value`, IF(tsv.value_id > 0, tsv.value, tdv.value) AS `value` FROM `eav_attribute_option` AS `main_table`
+ INNER JOIN `eav_attribute_option_value` AS `tdv` ON tdv.option_id = main_table.option_id
+ LEFT JOIN `eav_attribute_option_value` AS `tsv` ON tsv.option_id = main_table.option_id AND tsv.store_id = '1' WHERE (attribute_id = '965') AND (tdv.store_id = 0) ORDER BY main_table.sort_order ASC, value ASC
+AFF: 23
+TIME: 0.0013
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `core_url_rewrite`.* FROM `core_url_rewrite` WHERE (`core_url_rewrite`.`id_path`='product/3916') AND (store_id IN(0, '1')) ORDER BY `store_id` DESC LIMIT 1
+AFF: 1
+TIME: 0.0012
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `main_table`.* FROM `catalog_product_super_attribute` AS `main_table` WHERE (product_id = '3916') ORDER BY position  ASC
+AFF: 1
+TIME: 0.0008
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `e`.*, `link_table`.`parent_id`, `at_clothing_size`.`value` AS `clothing_size` FROM `catalog_product_entity` AS `e`
+ INNER JOIN `catalog_product_super_link` AS `link_table` ON link_table.product_id = e.entity_id
+ INNER JOIN `catalog_product_entity_int` AS `at_clothing_size` ON (`at_clothing_size`.`entity_id` = `e`.`entity_id`) AND (`at_clothing_size`.`attribute_id` = '965') AND (`at_clothing_size`.`store_id` = 0) WHERE (link_table.parent_id = 3916) AND (((`e`.`required_options` != '1') OR (`e`.`required_options` IS NULL))) AND (at_clothing_size.value IS NOT NULL)
+AFF: 5
+TIME: 0.0008
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `t_d`.`entity_id`, `t_d`.`attribute_id`, `t_d`.`value` AS `default_value`, `t_s`.`value` AS `store_value`, IF(t_s.value_id IS NULL, t_d.value, t_s.value) AS `value` FROM `catalog_product_entity_int` AS `t_d`
+ LEFT JOIN `catalog_product_entity_int` AS `t_s` ON t_s.attribute_id = t_d.attribute_id AND t_s.entity_id = t_d.entity_id AND t_s.store_id = 1 WHERE (t_d.entity_type_id = 10) AND (t_d.entity_id IN (3675, 3676, 3677, 3678, 3679)) AND (t_d.attribute_id IN ('962', '273', '526', '935', '989', '272', '274', '862', '102', '903', '973', '110', '859', '860', '861', '863', '904', '952', '975', '510', '875', '877', '977', '501', '969', '970', '513', '995', '508', '525', '966', '107', '968', '976')) AND (t_d.store_id = 0) UNION ALL SELECT `t_d`.`entity_id`, `t_d`.`attribute_id`, `t_d`.`value` AS `default_value`, `t_s`.`value` AS `store_value`, IF(t_s.value_id IS NULL, t_d.value, t_s.value) AS `value` FROM `catalog_product_entity_decimal` AS `t_d`
+ LEFT JOIN `catalog_product_entity_decimal` AS `t_s` ON t_s.attribute_id = t_d.attribute_id AND t_s.entity_id = t_d.entity_id AND t_s.store_id = 1 WHERE (t_d.entity_type_id = 10) AND (t_d.entity_id IN (3675, 3676, 3677, 3678, 3679)) AND (t_d.attribute_id IN ('503', '960', '99', '101', '100', '270', '943', '567')) AND (t_d.store_id = 0) UNION ALL SELECT `t_d`.`entity_id`, `t_d`.`attribute_id`, `t_d`.`value` AS `default_value`, `t_s`.`value` AS `store_value`, IF(t_s.value_id IS NULL, t_d.value, t_s.value) AS `value` FROM `catalog_product_entity_varchar` AS `t_d`
+ LEFT JOIN `catalog_product_entity_varchar` AS `t_s` ON t_s.attribute_id = t_d.attribute_id AND t_s.entity_id = t_d.entity_id AND t_s.store_id = 1 WHERE (t_d.entity_type_id = 10) AND (t_d.entity_id IN (3675, 3676, 3677, 3678, 3679)) AND (t_d.attribute_id IN ('96', '103', '493', '571', '562', '109', '105', '271', '106', '703', '836', '941', '931', '481', '942', '940', '570', '879', '880', '881', '905', '906', '878', '983', '984', '873', '987', '876', '982')) AND (t_d.store_id = 0) UNION ALL SELECT `t_d`.`entity_id`, `t_d`.`attribute_id`, `t_d`.`value` AS `default_value`, `t_s`.`value` AS `store_value`, IF(t_s.value_id IS NULL, t_d.value, t_s.value) AS `value` FROM `catalog_product_entity_text` AS `t_d`
+ LEFT JOIN `catalog_product_entity_text` AS `t_s` ON t_s.attribute_id = t_d.attribute_id AND t_s.entity_id = t_d.entity_id AND t_s.store_id = 1 WHERE (t_d.entity_type_id = 10) AND (t_d.entity_id IN (3675, 3676, 3677, 3678, 3679)) AND (t_d.attribute_id IN ('506', '980', '104', '936', '531', '978', '979', '97', '496', '507', '494', '509', '499', '974', '492', '986', '498', '495', '497', '476')) AND (t_d.store_id = 0) UNION ALL SELECT `t_d`.`entity_id`, `t_d`.`attribute_id`, `t_d`.`value` AS `default_value`, `t_s`.`value` AS `store_value`, IF(t_s.value_id IS NULL, t_d.value, t_s.value) AS `value` FROM `catalog_product_entity_datetime` AS `t_d`
+ LEFT JOIN `catalog_product_entity_datetime` AS `t_s` ON t_s.attribute_id = t_d.attribute_id AND t_s.entity_id = t_d.entity_id AND t_s.store_id = 1 WHERE (t_d.entity_type_id = 10) AND (t_d.entity_id IN (3675, 3676, 3677, 3678, 3679)) AND (t_d.attribute_id IN ('572', '573', '704', '705', '568', '569')) AND (t_d.store_id = 0)
+AFF: 120
+TIME: 0.0064
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `main_table`.*, `cp_table`.`type_id`, `status_table`.`stock_status` FROM `cataloginventory_stock_item` AS `main_table`
+ INNER JOIN `catalog_product_entity` AS `cp_table` ON main_table.product_id = cp_table.entity_id
+ LEFT JOIN `cataloginventory_stock_status` AS `status_table` ON main_table.product_id=status_table.product_id AND main_table.stock_id=status_table.stock_id AND status_table.website_id='1' WHERE (main_table.stock_id = '1') AND (main_table.product_id IN('3675', '3676', '3677', '3678', '3679'))
+AFF: 5
+TIME: 0.0007
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `def`.*, IF(store.use_default IS NULL, def.use_default, store.use_default) AS `use_default`, IF(store.value IS NULL, def.value, store.value) AS `label` FROM `catalog_product_super_attribute_label` AS `def`
+ LEFT JOIN `catalog_product_super_attribute_label` AS `store` ON store.product_super_attribute_id = def.product_super_attribute_id AND store.store_id = 1 WHERE (def.product_super_attribute_id IN (82)) AND (def.store_id = 0)
+AFF: 1
+TIME: 0.0007
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `price`.* FROM `catalog_product_super_attribute_pricing` AS `price` WHERE (price.product_super_attribute_id IN (82)) AND (price.website_id = 0)
+AFF: 0
+TIME: 0.0004
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `core_url_rewrite`.* FROM `core_url_rewrite` WHERE (`core_url_rewrite`.`id_path`='product/3914') AND (store_id IN(0, '1')) ORDER BY `store_id` DESC LIMIT 1
+AFF: 1
+TIME: 0.0011
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `main_table`.* FROM `catalog_product_super_attribute` AS `main_table` WHERE (product_id = '3914') ORDER BY position  ASC
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `e`.*, `link_table`.`parent_id`, `at_clothing_size`.`value` AS `clothing_size` FROM `catalog_product_entity` AS `e`
+ INNER JOIN `catalog_product_super_link` AS `link_table` ON link_table.product_id = e.entity_id
+ INNER JOIN `catalog_product_entity_int` AS `at_clothing_size` ON (`at_clothing_size`.`entity_id` = `e`.`entity_id`) AND (`at_clothing_size`.`attribute_id` = '965') AND (`at_clothing_size`.`store_id` = 0) WHERE (link_table.parent_id = 3914) AND (((`e`.`required_options` != '1') OR (`e`.`required_options` IS NULL))) AND (at_clothing_size.value IS NOT NULL)
+AFF: 5
+TIME: 0.0008
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `t_d`.`entity_id`, `t_d`.`attribute_id`, `t_d`.`value` AS `default_value`, `t_s`.`value` AS `store_value`, IF(t_s.value_id IS NULL, t_d.value, t_s.value) AS `value` FROM `catalog_product_entity_int` AS `t_d`
+ LEFT JOIN `catalog_product_entity_int` AS `t_s` ON t_s.attribute_id = t_d.attribute_id AND t_s.entity_id = t_d.entity_id AND t_s.store_id = 1 WHERE (t_d.entity_type_id = 10) AND (t_d.entity_id IN (3670, 3671, 3672, 3673, 3674)) AND (t_d.attribute_id IN ('962', '273', '526', '935', '989', '272', '274', '862', '102', '903', '973', '110', '859', '860', '861', '863', '904', '952', '975', '510', '875', '877', '977', '501', '969', '970', '513', '995', '508', '525', '966', '107', '968', '976')) AND (t_d.store_id = 0) UNION ALL SELECT `t_d`.`entity_id`, `t_d`.`attribute_id`, `t_d`.`value` AS `default_value`, `t_s`.`value` AS `store_value`, IF(t_s.value_id IS NULL, t_d.value, t_s.value) AS `value` FROM `catalog_product_entity_decimal` AS `t_d`
+ LEFT JOIN `catalog_product_entity_decimal` AS `t_s` ON t_s.attribute_id = t_d.attribute_id AND t_s.entity_id = t_d.entity_id AND t_s.store_id = 1 WHERE (t_d.entity_type_id = 10) AND (t_d.entity_id IN (3670, 3671, 3672, 3673, 3674)) AND (t_d.attribute_id IN ('503', '960', '99', '101', '100', '270', '943', '567')) AND (t_d.store_id = 0) UNION ALL SELECT `t_d`.`entity_id`, `t_d`.`attribute_id`, `t_d`.`value` AS `default_value`, `t_s`.`value` AS `store_value`, IF(t_s.value_id IS NULL, t_d.value, t_s.value) AS `value` FROM `catalog_product_entity_varchar` AS `t_d`
+ LEFT JOIN `catalog_product_entity_varchar` AS `t_s` ON t_s.attribute_id = t_d.attribute_id AND t_s.entity_id = t_d.entity_id AND t_s.store_id = 1 WHERE (t_d.entity_type_id = 10) AND (t_d.entity_id IN (3670, 3671, 3672, 3673, 3674)) AND (t_d.attribute_id IN ('96', '103', '493', '571', '562', '109', '105', '271', '106', '703', '836', '941', '931', '481', '942', '940', '570', '879', '880', '881', '905', '906', '878', '983', '984', '873', '987', '876', '982')) AND (t_d.store_id = 0) UNION ALL SELECT `t_d`.`entity_id`, `t_d`.`attribute_id`, `t_d`.`value` AS `default_value`, `t_s`.`value` AS `store_value`, IF(t_s.value_id IS NULL, t_d.value, t_s.value) AS `value` FROM `catalog_product_entity_text` AS `t_d`
+ LEFT JOIN `catalog_product_entity_text` AS `t_s` ON t_s.attribute_id = t_d.attribute_id AND t_s.entity_id = t_d.entity_id AND t_s.store_id = 1 WHERE (t_d.entity_type_id = 10) AND (t_d.entity_id IN (3670, 3671, 3672, 3673, 3674)) AND (t_d.attribute_id IN ('506', '980', '104', '936', '531', '978', '979', '97', '496', '507', '494', '509', '499', '974', '492', '986', '498', '495', '497', '476')) AND (t_d.store_id = 0) UNION ALL SELECT `t_d`.`entity_id`, `t_d`.`attribute_id`, `t_d`.`value` AS `default_value`, `t_s`.`value` AS `store_value`, IF(t_s.value_id IS NULL, t_d.value, t_s.value) AS `value` FROM `catalog_product_entity_datetime` AS `t_d`
+ LEFT JOIN `catalog_product_entity_datetime` AS `t_s` ON t_s.attribute_id = t_d.attribute_id AND t_s.entity_id = t_d.entity_id AND t_s.store_id = 1 WHERE (t_d.entity_type_id = 10) AND (t_d.entity_id IN (3670, 3671, 3672, 3673, 3674)) AND (t_d.attribute_id IN ('572', '573', '704', '705', '568', '569')) AND (t_d.store_id = 0)
+AFF: 120
+TIME: 0.0062
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `main_table`.*, `cp_table`.`type_id`, `status_table`.`stock_status` FROM `cataloginventory_stock_item` AS `main_table`
+ INNER JOIN `catalog_product_entity` AS `cp_table` ON main_table.product_id = cp_table.entity_id
+ LEFT JOIN `cataloginventory_stock_status` AS `status_table` ON main_table.product_id=status_table.product_id AND main_table.stock_id=status_table.stock_id AND status_table.website_id='1' WHERE (main_table.stock_id = '1') AND (main_table.product_id IN('3670', '3671', '3672', '3673', '3674'))
+AFF: 5
+TIME: 0.0007
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `def`.*, IF(store.use_default IS NULL, def.use_default, store.use_default) AS `use_default`, IF(store.value IS NULL, def.value, store.value) AS `label` FROM `catalog_product_super_attribute_label` AS `def`
+ LEFT JOIN `catalog_product_super_attribute_label` AS `store` ON store.product_super_attribute_id = def.product_super_attribute_id AND store.store_id = 1 WHERE (def.product_super_attribute_id IN (80)) AND (def.store_id = 0)
+AFF: 1
+TIME: 0.0008
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `price`.* FROM `catalog_product_super_attribute_pricing` AS `price` WHERE (price.product_super_attribute_id IN (80)) AND (price.website_id = 0)
+AFF: 0
+TIME: 0.0005
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `core_url_rewrite`.* FROM `core_url_rewrite` WHERE (`core_url_rewrite`.`id_path`='product/3294') AND (store_id IN(0, '1')) ORDER BY `store_id` DESC LIMIT 1
+AFF: 1
+TIME: 0.0011
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `core_url_rewrite`.* FROM `core_url_rewrite` WHERE (`core_url_rewrite`.`id_path`='product/3295') AND (store_id IN(0, '1')) ORDER BY `store_id` DESC LIMIT 1
+AFF: 1
+TIME: 0.0009
+
+## 2012-12-12 03:49:59
+## 5652 ## QUERY
+SQL: SELECT `core_url_rewrite`.* FROM `core_url_rewrite` WHERE (`core_url_rewrite`.`id_path`='product/3289') AND (store_id IN(0, '1')) ORDER BY `store_id` DESC LIMIT 1
+AFF: 1
+TIME: 0.0011
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: SELECT `core_url_rewrite`.* FROM `core_url_rewrite` WHERE (`core_url_rewrite`.`id_path`='product/3283') AND (store_id IN(0, '1')) ORDER BY `store_id` DESC LIMIT 1
+AFF: 1
+TIME: 0.0010
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: SELECT `core_url_rewrite`.* FROM `core_url_rewrite` WHERE (`core_url_rewrite`.`id_path`='product/3330') AND (store_id IN(0, '1')) ORDER BY `store_id` DESC LIMIT 1
+AFF: 1
+TIME: 0.0012
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: SELECT `core_url_rewrite`.* FROM `core_url_rewrite` WHERE (`core_url_rewrite`.`id_path`='product/3913') AND (store_id IN(0, '1')) ORDER BY `store_id` DESC LIMIT 1
+AFF: 1
+TIME: 0.0011
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: SELECT `main_table`.* FROM `catalog_product_super_attribute` AS `main_table` WHERE (product_id = '3913') ORDER BY position  ASC
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: SELECT `e`.*, `link_table`.`parent_id`, `at_clothing_size`.`value` AS `clothing_size` FROM `catalog_product_entity` AS `e`
+ INNER JOIN `catalog_product_super_link` AS `link_table` ON link_table.product_id = e.entity_id
+ INNER JOIN `catalog_product_entity_int` AS `at_clothing_size` ON (`at_clothing_size`.`entity_id` = `e`.`entity_id`) AND (`at_clothing_size`.`attribute_id` = '965') AND (`at_clothing_size`.`store_id` = 0) WHERE (link_table.parent_id = 3913) AND (((`e`.`required_options` != '1') OR (`e`.`required_options` IS NULL))) AND (at_clothing_size.value IS NOT NULL)
+AFF: 5
+TIME: 0.0011
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: SELECT `t_d`.`entity_id`, `t_d`.`attribute_id`, `t_d`.`value` AS `default_value`, `t_s`.`value` AS `store_value`, IF(t_s.value_id IS NULL, t_d.value, t_s.value) AS `value` FROM `catalog_product_entity_int` AS `t_d`
+ LEFT JOIN `catalog_product_entity_int` AS `t_s` ON t_s.attribute_id = t_d.attribute_id AND t_s.entity_id = t_d.entity_id AND t_s.store_id = 1 WHERE (t_d.entity_type_id = 10) AND (t_d.entity_id IN (3665, 3666, 3667, 3668, 3669)) AND (t_d.attribute_id IN ('962', '273', '526', '935', '989', '272', '274', '862', '102', '903', '973', '110', '859', '860', '861', '863', '904', '952', '975', '510', '875', '877', '977', '501', '969', '970', '513', '995', '508', '525', '966', '107', '968', '976')) AND (t_d.store_id = 0) UNION ALL SELECT `t_d`.`entity_id`, `t_d`.`attribute_id`, `t_d`.`value` AS `default_value`, `t_s`.`value` AS `store_value`, IF(t_s.value_id IS NULL, t_d.value, t_s.value) AS `value` FROM `catalog_product_entity_decimal` AS `t_d`
+ LEFT JOIN `catalog_product_entity_decimal` AS `t_s` ON t_s.attribute_id = t_d.attribute_id AND t_s.entity_id = t_d.entity_id AND t_s.store_id = 1 WHERE (t_d.entity_type_id = 10) AND (t_d.entity_id IN (3665, 3666, 3667, 3668, 3669)) AND (t_d.attribute_id IN ('503', '960', '99', '101', '100', '270', '943', '567')) AND (t_d.store_id = 0) UNION ALL SELECT `t_d`.`entity_id`, `t_d`.`attribute_id`, `t_d`.`value` AS `default_value`, `t_s`.`value` AS `store_value`, IF(t_s.value_id IS NULL, t_d.value, t_s.value) AS `value` FROM `catalog_product_entity_varchar` AS `t_d`
+ LEFT JOIN `catalog_product_entity_varchar` AS `t_s` ON t_s.attribute_id = t_d.attribute_id AND t_s.entity_id = t_d.entity_id AND t_s.store_id = 1 WHERE (t_d.entity_type_id = 10) AND (t_d.entity_id IN (3665, 3666, 3667, 3668, 3669)) AND (t_d.attribute_id IN ('96', '103', '493', '571', '562', '109', '105', '271', '106', '703', '836', '941', '931', '481', '942', '940', '570', '879', '880', '881', '905', '906', '878', '983', '984', '873', '987', '876', '982')) AND (t_d.store_id = 0) UNION ALL SELECT `t_d`.`entity_id`, `t_d`.`attribute_id`, `t_d`.`value` AS `default_value`, `t_s`.`value` AS `store_value`, IF(t_s.value_id IS NULL, t_d.value, t_s.value) AS `value` FROM `catalog_product_entity_text` AS `t_d`
+ LEFT JOIN `catalog_product_entity_text` AS `t_s` ON t_s.attribute_id = t_d.attribute_id AND t_s.entity_id = t_d.entity_id AND t_s.store_id = 1 WHERE (t_d.entity_type_id = 10) AND (t_d.entity_id IN (3665, 3666, 3667, 3668, 3669)) AND (t_d.attribute_id IN ('506', '980', '104', '936', '531', '978', '979', '97', '496', '507', '494', '509', '499', '974', '492', '986', '498', '495', '497', '476')) AND (t_d.store_id = 0) UNION ALL SELECT `t_d`.`entity_id`, `t_d`.`attribute_id`, `t_d`.`value` AS `default_value`, `t_s`.`value` AS `store_value`, IF(t_s.value_id IS NULL, t_d.value, t_s.value) AS `value` FROM `catalog_product_entity_datetime` AS `t_d`
+ LEFT JOIN `catalog_product_entity_datetime` AS `t_s` ON t_s.attribute_id = t_d.attribute_id AND t_s.entity_id = t_d.entity_id AND t_s.store_id = 1 WHERE (t_d.entity_type_id = 10) AND (t_d.entity_id IN (3665, 3666, 3667, 3668, 3669)) AND (t_d.attribute_id IN ('572', '573', '704', '705', '568', '569')) AND (t_d.store_id = 0)
+AFF: 90
+TIME: 0.0051
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: SELECT `main_table`.*, `cp_table`.`type_id`, `status_table`.`stock_status` FROM `cataloginventory_stock_item` AS `main_table`
+ INNER JOIN `catalog_product_entity` AS `cp_table` ON main_table.product_id = cp_table.entity_id
+ LEFT JOIN `cataloginventory_stock_status` AS `status_table` ON main_table.product_id=status_table.product_id AND main_table.stock_id=status_table.stock_id AND status_table.website_id='1' WHERE (main_table.stock_id = '1') AND (main_table.product_id IN('3665', '3666', '3667', '3668', '3669'))
+AFF: 5
+TIME: 0.0008
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: SELECT `def`.*, IF(store.use_default IS NULL, def.use_default, store.use_default) AS `use_default`, IF(store.value IS NULL, def.value, store.value) AS `label` FROM `catalog_product_super_attribute_label` AS `def`
+ LEFT JOIN `catalog_product_super_attribute_label` AS `store` ON store.product_super_attribute_id = def.product_super_attribute_id AND store.store_id = 1 WHERE (def.product_super_attribute_id IN (79)) AND (def.store_id = 0)
+AFF: 1
+TIME: 0.0007
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: SELECT `price`.* FROM `catalog_product_super_attribute_pricing` AS `price` WHERE (price.product_super_attribute_id IN (79)) AND (price.website_id = 0)
+AFF: 0
+TIME: 0.0007
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: SELECT COUNT(*) FROM `vendors` AS `main_table` WHERE (on_home = '1') AND (status = '1')
+AFF: 1
+TIME: 0.0008
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: SELECT `main_table`.`vendor_code`, `main_table`.`vendor_id`, `main_table`.`is_saling`, `main_table`.`company_name`, `main_table`.`average_rate`, `main_table`.`aboutcompany`, `main_table`.`about_short_company`, `main_table`.`about_mshort_company`, `main_table`.`logo`, `main_table`.`path` FROM `vendors` AS `main_table` WHERE (on_home = '1') AND (status = '1') ORDER BY average_rate DESC LIMIT 8
+AFF: 8
+TIME: 0.0005
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: SELECT `main_table`.`vendor_id`, `main_table`.`company_name`, `main_table`.`vendor_code`, `main_table`.`is_saling`, `main_table`.`logo`, `main_table`.`path`, `main_table`.`aboutcompany`, `main_table`.`about_short_company`, `main_table`.`about_mshort_company` FROM `vendors` AS `main_table` WHERE (on_slide = '1') AND (status = '1') ORDER BY average_rate DESC
+AFF: 13
+TIME: 0.0007
+
+## 2012-12-12 03:50:00
+## 5652 ## TRANSACTION BEGIN
+TIME: 0.0003
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: INSERT INTO `log_url_info` (`url`, `referer`) VALUES (?, ?)
+BIND: array (
+  0 => 'http://www.muafast.com/',
+  1 => NULL,
+)
+AFF: 1
+TIME: 0.0006
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: UPDATE `log_visitor` SET `session_id` = ?, `first_visit_at` = ?, `last_visit_at` = ?, `last_url_id` = ?, `store_id` = ? WHERE (visitor_id='1')
+BIND: array (
+  0 => 'aee0ca1dc10edca71297a603bee7fb0e',
+  1 => '2012-12-11 05:47:52',
+  2 => '2012-12-12 03:50:00',
+  3 => '64738',
+  4 => '1',
+)
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: INSERT INTO `log_url` (`url_id`, `visitor_id`, `visit_time`) VALUES (?, ?, '2012-12-12 03:50:00')
+BIND: array (
+  0 => '64738',
+  1 => '1',
+)
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: INSERT INTO `log_quote` (`quote_id`, `visitor_id`, `created_at`) VALUES (?, ?, '2012-12-12 03:50:00')
+BIND: array (
+  0 => 93961,
+  1 => 1,
+)
+AFF: 1
+TIME: 0.0004
+
+## 2012-12-12 03:50:00
+## 5652 ## TRANSACTION COMMIT
+TIME: 0.0024
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: SELECT `core_session`.* FROM `core_session` WHERE (session_id = :session_id)
+BIND: array (
+  ':session_id' => 'aee0ca1dc10edca71297a603bee7fb0e',
+)
+AFF: 1
+TIME: 0.0008
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: UPDATE `core_session` SET `session_expires` = ?, `session_data` = ? WHERE (session_id='aee0ca1dc10edca71297a603bee7fb0e')
+BIND: array (
+  0 => 1355368200,
+  1 => 'core|a:7:{s:23:"_session_validator_data";a:4:{s:11:"remote_addr";s:9:"127.0.0.1";s:8:"http_via";s:0:"";s:20:"http_x_forwarded_for";s:0:"";s:15:"http_user_agent";s:72:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0";}s:13:"session_hosts";a:1:{s:15:"www.muafast.com";b:1;}s:8:"messages";O:34:"Mage_Core_Model_Message_Collection":2:{s:12:"' . "\0" . '*' . "\0" . '_messages";a:0:{}s:20:"' . "\0" . '*' . "\0" . '_lastAddedMessage";N;}s:12:"visitor_data";a:19:{s:0:"";N;s:11:"server_addr";i:2130706433;s:11:"remote_addr";i:2130706433;s:11:"http_secure";b:0;s:9:"http_host";s:15:"www.muafast.com";s:15:"http_user_agent";s:72:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0";s:20:"http_accept_language";s:14:"en-US,en;q=0.5";s:19:"http_accept_charset";s:0:"";s:11:"request_uri";s:1:"/";s:10:"session_id";s:32:"aee0ca1dc10edca71297a603bee7fb0e";s:12:"http_referer";s:0:"";s:14:"first_visit_at";s:19:"2012-12-11 05:47:52";s:14:"is_new_visitor";b:0;s:13:"last_visit_at";s:19:"2012-12-12 03:50:00";s:10:"visitor_id";s:1:"1";s:8:"quote_id";s:5:"93961";s:15:"do_quote_create";b:0;s:11:"last_url_id";s:5:"64738";s:16:"do_quote_destroy";b:0;}s:8:"last_url";s:39:"http://www.muafast.com/cms/index/index/";s:9:"_form_key";s:16:"ESfJYJD1bXu1omf2";s:13:"data_category";a:4:{i:0;s:2:"42";i:1;s:2:"43";i:2;s:2:"45";i:3;s:2:"68";}}customer_base|a:6:{s:23:"_session_validator_data";a:4:{s:11:"remote_addr";s:9:"127.0.0.1";s:8:"http_via";s:0:"";s:20:"http_x_forwarded_for";s:0:"";s:15:"http_user_agent";s:72:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0";}s:13:"session_hosts";a:1:{s:15:"www.muafast.com";b:1;}s:4:"link";s:1:"/";s:8:"messages";O:34:"Mage_Core_Model_Message_Collection":2:{s:12:"' . "\0" . '*' . "\0" . '_messages";a:0:{}s:20:"' . "\0" . '*' . "\0" . '_lastAddedMessage";N;}s:2:"id";N;s:15:"before_auth_url";s:46:"http://www.muafast.com/checkout/onepage/index/";}catalog|a:4:{s:23:"_session_validator_data";a:4:{s:11:"remote_addr";s:9:"127.0.0.1";s:8:"http_via";s:0:"";s:20:"http_x_forwarded_for";s:0:"";s:15:"http_user_agent";s:72:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0";}s:13:"session_hosts";a:1:{s:15:"www.muafast.com";b:1;}s:22:"last_viewed_product_id";s:4:"3914";s:8:"messages";O:34:"Mage_Core_Model_Message_Collection":2:{s:12:"' . "\0" . '*' . "\0" . '_messages";a:0:{}s:20:"' . "\0" . '*' . "\0" . '_lastAddedMessage";N;}}reports|a:3:{s:23:"_session_validator_data";a:4:{s:11:"remote_addr";s:9:"127.0.0.1";s:8:"http_via";s:0:"";s:20:"http_x_forwarded_for";s:0:"";s:15:"http_user_agent";s:72:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0";}s:13:"session_hosts";a:1:{s:15:"www.muafast.com";b:1;}s:26:"product_index_viewed_count";i:2;}checkout|a:11:{s:23:"_session_validator_data";a:4:{s:11:"remote_addr";s:9:"127.0.0.1";s:8:"http_via";s:0:"";s:20:"http_x_forwarded_for";s:0:"";s:15:"http_user_agent";s:72:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0";}s:13:"session_hosts";a:1:{s:15:"www.muafast.com";b:1;}s:5:"steps";a:6:{s:5:"login";a:2:{s:5:"label";s:27:"Phương thức thanh toán";s:5:"allow";b:1;}s:7:"billing";a:2:{s:5:"label";s:35:"Thông tin địa chỉ thanh toán";s:7:"is_show";b:1;}s:8:"shipping";a:2:{s:5:"label";s:25:"Thông tin vận chuyển";s:7:"is_show";b:1;}s:15:"shipping_method";a:2:{s:5:"label";s:30:"Phương thức vận chuyển";s:7:"is_show";b:1;}s:7:"payment";a:2:{s:5:"label";s:22:"Thông tin thanh toán";s:7:"is_show";b:1;}s:6:"review";a:2:{s:5:"label";s:15:"Xem đơn hàng";s:7:"is_show";b:1;}}s:8:"messages";O:34:"Mage_Core_Model_Message_Collection":2:{s:12:"' . "\0" . '*' . "\0" . '_messages";a:0:{}s:20:"' . "\0" . '*' . "\0" . '_lastAddedMessage";N;}s:21:"last_added_product_id";s:4:"3914";s:10:"quote_id_1";N;s:13:"last_quote_id";s:5:"93938";s:13:"last_order_id";s:3:"150";s:18:"last_real_order_id";s:9:"100000151";s:12:"redirect_url";N;s:21:"last_success_quote_id";N;}store_default|a:2:{s:23:"_session_validator_data";a:4:{s:11:"remote_addr";s:9:"127.0.0.1";s:8:"http_via";s:0:"";s:20:"http_x_forwarded_for";s:0:"";s:15:"http_user_agent";s:72:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0";}s:13:"session_hosts";a:1:{s:15:"www.muafast.com";b:1;}}tag|a:3:{s:23:"_session_validator_data";a:4:{s:11:"remote_addr";s:9:"127.0.0.1";s:8:"http_via";s:0:"";s:20:"http_x_forwarded_for";s:0:"";s:15:"http_user_agent";s:72:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0";}s:13:"session_hosts";a:1:{s:15:"www.muafast.com";b:1;}s:8:"messages";O:34:"Mage_Core_Model_Message_Collection":2:{s:12:"' . "\0" . '*' . "\0" . '_messages";a:0:{}s:20:"' . "\0" . '*' . "\0" . '_lastAddedMessage";N;}}admin|a:2:{s:23:"_session_validator_data";a:4:{s:11:"remote_addr";s:9:"127.0.0.1";s:8:"http_via";s:0:"";s:20:"http_x_forwarded_for";s:0:"";s:15:"http_user_agent";s:72:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0";}s:13:"session_hosts";a:1:{s:15:"www.muafast.com";b:1;}}',
+)
+AFF: 1
+TIME: 0.0023
+
+## 2012-12-12 03:50:00
+## 5652 ## CONNECT
+TIME: 0.0012
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: SET NAMES utf8
+AFF: 0
+TIME: 0.0158
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: SHOW TABLE STATUS LIKE 'core_resource'
+AFF: 1
+TIME: 0.0017
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: SELECT `core_resource`.* FROM `core_resource`
+AFF: 70
+TIME: 0.0023
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: SELECT `index_process`.`indexer_code` FROM `index_process`
+AFF: 9
+TIME: 0.0006
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: SELECT `core_website`.`website_id`, `core_website`.`code`, `core_website`.`name` FROM `core_website`
+AFF: 2
+TIME: 0.0024
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: SELECT `core_store`.`store_id`, `core_store`.`code`, `core_store`.`name`, `core_store`.`website_id` FROM `core_store` ORDER BY `sort_order` ASC
+AFF: 4
+TIME: 0.0005
+
+## 2012-12-12 03:50:00
+## 5652 ## QUERY
+SQL: SELECT `core_config_data`.`scope`, `core_config_data`.`scope_id`, `core_config_data`.`path`, `core_config_data`.`value` FROM `core_config_data`
+AFF: 810
+TIME: 0.0018
+
+## 2012-12-12 03:50:01
+## 5652 ## QUERY
+SQL: SELECT `main_table`.* FROM `core_store` AS `main_table` ORDER BY CASE WHEN main_table.store_id = 0 THEN 0 ELSE 1 END ASC, main_table.sort_order ASC, main_table.name ASC
+AFF: 4
+TIME: 0.0006
+
+## 2012-12-12 03:50:01
+## 5652 ## QUERY
+SQL: SELECT `main_table`.* FROM `core_website` AS `main_table` ORDER BY main_table.sort_order ASC, main_table.name ASC
+AFF: 2
+TIME: 0.0004
+
+## 2012-12-12 03:50:01
+## 5652 ## QUERY
+SQL: SELECT `main_table`.* FROM `core_store_group` AS `main_table` ORDER BY main_table.name ASC
+AFF: 2
+TIME: 0.0005
+
+## 2012-12-12 03:50:01
+## 5652 ## QUERY
+SQL: SELECT `core_url_rewrite`.* FROM `core_url_rewrite` WHERE (request_path IN (:path0, :path1, :path2, :path3)) AND (store_id IN(0, 1))
+BIND: array (
+  ':path0' => 'sociallogin/index/captcha/?width=124&height=30&characters=5',
+  ':path1' => 'sociallogin/index/captcha?width=124&height=30&characters=5',
+  ':path2' => 'sociallogin/index/captcha/',
+  ':path3' => 'sociallogin/index/captcha',
+)
+AFF: 0
+TIME: 0.0007
+
+## 2012-12-12 03:50:01
+## 5652 ## QUERY
+SQL: SHOW TABLE STATUS LIKE 'core_session'
+AFF: 1
+TIME: 0.0017
+
+## 2012-12-12 03:50:01
+## 5652 ## QUERY
+SQL: SELECT `core_session`.`session_data` FROM `core_session` WHERE (session_id = :session_id) AND (session_expires > :session_expires)
+BIND: array (
+  ':session_id' => 'aee0ca1dc10edca71297a603bee7fb0e',
+  ':session_expires' => 1355284201,
+)
+AFF: 1
+TIME: 0.0005
+
+## 2012-12-12 03:50:01
+## 5652 ## QUERY
+SQL: SELECT `main_table`.* FROM `design_change` AS `main_table` WHERE (store_id = :store_id) AND (date_from <= :required_date or date_from IS NULL) AND (date_to >= :required_date or date_to IS NULL)
+BIND: array (
+  ':store_id' => 1,
+  ':required_date' => '2012-12-12 03:50:01',
+)
+AFF: 0
+TIME: 0.0007
+
+## 2012-12-12 03:50:01
+## 5652 ## QUERY
+SQL: SELECT `core_translate`.`string`, `core_translate`.`translate` FROM `core_translate` WHERE (store_id IN (0 , :store_id)) AND (locale = :locale) ORDER BY `store_id` ASC
+BIND: array (
+  ':locale' => 'vi_VN',
+  ':store_id' => '1',
+)
+AFF: 0
+TIME: 0.0008
+
+## 2012-12-12 03:50:01
+## 5652 ## QUERY
+SQL: SELECT `core_session`.* FROM `core_session` WHERE (session_id = :session_id)
+BIND: array (
+  ':session_id' => 'aee0ca1dc10edca71297a603bee7fb0e',
+)
+AFF: 1
+TIME: 0.0007
+
+## 2012-12-12 03:50:01
+## 5652 ## QUERY
+SQL: UPDATE `core_session` SET `session_expires` = ?, `session_data` = ? WHERE (session_id='aee0ca1dc10edca71297a603bee7fb0e')
+BIND: array (
+  0 => 1355368201,
+  1 => 'core|a:7:{s:23:"_session_validator_data";a:4:{s:11:"remote_addr";s:9:"127.0.0.1";s:8:"http_via";s:0:"";s:20:"http_x_forwarded_for";s:0:"";s:15:"http_user_agent";s:72:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0";}s:13:"session_hosts";a:1:{s:15:"www.muafast.com";b:1;}s:8:"messages";O:34:"Mage_Core_Model_Message_Collection":2:{s:12:"' . "\0" . '*' . "\0" . '_messages";a:0:{}s:20:"' . "\0" . '*' . "\0" . '_lastAddedMessage";N;}s:12:"visitor_data";a:19:{s:0:"";N;s:11:"server_addr";i:2130706433;s:11:"remote_addr";i:2130706433;s:11:"http_secure";b:0;s:9:"http_host";s:15:"www.muafast.com";s:15:"http_user_agent";s:72:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0";s:20:"http_accept_language";s:14:"en-US,en;q=0.5";s:19:"http_accept_charset";s:0:"";s:11:"request_uri";s:1:"/";s:10:"session_id";s:32:"aee0ca1dc10edca71297a603bee7fb0e";s:12:"http_referer";s:0:"";s:14:"first_visit_at";s:19:"2012-12-11 05:47:52";s:14:"is_new_visitor";b:0;s:13:"last_visit_at";s:19:"2012-12-12 03:50:00";s:10:"visitor_id";s:1:"1";s:8:"quote_id";s:5:"93961";s:15:"do_quote_create";b:0;s:11:"last_url_id";s:5:"64738";s:16:"do_quote_destroy";b:0;}s:8:"last_url";s:39:"http://www.muafast.com/cms/index/index/";s:9:"_form_key";s:16:"ESfJYJD1bXu1omf2";s:13:"data_category";a:4:{i:0;s:2:"42";i:1;s:2:"43";i:2;s:2:"45";i:3;s:2:"68";}}customer_base|a:6:{s:23:"_session_validator_data";a:4:{s:11:"remote_addr";s:9:"127.0.0.1";s:8:"http_via";s:0:"";s:20:"http_x_forwarded_for";s:0:"";s:15:"http_user_agent";s:72:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0";}s:13:"session_hosts";a:1:{s:15:"www.muafast.com";b:1;}s:4:"link";s:1:"/";s:8:"messages";O:34:"Mage_Core_Model_Message_Collection":2:{s:12:"' . "\0" . '*' . "\0" . '_messages";a:0:{}s:20:"' . "\0" . '*' . "\0" . '_lastAddedMessage";N;}s:2:"id";N;s:15:"before_auth_url";s:46:"http://www.muafast.com/checkout/onepage/index/";}catalog|a:4:{s:23:"_session_validator_data";a:4:{s:11:"remote_addr";s:9:"127.0.0.1";s:8:"http_via";s:0:"";s:20:"http_x_forwarded_for";s:0:"";s:15:"http_user_agent";s:72:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0";}s:13:"session_hosts";a:1:{s:15:"www.muafast.com";b:1;}s:22:"last_viewed_product_id";s:4:"3914";s:8:"messages";O:34:"Mage_Core_Model_Message_Collection":2:{s:12:"' . "\0" . '*' . "\0" . '_messages";a:0:{}s:20:"' . "\0" . '*' . "\0" . '_lastAddedMessage";N;}}reports|a:3:{s:23:"_session_validator_data";a:4:{s:11:"remote_addr";s:9:"127.0.0.1";s:8:"http_via";s:0:"";s:20:"http_x_forwarded_for";s:0:"";s:15:"http_user_agent";s:72:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0";}s:13:"session_hosts";a:1:{s:15:"www.muafast.com";b:1;}s:26:"product_index_viewed_count";i:2;}checkout|a:11:{s:23:"_session_validator_data";a:4:{s:11:"remote_addr";s:9:"127.0.0.1";s:8:"http_via";s:0:"";s:20:"http_x_forwarded_for";s:0:"";s:15:"http_user_agent";s:72:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0";}s:13:"session_hosts";a:1:{s:15:"www.muafast.com";b:1;}s:5:"steps";a:6:{s:5:"login";a:2:{s:5:"label";s:27:"Phương thức thanh toán";s:5:"allow";b:1;}s:7:"billing";a:2:{s:5:"label";s:35:"Thông tin địa chỉ thanh toán";s:7:"is_show";b:1;}s:8:"shipping";a:2:{s:5:"label";s:25:"Thông tin vận chuyển";s:7:"is_show";b:1;}s:15:"shipping_method";a:2:{s:5:"label";s:30:"Phương thức vận chuyển";s:7:"is_show";b:1;}s:7:"payment";a:2:{s:5:"label";s:22:"Thông tin thanh toán";s:7:"is_show";b:1;}s:6:"review";a:2:{s:5:"label";s:15:"Xem đơn hàng";s:7:"is_show";b:1;}}s:8:"messages";O:34:"Mage_Core_Model_Message_Collection":2:{s:12:"' . "\0" . '*' . "\0" . '_messages";a:0:{}s:20:"' . "\0" . '*' . "\0" . '_lastAddedMessage";N;}s:21:"last_added_product_id";s:4:"3914";s:10:"quote_id_1";N;s:13:"last_quote_id";s:5:"93938";s:13:"last_order_id";s:3:"150";s:18:"last_real_order_id";s:9:"100000151";s:12:"redirect_url";N;s:21:"last_success_quote_id";N;}store_default|a:2:{s:23:"_session_validator_data";a:4:{s:11:"remote_addr";s:9:"127.0.0.1";s:8:"http_via";s:0:"";s:20:"http_x_forwarded_for";s:0:"";s:15:"http_user_agent";s:72:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0";}s:13:"session_hosts";a:1:{s:15:"www.muafast.com";b:1;}}tag|a:3:{s:23:"_session_validator_data";a:4:{s:11:"remote_addr";s:9:"127.0.0.1";s:8:"http_via";s:0:"";s:20:"http_x_forwarded_for";s:0:"";s:15:"http_user_agent";s:72:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0";}s:13:"session_hosts";a:1:{s:15:"www.muafast.com";b:1;}s:8:"messages";O:34:"Mage_Core_Model_Message_Collection":2:{s:12:"' . "\0" . '*' . "\0" . '_messages";a:0:{}s:20:"' . "\0" . '*' . "\0" . '_lastAddedMessage";N;}}admin|a:2:{s:23:"_session_validator_data";a:4:{s:11:"remote_addr";s:9:"127.0.0.1";s:8:"http_via";s:0:"";s:20:"http_x_forwarded_for";s:0:"";s:15:"http_user_agent";s:72:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0";}s:13:"session_hosts";a:1:{s:15:"www.muafast.com";b:1;}}',
+)
+AFF: 1
+TIME: 0.0017
+
